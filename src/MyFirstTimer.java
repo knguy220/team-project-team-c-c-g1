@@ -8,6 +8,7 @@ public class MyFirstTimer extends GraphicsProgram {
 	private GLabel myLabel;
 
 	// push and pull test
+	//this id my comment
 	public void init() {
 		setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
 		requestFocus();
