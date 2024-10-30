@@ -7,6 +7,7 @@ public class MyFirstTimer extends GraphicsProgram {
 	public static final int MAX_STEPS = 20;
 	private GLabel myLabel;
 
+	// push and pull test
 	public void init() {
 		setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
 		requestFocus();
