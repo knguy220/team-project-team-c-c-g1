@@ -9,5 +9,6 @@ public class Fist extends Weapon{
 	public void Activate() {
 		// TODO what happens when activated 
 	}
+	
 
 }
