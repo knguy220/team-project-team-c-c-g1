@@ -16,7 +16,6 @@ public class GButton extends GraphicsProgram {
 		rect.setFilled(true);
 		message = new GLabel(t,x+(rect.getWidth()/4),y+(rect.getHeight()/2));
 		message.setFont(f);
-		message.scale(w/100,h/50);
 		message.setColor(l);
 	}
 	public void setLabelMessage(String s, String f) {
@@ -33,7 +32,6 @@ public class GButton extends GraphicsProgram {
 	}
 	public void setButtonSize(double w, double h) {
 		rect.setSize(w, h);
-		message.scale(w/100, h/50);
 	}
 	public void setButtonColor(Color e, Color t) {
 		rect.setColor(e);
@@ -47,7 +45,7 @@ public class GButton extends GraphicsProgram {
 	}
 	
 	public static void main(String[] args) {
-		GButton button = new GButton(200,200,100,50,"BUTTON","SANS_SERIF",Color.black,Color.green);
+		GButton button = new GButton(200,200,100,50,"BUTTON","SANS_SERIF-12",Color.black,Color.green);
 		button.start();
 	}
 	
