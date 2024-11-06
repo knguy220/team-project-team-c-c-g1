@@ -61,15 +61,7 @@ public class InstructionsPane extends GraphicsProgram implements ActionListener 
 		
 	}
 	public void MouseClicked(MouseEvent e) {
-		rect.setVisible(false);
-		goal.setVisible(false);
-		moving.setVisible(false);
-		attacking.setVisible(false);
-		selecting.setVisible(false);
-		select.setVisible(false);
-		pickingUp.setVisible(false);
-		button.getRect().setVisible(false);
-		button.getMessage().setVisible(false);
+		
 	}
 	public void MouseMoved(MouseEvent e) {
 		
