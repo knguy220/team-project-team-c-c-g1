@@ -54,9 +54,10 @@ public class GameOverScreen extends GraphicsProgram implements ActionListener {
 	    add(again);
 	    
 	   
-	    /*icon = new GImage("arrow.png");
-	    icon.setLocation(againX, againY);
-	    add(icon);*/
+	    icon = new GImage("restart.jpg");
+	    icon.setSize(75, 75);
+	    icon.setLocation(restartX, restartY);
+	    add(icon);
 	    
 	    //test 2:15
 	}
