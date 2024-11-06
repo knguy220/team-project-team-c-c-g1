@@ -3,37 +3,22 @@ import acm.program.*;
 import acm.util.*;
 import java.awt.*;
 
-public class GButton extends GraphicsProgram {
+
+public class GButton {
 	private GRect rect;
 	private GLabel message;
-	
-	GButton(GRect r, GLabel m) {
-		rect = r;
-		message = m;
-	}
-	public void sizeLabel(double w, double h) {
-		message.scale(w, h);
-	}
-	public void setRectColor(Color e) {
-		rect.setFillColor(e);
-	}
-	public void setLabelMessage(String s) {
-		message.setLabel(s);
-	}
-	public void setLabelColor(Color e) {
-		message.setColor(e);
-	}
-	public void setLabelFont(Font f) {
+	public GButton(String s, String f, double x, double y, double w, double h, Color r, Color l) {
+		rect = new GRect(x,y,w,h);
+		rect.setColor(r);
+		rect.setFilled(true);
+		message = new GLabel(s,x+rect.getWidth()/4,y+rect.getHeight()/2);
 		message.setFont(f);
+		message.setColor(l);
 	}
-	
-	public static void main(String[] args) {
-		
+	public GLabel getMessage() {
+		return message;
 	}
-	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
+	public GRect getRect() {
+		return rect;
 	}
-} 
+}
