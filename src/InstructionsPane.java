@@ -2,14 +2,10 @@ import acm.graphics.*;
 import acm.program.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
-public class InstructionsPane extends GraphicsProgram implements ActionListener {
-	private static final int PROGRAM_WIDTH = 600;
-	private static final int PROGRAM_HEIGHT = 600;
+
+public class InstructionsPane extends GraphicsProgram {
 	private GRect rect;
 	private GLabel goal;
 	private GLabel moving;
@@ -18,11 +14,13 @@ public class InstructionsPane extends GraphicsProgram implements ActionListener 
 	private GLabel select;
 	private GLabel pickingUp;
 	private GButton button;
+	public static final int PROGRAM_WIDTH = 600;
+	public static final int PROGRAM_HEIGHT = 600;
 	
+	@Override
 	public void init() {
 		setSize(PROGRAM_WIDTH,PROGRAM_HEIGHT);
-	}
-	public void setUp() {
+		
 		rect = new GRect(PROGRAM_WIDTH/10,PROGRAM_HEIGHT/10,450,200);
 		rect.setColor(Color.gray);
 		rect.setFilled(true);
@@ -51,30 +49,33 @@ public class InstructionsPane extends GraphicsProgram implements ActionListener 
 		pickingUp.setFont("SERIF-13");
 		pickingUp.setColor(Color.blue);
 		add(pickingUp);
-		button = new GButton("BACK","ARIAL-18",rect.getWidth()/2,rect.getHeight(),100,50,Color.black,Color.blue);
+		button = new GButton("BACK","ARIAL-18",rect.getWidth()/2,rect.getHeight()*2,100,50,Color.black,Color.blue);
 		add(button.getRect());
 		add(button.getMessage());
 		
+		addMouseListeners();
 	}
 	
-	public void MouseReleased(MouseEvent e) {
-		
-	}
-	public void MouseClicked(MouseEvent e) {
-		
-	}
-	public void MouseMoved(MouseEvent e) {
-		
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		GObject clickedObject = getElementAt(e.getX(),e.getY());
+		if (clickedObject == button.getRect() || clickedObject == button.getMessage()) {
+			exitInstructions();
+		}
 	}
 	
+	private void exitInstructions() {
+		getGCanvas().getGraphics().clearRect(0,0,PROGRAM_WIDTH,PROGRAM_HEIGHT);
+	}
 	
 	public static void main(String[] args) {
 		new InstructionsPane().start();
 	}
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		setUp();
-		addMouseListeners();
+		
 	}
+	
 }
