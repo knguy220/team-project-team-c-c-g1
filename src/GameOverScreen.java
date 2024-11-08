@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
+import acm.graphics.GObject;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
@@ -22,6 +23,10 @@ public class GameOverScreen extends GraphicsProgram implements ActionListener {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		
+		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        addMouseListeners();
+        
 		title = new GLabel ("Game Over!");
 		title.setColor(Color.black);
 		title.setFont("Arial-BOLD-36");
@@ -37,27 +42,23 @@ public class GameOverScreen extends GraphicsProgram implements ActionListener {
 	    double scoreY = WINDOW_HEIGHT / 2; 
 	    score.setLocation(scoreX, scoreY);
 	    add(score);
-	    
-	    restart = new GRect(75, 75);
-	    double restartX = (WINDOW_WIDTH - restart.getWidth()) / 2;
-	    double restartY = (WINDOW_HEIGHT * 0.75) - (restart.getHeight() / 2); 
-	    restart.setLocation(restartX, restartY);
-	    add(restart);
+	      
+	    // Restart Icon
+        icon = new GImage("restart.jpg");
+        icon.setSize(75, 75);
+        double iconX = (WINDOW_WIDTH - icon.getWidth()) / 2;
+        double iconY = WINDOW_HEIGHT * 0.75;
+        icon.setLocation(iconX, iconY);
+        add(icon);
 
-	    
-	    again = new GLabel("Play Again?");
-	    again.setColor(Color.black);
-	    again.setFont("Arial-BOLD-30");
-	    double againX = (WINDOW_WIDTH - again.getWidth()) / 2; 
-	    double againY = restartY - 10; 
-	    again.setLocation(againX, againY);
-	    add(again);
-	    
-	   
-	    icon = new GImage("restart.jpg");
-	    icon.setSize(75, 75);
-	    icon.setLocation(restartX, restartY);
-	    add(icon);
+        // "Play Again?" Label
+        again = new GLabel("Play Again?");
+        again.setColor(Color.black);
+        again.setFont("Arial-BOLD-30");
+        double againX = (WINDOW_WIDTH - again.getWidth()) / 2; 
+        double againY = iconY - 10; 
+        again.setLocation(againX, againY);
+        add(again);
 	    
 	    //test 2:15
 	}
@@ -70,16 +71,24 @@ public class GameOverScreen extends GraphicsProgram implements ActionListener {
 	public void MouseReleased (MouseEvent e) {
 		
 	}
-	public void MouseClicked (MouseEvent e) {
-		
-	}
+	public void mouseClicked(MouseEvent e) {
+        GObject clickedObject = getElementAt(e.getX(), e.getY());
+
+        if (clickedObject == icon) {
+            restartGame();
+        }
+    }
+	
+	private void restartGame() {
+        // Logic to restart the game, such as resetting variables or going to the start screen.
+        System.out.println("Restarting game...");
+        // You can replace this print statement with actual restart logic.
+    }
+	
 	public void MouseMoved (MouseEvent e) {
 		
 	}
-	public void init() {
-		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		requestFocus();
-	}
+
 	public static void main(String args[]) {
 		new GameOverScreen().start();
 	}
