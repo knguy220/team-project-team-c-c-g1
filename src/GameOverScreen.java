@@ -14,8 +14,9 @@ public class GameOverScreen extends GraphicsProgram implements ActionListener {
 	private GLabel title;
 	private GLabel score;
 	private GLabel again;
-	private GRect restart;
+
 	private GImage icon;
+	private GImage background;
 	
 	public static final int WINDOW_HEIGHT = 600;
 	public static final int WINDOW_WIDTH = 600; 
@@ -26,6 +27,10 @@ public class GameOverScreen extends GraphicsProgram implements ActionListener {
 		
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         addMouseListeners();
+        
+        background = new GImage("restart.jpg");
+        background.setSize(WINDOW_WIDTH, WINDOW_HEIGHT); 
+        add(background, 0, 0);
         
 		title = new GLabel ("Game Over!");
 		title.setColor(Color.black);
