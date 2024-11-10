@@ -28,7 +28,7 @@ public class GameOverScreen extends GraphicsProgram implements ActionListener {
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         addMouseListeners();
         
-        background = new GImage("restart.jpg");
+        background = new GImage("background.jpg");
         background.setSize(WINDOW_WIDTH, WINDOW_HEIGHT); 
         add(background, 0, 0);
         
