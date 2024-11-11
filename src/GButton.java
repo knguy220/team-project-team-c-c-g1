@@ -1,24 +1,31 @@
 import acm.graphics.*;
-import acm.program.*;
-import acm.util.*;
-import java.awt.*;
-
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class GButton {
-	private GRect rect;
-	private GLabel message;
-	public GButton(String s, String f, double x, double y, double w, double h, Color r, Color l) {
-		rect = new GRect(x,y,w,h);
-		rect.setColor(r);
-		rect.setFilled(true);
-		message = new GLabel(s,x+rect.getWidth()/4,y+rect.getHeight()/2);
-		message.setFont(f);
-		message.setColor(l);
-	}
-	public GLabel getMessage() {
-		return message;
-	}
-	public GRect getRect() {
-		return rect;
-	}
+    private GRect rect;
+    private GLabel label;
+
+    public GButton(String text, int x, int y, int width, int height, Color rectColor, Color labelColor) {
+        this.rect = new GRect(x, y, width, height);
+        this.rect.setFilled(true);
+        this.rect.setFillColor(rectColor);
+
+        this.label = new GLabel(text, x + width / 4, y + height / 1.5);
+        this.label.setColor(labelColor);
+    }
+
+    public GRect getRect() {
+        return rect;
+    }
+
+    public GLabel getMessage() {
+        return label;
+    }
+
+    public void addActionListener(MouseListener listener) {
+        rect.addMouseListener(listener);
+        label.addMouseListener(listener);
+    }
 }

@@ -2,7 +2,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FlySwat extends Weapon{
 	private int coolDownTime = 60; // 1 min
-	private int enemiesKilled;
+	//private int enemiesKilled = 0;
 	private boolean isOnCoolDown = false; 
 
 	public FlySwat(WeaponType type, int damgeCaused) {

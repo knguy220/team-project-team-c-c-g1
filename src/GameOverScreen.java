@@ -68,14 +68,14 @@ public class GameOverScreen extends GraphicsProgram implements ActionListener {
 	    //test 2:15
 	}
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	/*public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	public void MouseReleased (MouseEvent e) {
 		
-	}
+	}*/ 
 	public void mouseClicked(MouseEvent e) {
         GObject clickedObject = getElementAt(e.getX(), e.getY());
 
@@ -90,9 +90,9 @@ public class GameOverScreen extends GraphicsProgram implements ActionListener {
         // You can replace this print statement with actual restart logic.
     }
 	
-	public void MouseMoved (MouseEvent e) {
+	/*public void MouseMoved (MouseEvent e) {
 		
-	}
+	}*/
 
 	public static void main(String args[]) {
 		new GameOverScreen().start();

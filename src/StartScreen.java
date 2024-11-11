@@ -3,7 +3,7 @@
 // https://www.youtube.com/watch?v=ZM8yIIRGruM&list=PLWms45O3n--5vDnNd6aiu1CSWX3JlCU1n&index=17
 //https://youtu.be/FZWX5WoGW00?si=TeGvPnH4x5-LjkaU
 //https://youtu.be/_SJU99LU1IQ?si=m5tqsO1litmxD9sN
-import javax.swing.*;
+/*import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +26,7 @@ public class StartScreen extends JFrame {
         // BACKGROUND PANEL
         backgroundPanel = new BackgroundPanel();
         backgroundPanel.setLayout(new BoxLayout(backgroundPanel, BoxLayout.Y_AXIS));
-
+        
         // TITLE LABEL
         JLabel titleLabel = new JLabel("Commander Dez", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 56));
@@ -165,4 +165,4 @@ public class StartScreen extends JFrame {
         SwingUtilities.invokeLater(() -> new StartScreen());
     }
 }
-
+*/
