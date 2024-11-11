@@ -42,6 +42,9 @@ public class GameApp extends GraphicsProgram {
      */
     @Override
     public void mouseClicked(MouseEvent e) {
+    	
+    	
+    	
         // Only process button clicks if no slider is being dragged
         if (!settingsScreen.isDraggingSlider()) {
             if (settingsScreen.isApplyButtonClicked(e.getX(), e.getY())) {

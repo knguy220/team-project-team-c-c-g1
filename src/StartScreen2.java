@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class StartScreen2 {
+public class StartScreen2{
     private GameApp gameApp; // Reference to the main GameApp class
     private GLabel instructionsLabel; // Label for displaying game instructions
 
