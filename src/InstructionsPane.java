@@ -1,4 +1,4 @@
-import acm.graphics.*;
+/*import acm.graphics.*;
 import acm.program.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -78,4 +78,4 @@ public class InstructionsPane extends GraphicsProgram {
 		
 	}
 	
-}
+}*/

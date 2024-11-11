@@ -1,135 +1,178 @@
 import acm.graphics.*;
-import acm.program.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.MouseEvent;
 
-public class SettingsScreen extends GraphicsProgram {
-    private GLabel titleLabel;
-    private GLabel musicLabel;
-    private GLabel audioLabel;
-    private GLabel musicValueLabel;
-    private GLabel audioValueLabel;
-    private GButton applyButton;
-    private GButton backButton;
-    private GButton increaseMusicButton;
-    private GButton decreaseMusicButton;
-    private GButton increaseAudioButton;
-    private GButton decreaseAudioButton;
-    private int musicVolume = 50;
-    private int audioVolume = 50;
+public class SettingsScreen {
+    private GameApp gameApp; 
+    private GOval musicSliderKnob; 
+    private GOval audioSliderKnob; 
+    private GLabel musicValueLabel; 
+    private GLabel audioValueLabel; 
+    private GButton applyButton; 
+    private GButton backButton; 
+    private int musicVolume = 50; // Initial music volume setting
+    private int audioVolume = 50; // Initial audio volume setting
+    private boolean draggingMusicSlider = false; 
+    private boolean draggingAudioSlider = false; 
 
-    public static final int WINDOW_WIDTH = 800;
-    public static final int WINDOW_HEIGHT = 600;
-
-    @Override
-    public void init() {
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        // Title Label
-        titleLabel = new GLabel("Settings", WINDOW_WIDTH / 2 - 100, 50);
-        titleLabel.setFont("Arial-BOLD-32");
-        add(titleLabel);
-
-        // Music Volume Label and Value
-        musicLabel = new GLabel("Music Volume:", WINDOW_WIDTH / 4, 150);
-        musicLabel.setFont("Arial-BOLD-18");
-        add(musicLabel);
-
-        musicValueLabel = new GLabel(String.valueOf(musicVolume), WINDOW_WIDTH / 2 + 50, 150);
-        musicValueLabel.setFont("Arial-BOLD-18");
-        add(musicValueLabel);
-
-        // Music Volume Adjust Buttons
-        increaseMusicButton = new GButton("+", "Arial-BOLD-18", WINDOW_WIDTH / 2 + 100, 135, 40, 40, Color.BLACK, Color.WHITE);
-        decreaseMusicButton = new GButton("-", "Arial-BOLD-18", WINDOW_WIDTH / 2, 135, 40, 40, Color.BLACK, Color.WHITE);
-        add(increaseMusicButton.getRect());
-        add(increaseMusicButton.getMessage());
-        add(decreaseMusicButton.getRect());
-        add(decreaseMusicButton.getMessage());
-
-        // Game Audio Volume Label and Value
-        audioLabel = new GLabel("Game Audio Volume:", WINDOW_WIDTH / 4, 250);
-        audioLabel.setFont("Arial-BOLD-18");
-        add(audioLabel);
-
-        audioValueLabel = new GLabel(String.valueOf(audioVolume), WINDOW_WIDTH / 2 + 50, 250);
-        audioValueLabel.setFont("Arial-BOLD-18");
-        add(audioValueLabel);
-
-        // Game Audio Volume Adjust Buttons
-        increaseAudioButton = new GButton("+", "Arial-BOLD-18", WINDOW_WIDTH / 2 + 100, 235, 40, 40, Color.BLACK, Color.WHITE);
-        decreaseAudioButton = new GButton("-", "Arial-BOLD-18", WINDOW_WIDTH / 2, 235, 40, 40, Color.BLACK, Color.WHITE);
-        add(increaseAudioButton.getRect());
-        add(increaseAudioButton.getMessage());
-        add(decreaseAudioButton.getRect());
-        add(decreaseAudioButton.getMessage());
-
-        // Apply Button
-        applyButton = new GButton("Apply", "Arial-BOLD-18", WINDOW_WIDTH / 3, 400, 120, 40, Color.BLACK, Color.WHITE);
-        add(applyButton.getRect());
-        add(applyButton.getMessage());
-
-        // Back Button
-        backButton = new GButton("Back", "Arial-BOLD-18", WINDOW_WIDTH / 2, 400, 120, 40, Color.BLACK, Color.WHITE);
-        add(backButton.getRect());
-        add(backButton.getMessage());
-
-        addMouseListeners();
+    /**
+     * Constructor that initializes SettingsScreen with a reference to the main GameApp.
+     *
+     * @param gameApp The main GameApp instance to enable screen transitions
+     */
+    public SettingsScreen(GameApp gameApp) {
+        this.gameApp = gameApp;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        GObject clickedObject = getElementAt(e.getX(), e.getY());
+    /**
+     * Displays the settings screen, adding UI elements like title, sliders, and buttons.
+     * Clears any existing UI elements before adding new ones.
+     */
+    public void show() {
+        gameApp.removeAll(); // Clear any existing UI elements
 
-        // Check which button was clicked
-        if (clickedObject == increaseMusicButton.getRect() || clickedObject == increaseMusicButton.getMessage()) {
-            if (musicVolume < 100) musicVolume += 10;
+        // Title label for the settings screen
+        GLabel titleLabel = new GLabel("Settings", 200, 100);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 32));
+        titleLabel.setColor(Color.BLACK);
+        gameApp.add(titleLabel);
+
+        // Music volume label and slider track
+        GLabel musicLabel = new GLabel("Music Volume", 200, 200);
+        musicLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        gameApp.add(musicLabel);
+
+        GRect musicSliderTrack = new GRect(300, 200, 200, 5);
+        musicSliderTrack.setFilled(true);
+        musicSliderTrack.setColor(Color.GRAY);
+        gameApp.add(musicSliderTrack);
+
+        // Music slider knob
+        musicSliderKnob = new GOval(300 + musicVolume * 2 - 8, 195, 16, 16);
+        musicSliderKnob.setFilled(true);
+        musicSliderKnob.setColor(Color.BLACK);
+        gameApp.add(musicSliderKnob);
+
+        // Display current music volume
+        musicValueLabel = new GLabel(String.valueOf(musicVolume), 510, 205);
+        gameApp.add(musicValueLabel);
+
+        // Audio volume label and slider track
+        GLabel audioLabel = new GLabel("Audio Volume", 200, 250);
+        audioLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        gameApp.add(audioLabel);
+
+        GRect audioSliderTrack = new GRect(300, 250, 200, 5);
+        audioSliderTrack.setFilled(true);
+        audioSliderTrack.setColor(Color.GRAY);
+        gameApp.add(audioSliderTrack);
+
+        // Audio slider knob
+        audioSliderKnob = new GOval(300 + audioVolume * 2 - 8, 245, 16, 16);
+        audioSliderKnob.setFilled(true);
+        audioSliderKnob.setColor(Color.BLACK);
+        gameApp.add(audioSliderKnob);
+
+        // Display current audio volume
+        audioValueLabel = new GLabel(String.valueOf(audioVolume), 510, 255);
+        gameApp.add(audioValueLabel);
+
+        // Apply button to save settings
+        applyButton = new GButton("Apply", 200, 350, 100, 40, Color.BLACK, Color.WHITE);
+        gameApp.add(applyButton.getRect());
+        gameApp.add(applyButton.getMessage());
+
+        // Back button to return to the start screen
+        backButton = new GButton("Back", 350, 350, 100, 40, Color.BLACK, Color.WHITE);
+        gameApp.add(backButton.getRect());
+        gameApp.add(backButton.getMessage());
+    }
+
+    /**
+     * Hides the settings screen by removing all elements.
+     */
+    public void hide() {
+        gameApp.removeAll();
+    }
+
+    /**
+     * Handles slider dragging to adjust music or audio volume based on the mouse position.
+     *
+     * @param e MouseEvent containing the coordinates of the drag
+     */
+    public void handleSliderDrag(MouseEvent e) {
+        if (musicSliderKnob.contains(e.getX(), e.getY()) || draggingMusicSlider) {
+            double newX = Math.min(Math.max(e.getX(), 300), 500);
+            musicSliderKnob.setLocation(newX - 8, musicSliderKnob.getY());
+            musicVolume = (int) ((newX - 300) / 2);
             musicValueLabel.setLabel(String.valueOf(musicVolume));
-        } else if (clickedObject == decreaseMusicButton.getRect() || clickedObject == decreaseMusicButton.getMessage()) {
-            if (musicVolume > 0) musicVolume -= 10;
-            musicValueLabel.setLabel(String.valueOf(musicVolume));
-        } else if (clickedObject == increaseAudioButton.getRect() || clickedObject == increaseAudioButton.getMessage()) {
-            if (audioVolume < 100) audioVolume += 10;
+            draggingMusicSlider = true; // Set dragging flag for music slider
+        } else if (audioSliderKnob.contains(e.getX(), e.getY()) || draggingAudioSlider) {
+            double newX = Math.min(Math.max(e.getX(), 300), 500);
+            audioSliderKnob.setLocation(newX - 8, audioSliderKnob.getY());
+            audioVolume = (int) ((newX - 300) / 2);
             audioValueLabel.setLabel(String.valueOf(audioVolume));
-        } else if (clickedObject == decreaseAudioButton.getRect() || clickedObject == decreaseAudioButton.getMessage()) {
-            if (audioVolume > 0) audioVolume -= 10;
-            audioValueLabel.setLabel(String.valueOf(audioVolume));
-        } else if (clickedObject == applyButton.getRect() || clickedObject == applyButton.getMessage()) {
-            applySettings();
-        } else if (clickedObject == backButton.getRect() || clickedObject == backButton.getMessage()) {
-            exitSettings();
+            draggingAudioSlider = true; // Set dragging flag for audio slider
         }
     }
 
-    private void applySettings() {
-        // Save settings or show confirmation message
-        GLabel confirmationLabel = new GLabel("Settings applied!", WINDOW_WIDTH / 2 - 50, 500);
-        confirmationLabel.setFont("Arial-BOLD-16");
-        confirmationLabel.setColor(Color.BLUE);
-        add(confirmationLabel);
-        
-        // Remove the confirmation message after 2 seconds
-        new javax.swing.Timer(2000, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                remove(confirmationLabel);
-            }
-        }).start();
+    /**
+     * Resets the dragging flags for the sliders after the mouse is released.
+     */
+    public void handleMouseReleased() {
+        draggingMusicSlider = false;
+        draggingAudioSlider = false;
     }
 
-    private void exitSettings() {
-        // Logic to go back to the start screen
-        getGCanvas().getGraphics().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    /**
+     * Checks if the Apply button was clicked.
+     *
+     * @param x X-coordinate of the click
+     * @param y Y-coordinate of the click
+     * @return true if the Apply button was clicked, false otherwise
+     */
+    public boolean isApplyButtonClicked(double x, double y) {
+        return applyButton.getRect().contains(x, y);
     }
 
-    public static void main(String[] args) {
-        new SettingsScreen().start();
+    /**
+     * Checks if the Back button was clicked.
+     *
+     * @param x X-coordinate of the click
+     * @param y Y-coordinate of the click
+     * @return true if the Back button was clicked, false otherwise
+     */
+    public boolean isBackButtonClicked(double x, double y) {
+        return backButton.getRect().contains(x, y);
     }
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+    /**
+     * Returns true if either slider is being dragged.
+     *
+     * @return true if a slider is being dragged, false otherwise
+     */
+    public boolean isDraggingSlider() {
+        return draggingMusicSlider || draggingAudioSlider;
+    }
+
+    /**
+     * Applies the settings by saving the current volume levels and displays a confirmation message.
+     */
+    public void applySettings() {
+        System.out.println("Settings applied: Music Volume = " + musicVolume + ", Audio Volume = " + audioVolume);
+        GLabel confirmationLabel = new GLabel("Settings Applied!", 200, 400);
+        confirmationLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        confirmationLabel.setColor(Color.GREEN);
+        gameApp.add(confirmationLabel);
+    }
+
+    /**
+     * Returns to the start screen by hiding the settings screen.
+     */
+    public void goBack() {
+        hide();
+        gameApp.showStartScreen(); // Transition back to the start screen
+    }
 }
-
 
