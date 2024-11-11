@@ -1,4 +1,4 @@
-// meelaud will do
+
 public class Fist extends Weapon{
 
 	public Fist(WeaponType type, int damgeCaused) {
