@@ -25,13 +25,13 @@ public class StartScreen2 {
         gameApp.removeAll(); // Clear existing UI elements before adding new ones
 
         // Title label for the game
-        GLabel titleLabel = new GLabel("Commander Dez", 200, 100);
+        GLabel titleLabel = new GLabel("Commander Dez", 585, 100);
         titleLabel.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 56));
         titleLabel.setColor(Color.BLUE);
         gameApp.add(titleLabel);
 
         // Settings button - Opens the settings screen when clicked
-        GButton settingsButton = new GButton("Settings", 300, 240, 100, 40, Color.BLACK, Color.WHITE);
+        GButton settingsButton = new GButton("Settings", 730, 240, 100, 40, Color.BLACK, Color.WHITE);
         settingsButton.addActionListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -46,7 +46,7 @@ public class StartScreen2 {
         gameApp.add(settingsButton.getMessage());
 
         // Instructions button - Displays game instructions when clicked
-        GButton instructionsButton = new GButton("Instructions", 300, 300, 100, 40, Color.BLACK, Color.WHITE);
+        GButton instructionsButton = new GButton("Instructions", 730, 400, 100, 40, Color.BLACK, Color.WHITE);
         instructionsButton.addActionListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -61,7 +61,7 @@ public class StartScreen2 {
         gameApp.add(instructionsButton.getMessage());
 
         // Start button - Begins the game when clicked
-        GButton startButton = new GButton("Start", 300, 360, 100, 40, Color.BLACK, Color.WHITE);
+        GButton startButton = new GButton("Start", 730, 600, 100, 40, Color.BLACK, Color.WHITE);
         startButton.addActionListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -94,7 +94,7 @@ public class StartScreen2 {
         // Instructional text describing game controls and goals
         instructionsLabel = new GLabel(
             "Survive as long as possible. Use W, A, S, D to move. " +
-            "Use the mouse to aim and shoot. Use E to pick up items.", 100, 420);
+            "Use the mouse to aim and shoot. Use E to pick up items.", 100, 385);
         instructionsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         instructionsLabel.setColor(Color.BLACK);
         gameApp.add(instructionsLabel);
