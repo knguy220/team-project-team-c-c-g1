@@ -18,7 +18,7 @@ public class StartScreen extends JFrame {
     public StartScreen() {
         // FRAME
         setTitle("Commander Dez");
-        setSize(800, 600);  // Adjust this as needed
+        setSize(800, 600);  // ADJUSTABLE
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -82,7 +82,7 @@ public class StartScreen extends JFrame {
         backgroundPanel.add(Box.createRigidArea(new Dimension(0, 200)));
         backgroundPanel.add(startButton);
 
-        add(backgroundPanel);  // Add the background panel to the frame
+        add(backgroundPanel);  
         setVisible(true);
     }
 
@@ -92,7 +92,7 @@ public class StartScreen extends JFrame {
 
         public BackgroundPanel() {
             try {
-            	backgroundImage = ImageIO.read(new File("src/image/istockphoto-1323844652-612x612.jpg"));
+            	backgroundImage = ImageIO.read(new File("src/image/background.jpg"));
                 if (backgroundImage == null) {
                     throw new IOException("Image file not found.");
                 }
@@ -109,8 +109,8 @@ public class StartScreen extends JFrame {
             if (backgroundImage != null) {
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             } else {
-                g.setColor(Color.BLACK);  // Set background color to black if image fails to load
-                g.fillRect(0, 0, getWidth(), getHeight());  // Fill the entire panel with black
+                g.setColor(Color.BLACK);  // SETS IMAGE TO BLACK IF FAILS
+                g.fillRect(0, 0, getWidth(), getHeight());  
             }
         }
     }
@@ -128,7 +128,7 @@ public class StartScreen extends JFrame {
         instructionsArea.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(instructionsArea);
-        scrollPane.setPreferredSize(new Dimension(300, 400));
+        scrollPane.setPreferredSize(new Dimension(200, 300));
 
         JOptionPane.showMessageDialog(
             this,
