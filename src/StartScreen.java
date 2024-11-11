@@ -128,7 +128,7 @@ public class StartScreen extends JFrame {
         instructionsArea.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(instructionsArea);
-        scrollPane.setPreferredSize(new Dimension(200, 300));
+        scrollPane.setPreferredSize(new Dimension(400, 100));
 
         JOptionPane.showMessageDialog(
             this,
