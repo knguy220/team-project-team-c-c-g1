@@ -25,7 +25,7 @@ public void setDamage(int damageCaused){
 	this.damageCaused = damageCaused; 
 }
 
-public void isEnemyKilled(){
+public void EnemyKilledThreshold(){
 	enemiesKilled++;
 	if(enemiesKilled == 10){
 		hazmat.Activate();
