@@ -4,13 +4,17 @@ public class Weapon {
 	private int damageCaused; 
 
 
-public Weapon (WeaponType type, int damgeCaused){
+public Weapon (WeaponType type, int damageCaused){
 	this.type = type;
-	this.damageCaused = damgeCaused;
+	this.damageCaused = damageCaused;
 }
 
 public WeaponType getWeapon(WeaponType type) {
 	return this.type;
+}
+
+public int getDamage(int damageCaused){
+	return this.damageCaused; 
 }
 
 public void setDamage(int damageCaused){
