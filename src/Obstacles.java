@@ -4,7 +4,7 @@ import acm.util.*;
 import java.awt.*;
 
 
-public class Obstacles extends GraphicsProgram {
+public class Obstacles {
 	private GLine wall;
 	private GImage rock;
 	
@@ -20,23 +20,11 @@ public class Obstacles extends GraphicsProgram {
 	public GLine getWall() {
 		return wall;
 	}
-	public void init() {
-		setSize(800,800);
-		createWall(200,200,10,100,true);
-		add(getWall());
-		createWall(400,400,10,100,false);
-		add(getWall());
+	public void createRock(double x, double y, double s) {
+		rock = new GImage("rock.png",x,y);
+		rock.scale(s);
 	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Obstacles().start();
+	public GImage getRock() {
+		return rock;
 	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
