@@ -7,7 +7,7 @@ public class GameApp extends GraphicsProgram implements KeyListener {
     private StartScreen2 startScreen; // Instance of StartScreen2 for the start screen UI
     private SettingsScreen settingsScreen; // Instance of SettingsScreen for the settings UI
     private StartGame startGame; // Instance of StartGame for the gameplay
-
+    //test
     /**
      * Initializes the game app by setting up the start and settings screens
      * and enabling mouse and key interactions. Starts by displaying the start screen.
