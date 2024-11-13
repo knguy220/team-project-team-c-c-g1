@@ -6,7 +6,7 @@ public class StartGame {
     private GameApp gameApp;
     private GOval playerCircle; // The circle representing the player
     private final int STEP_SIZE = 10; // Amount of movement in each key press
-
+    //test
     /**
      * Constructor that initializes StartGame with a reference to the main GameApp.
      *
