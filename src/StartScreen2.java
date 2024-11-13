@@ -1,4 +1,5 @@
 import acm.graphics.*;
+import acm.graphics.GImage;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import acm.program.GraphicsProgram;
 
 
 public class StartScreen2 {
@@ -15,7 +17,11 @@ public class StartScreen2 {
     private GButton startButton;// Label for displaying game instructions
     private JTextField usernameField; // USERNAME
     private GButton instructionsButton;
-
+    private GImage background;
+    
+    public static final int WINDOW_HEIGHT = 600;
+	public static final int WINDOW_WIDTH = 600; 
+	
     /**
      * Constructor initializes StartScreen2 with a reference to the main GameApp.
      *
@@ -33,6 +39,12 @@ public class StartScreen2 {
     
     public void show() {
         gameApp.removeAll(); // Clear existing UI elements before adding new ones
+        
+        
+        background = new GImage("space.jpg");
+        background.setSize(WINDOW_WIDTH, WINDOW_HEIGHT); 
+        add(background, 0, 0); 
+        
         
      //Title label for the game
         GLabel titleLabel = new GLabel("Commander Dez", 585, 100);
@@ -87,7 +99,12 @@ public class StartScreen2 {
         gameApp.add(startButton.getMessage());
     }
 
-    /**
+    private void add(GImage background2, int i, int j) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
      * Hides the start screen by removing all elements.
      */
     public void hide() {
