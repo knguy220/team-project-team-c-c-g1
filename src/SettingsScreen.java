@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 
-public class SettingsScreen {
+public class SettingsScreen{
     private GameApp gameApp; 
     private GOval musicSliderKnob; 
     private GOval audioSliderKnob; 
@@ -23,6 +23,7 @@ public class SettingsScreen {
      */
     public SettingsScreen(GameApp gameApp) {
         this.gameApp = gameApp;
+        
     }
 
     /**

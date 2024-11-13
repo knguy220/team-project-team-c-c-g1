@@ -11,10 +11,16 @@ import java.awt.event.KeyListener;
 
 public class StartScreen2 {
     private GameApp gameApp; // Reference to the main GameApp class
+<<<<<<< HEAD
+    private GLabel instructionsLabel;
+    private GButton startButton;// Label for displaying game instructions
+
+=======
     private GLabel instructionsLabel; // Label for displaying game instructions
     private JTextField usernameField; // USERNAME
     private GButton startButton;
     private GButton instructionsButton;
+>>>>>>> branch 'main' of https://github.com/Fall2024Comp55/team-project-team-c-c-g.git
     /**
      * Constructor initializes StartScreen2 with a reference to the main GameApp.
      *
@@ -22,6 +28,7 @@ public class StartScreen2 {
      */ 
     public StartScreen2(GameApp gameApp) {
         this.gameApp = gameApp;
+        GButton startButton = new GButton("Start", 730, 600, 100, 40, Color.BLACK, Color.WHITE);
     }
     
     /**
