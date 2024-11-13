@@ -1,8 +1,11 @@
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FlySwat extends Weapon{
 	private int coolDownTime = 60; // 1 min
-	//private int enemiesKilled = 0;
+	private Timer coolDownTimer;
+	private int enemiesKilled = 0;
 	private boolean isOnCoolDown = false; 
 
 	public FlySwat(WeaponType type, int damgeCaused) {
@@ -20,15 +23,14 @@ public class FlySwat extends Weapon{
 	
 	private void startCoolDown(){
 		isOnCoolDown = true;
-		new Thread(() -> {
-			try {
-				TimeUnit.SECONDS.sleep(coolDownTime);
-			}catch(InterruptedException e) {
-				e.printStackTrace();
-			}
-			isOnCoolDown = false;
-			// ready for activation
-		}).start();
+		coolDownTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                isOnCoolDown = false;
+                System.out.println("Hazmat Suit Ready for Activation");
+                coolDownTimer.cancel(); // Stops the timer after execution
+            }
+        }, coolDownTime * 1000);
 	}
 
 }
