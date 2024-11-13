@@ -10,7 +10,7 @@ public class Bullet {
 		this.bulletPosition = startPosition;
 		this.clickedLocation = targetPosition;
 		bulletIcon = new GImage ("bullet.png");
-		
+		//test
 	}
 	public void bulletMovementPath(int X, int Y) {
 		double differenceX = clickedLocation.getX() - bulletPosition.getX();
