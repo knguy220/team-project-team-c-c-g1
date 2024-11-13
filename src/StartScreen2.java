@@ -4,9 +4,10 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class StartScreen2{
+public class StartScreen2 {
     private GameApp gameApp; // Reference to the main GameApp class
-    private GLabel instructionsLabel; // Label for displaying game instructions
+    private GLabel instructionsLabel;
+    private GButton startButton;// Label for displaying game instructions
 
     /**
      * Constructor initializes StartScreen2 with a reference to the main GameApp.
@@ -15,6 +16,7 @@ public class StartScreen2{
      */
     public StartScreen2(GameApp gameApp) {
         this.gameApp = gameApp;
+        GButton startButton = new GButton("Start", 730, 600, 100, 40, Color.BLACK, Color.WHITE);
     }
     
     /**
