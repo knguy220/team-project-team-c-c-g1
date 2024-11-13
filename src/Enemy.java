@@ -19,3 +19,6 @@ public class Enemy {
 	
 }
 
+class BugOne extends Enemy{}
+class BugTwo extends Enemy{}
+class BugThree extends Enemy{}
