@@ -1,19 +1,31 @@
 import acm.graphics.*;
+import javax.swing.*;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 
 public class StartScreen2 {
     private GameApp gameApp; // Reference to the main GameApp class
+<<<<<<< HEAD
     private GLabel instructionsLabel;
     private GButton startButton;// Label for displaying game instructions
 
+=======
+    private GLabel instructionsLabel; // Label for displaying game instructions
+    private JTextField usernameField; // USERNAME
+    private GButton startButton;
+    private GButton instructionsButton;
+>>>>>>> branch 'main' of https://github.com/Fall2024Comp55/team-project-team-c-c-g.git
     /**
      * Constructor initializes StartScreen2 with a reference to the main GameApp.
      *
      * @param gameApp The main GameApp instance to enable screen transitions
-     */
+     */ 
     public StartScreen2(GameApp gameApp) {
         this.gameApp = gameApp;
         GButton startButton = new GButton("Start", 730, 600, 100, 40, Color.BLACK, Color.WHITE);
@@ -22,15 +34,17 @@ public class StartScreen2 {
     /**
      * Displays the start screen, adding UI elements like title, settings, instructions,
      * and start buttons. Clears any existing UI elements before adding new ones.
-     */
+     */ 
+    
     public void show() {
         gameApp.removeAll(); // Clear existing UI elements before adding new ones
-
-        // Title label for the game
+        
+     //Title label for the game
         GLabel titleLabel = new GLabel("Commander Dez", 585, 100);
-        titleLabel.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 56));
-        titleLabel.setColor(Color.BLUE);
+        titleLabel.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 60));
+        titleLabel.setColor(Color.blue);
         gameApp.add(titleLabel);
+
 
         // Settings button - Opens the settings screen when clicked
         GButton settingsButton = new GButton("Settings", 730, 240, 100, 40, Color.BLACK, Color.WHITE);
@@ -53,7 +67,7 @@ public class StartScreen2 {
             @Override
             public void mouseClicked(MouseEvent e) {
                 showInstructions(); // Display instructions
-            }
+            } 
             @Override public void mousePressed(MouseEvent e) {}
             @Override public void mouseReleased(MouseEvent e) {}
             @Override public void mouseEntered(MouseEvent e) {}
@@ -63,7 +77,7 @@ public class StartScreen2 {
         gameApp.add(instructionsButton.getMessage());
 
         // Start button - Begins the game when clicked
-        GButton startButton = new GButton("Start", 730, 600, 100, 40, Color.BLACK, Color.WHITE);
+        GButton startButton = new GButton("Start Game", 730, 600, 100, 40, Color.BLACK, Color.WHITE);
         startButton.addActionListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -106,12 +120,13 @@ public class StartScreen2 {
      * Initiates the game by clearing the start screen and displaying a message.
      * This would be expanded to start the main game loop in a full implementation.
      */
-    private void startGame() {
-        gameApp.removeAll();
-        // Display a welcome message indicating the game is starting
-        GLabel startLabel = new GLabel("Game Starting...", 200, 300);
-        startLabel.setFont(new Font("Arial", Font.BOLD, 24));
+ 
+   private void startGame() {
+       gameApp.removeAll();
+       // Display a welcome message indicating the game is starting
+       GLabel startLabel = new GLabel("Game Starting...", 650, 300);
+       startLabel.setFont(new Font("Arial", Font.BOLD, 32));
         startLabel.setColor(Color.RED);
-        gameApp.add(startLabel);
-    }
-}
+       gameApp.add(startLabel);
+   }
+ }

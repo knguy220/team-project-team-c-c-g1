@@ -1,5 +1,8 @@
 import acm.program.GraphicsProgram;
+import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
+import javax.swing.JPanel; 
+
 
 public class GameApp extends GraphicsProgram {
     // Screens for the game - start screen and settings screen
@@ -9,7 +12,7 @@ public class GameApp extends GraphicsProgram {
     /**
      * Initializes the game app by setting up the start and settings screens
      * and enabling mouse interactions. Starts by displaying the start screen.
-     */
+     */ 
     public void init() {
         startScreen = new StartScreen2(this);
         settingsScreen = new SettingsScreen(this);
@@ -88,4 +91,5 @@ public class GameApp extends GraphicsProgram {
     @Override
     public void run() {
     }
+
 }
