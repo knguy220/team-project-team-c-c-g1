@@ -19,8 +19,8 @@ public class StartScreen2 {
     private GButton instructionsButton;
     private GImage background;
     
-    public static final int WINDOW_HEIGHT = 600;
-	public static final int WINDOW_WIDTH = 600; 
+    public static final int WINDOW_HEIGHT = 700;
+	public static final int WINDOW_WIDTH = 700; 
 	
     /**
      * Constructor initializes StartScreen2 with a reference to the main GameApp.
@@ -40,6 +40,7 @@ public class StartScreen2 {
     public void show() {
         gameApp.removeAll(); // Clear existing UI elements before adding new ones
         
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         
         background = new GImage("space.jpg");
         background.setSize(WINDOW_WIDTH, WINDOW_HEIGHT); 
@@ -99,7 +100,12 @@ public class StartScreen2 {
         gameApp.add(startButton.getMessage());
     }
 
-    private void add(GImage background2, int i, int j) {
+    private void setSize(int windowWidth, int windowHeight) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void add(GImage background2, int i, int j) {
 		// TODO Auto-generated method stub
 		
 	}
