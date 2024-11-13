@@ -26,7 +26,7 @@ public class FlySwat extends Weapon{
             @Override
             public void run() {
                 isOnCoolDown = false;
-                System.out.println("FlySwat Ready for Activation");
+                System.out.println("Fly swat Ready for Activation");
                 coolDownTimer.cancel(); // Stops the timer after execution
             }
         }, coolDownTime * 1000);
