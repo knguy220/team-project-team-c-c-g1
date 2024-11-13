@@ -1,27 +1,14 @@
 import acm.graphics.*;
-import acm.graphics.GImage;
 import javax.swing.*;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import acm.program.GraphicsProgram;
-
 
 public class StartScreen2 {
     private GameApp gameApp; // Reference to the main GameApp class
-    private GLabel instructionsLabel;
-    private GButton startButton;// Label for displaying game instructions
-    private JTextField usernameField; // USERNAME
-    private GButton instructionsButton;
-    private GImage background;
-    
-    public static final int WINDOW_HEIGHT = 600;
-	public static final int WINDOW_WIDTH = 600; 
-	
+    private GLabel instructionsLabel; // Label for displaying game instructions
+
     /**
      * Constructor initializes StartScreen2 with a reference to the main GameApp.
      *
@@ -29,29 +16,20 @@ public class StartScreen2 {
      */ 
     public StartScreen2(GameApp gameApp) {
         this.gameApp = gameApp;
-        GButton startButton = new GButton("Start", 730, 600, 100, 40, Color.BLACK, Color.WHITE);
     }
     
     /**
      * Displays the start screen, adding UI elements like title, settings, instructions,
      * and start buttons. Clears any existing UI elements before adding new ones.
      */ 
-    
     public void show() {
         gameApp.removeAll(); // Clear existing UI elements before adding new ones
         
-        
-        background = new GImage("space.jpg");
-        background.setSize(WINDOW_WIDTH, WINDOW_HEIGHT); 
-        add(background, 0, 0); 
-        
-        
-     //Title label for the game
+        // Title label for the game
         GLabel titleLabel = new GLabel("Commander Dez", 585, 100);
         titleLabel.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 60));
-        titleLabel.setColor(Color.blue);
+        titleLabel.setColor(Color.BLUE);
         gameApp.add(titleLabel);
-
 
         // Settings button - Opens the settings screen when clicked
         GButton settingsButton = new GButton("Settings", 730, 240, 100, 40, Color.BLACK, Color.WHITE);
@@ -65,8 +43,8 @@ public class StartScreen2 {
             @Override public void mouseEntered(MouseEvent e) {}
             @Override public void mouseExited(MouseEvent e) {}
         });
-        gameApp.add(settingsButton.getRect());
-        gameApp.add(settingsButton.getMessage());
+        gameApp.add(settingsButton.getRect()); // Add the button background to GameApp
+        gameApp.add(settingsButton.getMessage()); // Add the button label to GameApp
 
         // Instructions button - Displays game instructions when clicked
         GButton instructionsButton = new GButton("Instructions", 730, 400, 100, 40, Color.BLACK, Color.WHITE);
@@ -88,7 +66,7 @@ public class StartScreen2 {
         startButton.addActionListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                startGame(); // Initiate the game
+                startGame(); // Call GameApp's startGame method to initiate the game
             }
             @Override public void mousePressed(MouseEvent e) {}
             @Override public void mouseReleased(MouseEvent e) {}
@@ -99,12 +77,7 @@ public class StartScreen2 {
         gameApp.add(startButton.getMessage());
     }
 
-    private void add(GImage background2, int i, int j) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/**
+    /**
      * Hides the start screen by removing all elements.
      */
     public void hide() {
@@ -129,16 +102,10 @@ public class StartScreen2 {
     }
 
     /**
-     * Initiates the game by clearing the start screen and displaying a message.
-     * This would be expanded to start the main game loop in a full implementation.
+     * Initiates the game by calling GameApp's startGame method.
      */
- 
-   private void startGame() {
-       gameApp.removeAll();
-       // Display a welcome message indicating the game is starting
-       GLabel startLabel = new GLabel("Game Starting...", 650, 300);
-       startLabel.setFont(new Font("Arial", Font.BOLD, 32));
-        startLabel.setColor(Color.RED);
-       gameApp.add(startLabel);
-   }
- }
+    private void startGame() {
+        gameApp.startGame(); // Start the game in GameApp
+    }
+}
+
