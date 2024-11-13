@@ -107,4 +107,3 @@ public class StartScreen2 {
         gameApp.startGame(); // Start the game in GameApp
     }
 }
-
