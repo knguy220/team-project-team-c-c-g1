@@ -9,18 +9,29 @@ public class Bullet {
 		this.bulletIcon = bulletIcon;
 		this.bulletPosition = startPosition;
 		this.clickedLocation = targetPosition;
+		bulletIcon = new GImage ("bullet.png");
 		
 	}
 	public void bulletMovementPath(int X, int Y) {
 		double differenceX = clickedLocation.getX() - bulletPosition.getX();
 		double differenceY = clickedLocation.getY() - bulletPosition.getY();
 		
-		double distance = Math.sqrt(differenceX * differenceX + differenceY * differenceY);
-	
+		//double distance = Math.sqrt(differenceX * differenceX + differenceY * differenceY);
+		
+		double fraction = 0.5;
+		
+		int moveX = (int) (differenceX * fraction);
+		int moveY = (int) (differenceY * fraction);
+		
+		bulletPosition.setX(bulletPosition.getX() + moveX);
+	    bulletPosition.setY(bulletPosition.getY() + moveY);
+
+	     
+	    bulletIcon.setLocation(bulletPosition.getX(), bulletPosition.getY());
 	}
 	
-	public void targetLocation(Position position) {
-		
+	public void targetLocation(Position newTarget) {
+		this.clickedLocation = newTarget;
 	}
 	
 }
