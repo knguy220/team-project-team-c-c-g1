@@ -12,7 +12,11 @@ public class Bullet {
 		
 	}
 	public void bulletMovementPath(int X, int Y) {
+		double differenceX = clickedLocation.getX() - bulletPosition.getX();
+		double differenceY = clickedLocation.getY() - bulletPosition.getY();
 		
+		double distance = Math.sqrt(differenceX * differenceX + differenceY * differenceY);
+	
 	}
 	
 	public void targetLocation(Position position) {
