@@ -9,8 +9,8 @@ public class Bullet {
 		this.bulletIcon = bulletIcon;
 		this.bulletPosition = startPosition;
 		this.clickedLocation = targetPosition;
-		bulletIcon = new GImage ("bullet.png");
-		//test
+		bulletIcon = new GImage ("rename.png");
+		
 	}
 	public void bulletMovementPath(int X, int Y) {
 		double differenceX = clickedLocation.getX() - bulletPosition.getX();
@@ -33,5 +33,6 @@ public class Bullet {
 	public void targetLocation(Position newTarget) {
 		this.clickedLocation = newTarget;
 	}
+	
 	
 }
