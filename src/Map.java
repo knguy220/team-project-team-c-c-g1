@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-
+//comment
 public class Map extends JPanel {
     private static final int TILE_SIZE = 40;
     private static final int MAP_WIDTH = 15;
