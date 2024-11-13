@@ -8,4 +8,13 @@ public class Enemy {
 	private Position position; 
 	private GImage bugIcon;
 	private Color bugColor;
+	
+	public void moveLeft(){}
+	public void moveRight(){}
+	public void moveUp(){}
+	public void moveDown(){}
+	public void spawnIn(){}
+	public void attack(){}
+	public void beenHit(){}
+	
 }
