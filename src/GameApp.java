@@ -10,14 +10,13 @@ public class GameApp extends GraphicsProgram {
     private StartGame startGame;
     private PauseScreen pauseScreen;
     private boolean isPaused = false;
-    private boolean fromPauseScreen = false; // Track if settings was opened from pause
+    private boolean fromPauseScreen = false; 
 
     public void init() {
         startScreen = new StartScreen2(this);
         settingsScreen = new SettingsScreen(this);
         pauseScreen = new PauseScreen(this);
 
-        // Set the window to full screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize.width, screenSize.height);
 
@@ -27,7 +26,7 @@ public class GameApp extends GraphicsProgram {
     }
 
     public void showStartScreen() {
-        if (startGame != null) startGame.hide(); // Hide StartGame if switching back to start screen
+        if (startGame != null) startGame.hide(); 
         startScreen.show();
     }
 
@@ -36,7 +35,7 @@ public class GameApp extends GraphicsProgram {
         fromPauseScreen = openedFromPause;
 
         if (fromPauseScreen) {
-            pauseScreen.hide(); // Hide pause screen if coming from pause
+            pauseScreen.hide(); 
         } else {
             if (startGame != null) startGame.hide();
             startScreen.hide();
@@ -47,31 +46,31 @@ public class GameApp extends GraphicsProgram {
 
     public void startGame() {
         removeAll();
-        if (startGame == null) { // Only create StartGame once
+        if (startGame == null) { 
             startGame = new StartGame(this);
         } else {
-            startGame.show(); // Show the existing StartGame instance without resetting
+            startGame.show(); 
         }
         isPaused = false;
     }
 
     public void showPauseScreen() {
-        if (startGame != null) startGame.hide(); // Hide StartGame when pausing
+        if (startGame != null) startGame.hide(); 
         pauseScreen.show();
         isPaused = true;
     }
 
     public void resumeGame() {
         if (startGame != null) {
-            pauseScreen.hide(); // Hide pause screen
-            startGame.show(); // Show StartGame elements when resuming
+            pauseScreen.hide(); 
+            startGame.show(); 
         }
         isPaused = false;
     }
 
     public void quitToStartScreen() {
-        if (startGame != null) startGame.hide(); // Hide the game elements
-        showStartScreen(); // Go back to main StartScreen
+        if (startGame != null) startGame.hide(); 
+        showStartScreen(); 
     }
 
     @Override
@@ -86,23 +85,21 @@ public class GameApp extends GraphicsProgram {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // Handle settings button behavior based on the active screen state
-        if (isPaused && pauseScreen.isResumeButtonClicked(e.getX(), e.getY())) {
+
+    	if (isPaused && pauseScreen.isResumeButtonClicked(e.getX(), e.getY())) {
             resumeGame();
         } else if (isPaused && pauseScreen.isSettingsButtonClicked(e.getX(), e.getY())) {
-            showSettingsScreen(true); // Settings from PauseScreen
+            showSettingsScreen(true); 
         } else if (isPaused && pauseScreen.isQuitButtonClicked(e.getX(), e.getY())) {
             quitToStartScreen();
         } else if (settingsScreen.isApplyButtonClicked(e.getX(), e.getY())) {
-            // Only apply settings without navigation
             settingsScreen.applySettings();
         } else if (settingsScreen.isBackButtonClicked(e.getX(), e.getY())) {
-            // Go back based on where settings were opened from
             settingsScreen.hide();
             if (fromPauseScreen) {
-                resumeGame(); // Return to StartGame if accessed from PauseScreen
+                resumeGame(); 
             } else {
-                showStartScreen(); // Return to StartScreen if accessed from StartScreen2
+                showStartScreen(); 
             }
         }
     }

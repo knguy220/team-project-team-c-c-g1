@@ -6,31 +6,28 @@ import java.awt.event.MouseListener;
 
 public class StartGame {
     private GameApp gameApp;
-    private GOval playerCircle; // Represents the player character as a circle
-    private GButton pauseButton; // Pause button at the top-right corner
-    private final int STEP_SIZE = 10; // Movement increment for each key press
+    private GOval playerCircle; 
+    private GButton pauseButton; 
+    private final int STEP_SIZE = 10; 
 
     public StartGame(GameApp gameApp) {
         this.gameApp = gameApp;
         initGame();
     }
 
-    // Initialize the game elements
     private void initGame() {
-        gameApp.removeAll(); // Clear previous screen elements
+        gameApp.removeAll(); 
 
-        // Player circle setup in the center of the screen
         playerCircle = new GOval(gameApp.getWidth() / 2 - 25, gameApp.getHeight() / 2 - 25, 50, 50);
         playerCircle.setFilled(true);
         playerCircle.setColor(Color.BLUE);
         gameApp.add(playerCircle);
 
-        // Pause button setup in the top-right corner
         pauseButton = new GButton("Pause", (int) (gameApp.getWidth() - 100), 20, 80, 30, Color.BLACK, Color.WHITE);
         pauseButton.addActionListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                gameApp.showPauseScreen(); // Show pause screen when clicked
+                gameApp.showPauseScreen();
             }
             @Override public void mousePressed(MouseEvent e) {}
             @Override public void mouseReleased(MouseEvent e) {}
@@ -41,16 +38,14 @@ public class StartGame {
         gameApp.add(pauseButton.getMessage());
     }
 
-    // Show method to re-add elements to the screen when resuming the game
     public void show() {
-        gameApp.add(playerCircle); // Add the player circle back to the screen
+        gameApp.add(playerCircle); 
         gameApp.add(pauseButton.getRect());
         gameApp.add(pauseButton.getMessage());
     }
 
-    // Hide method to remove elements from the screen when pausing the game
     public void hide() {
-        gameApp.remove(playerCircle); // Remove the player circle from the screen
+        gameApp.remove(playerCircle);
         gameApp.remove(pauseButton.getRect());
         gameApp.remove(pauseButton.getMessage());
     }

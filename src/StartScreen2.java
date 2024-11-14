@@ -44,7 +44,7 @@ public class StartScreen2 {
         instructionsButton.addActionListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                showInstructions(); // Display instructions
+                showInstructions(); 
             } 
             @Override public void mousePressed(MouseEvent e) {}
             @Override public void mouseReleased(MouseEvent e) {}
@@ -59,7 +59,7 @@ public class StartScreen2 {
         startButton.addActionListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                gameApp.startGame(); // Start the game
+                gameApp.startGame(); 
             }
             @Override public void mousePressed(MouseEvent e) {}
             @Override public void mouseReleased(MouseEvent e) {}
@@ -76,8 +76,9 @@ public class StartScreen2 {
 
     private void showInstructions() {
         if (instructionsLabel != null) {
-            gameApp.remove(instructionsLabel); // Remove old instructions if they exist
+            gameApp.remove(instructionsLabel); 
         }
+        
         // Instructional text describing game controls and goals
         instructionsLabel = new GLabel(
             "Survive as long as possible. Use W, A, S, D to move. " +
