@@ -6,14 +6,11 @@ public class Map extends JPanel {
     private static final int MAP_WIDTH = 15;
     private static final int MAP_HEIGHT = 10;
 
-<<<<<<< HEAD
+
     // Define tile types
     private static final int FLOOR = 0;
     private static final int WALL = 1;
-=======
->>>>>>> branch 'main' of https://github.com/Fall2024Comp55/team-project-team-c-c-g.git
 
-<<<<<<< HEAD
     // Sample map layout using a 2D array
     private int[][] map = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -55,5 +52,3 @@ public class Map extends JPanel {
         frame.setVisible(true);
     }
 }
-=======
->>>>>>> branch 'main' of https://github.com/Fall2024Comp55/team-project-team-c-c-g.git
