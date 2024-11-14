@@ -5,11 +5,12 @@ import java.awt.event.MouseEvent;
 
 public class StartGame {
     private GameApp gameApp;
+    private GImage backgroundImage;
     private GOval playerCircle;
     private GLine gunLine;
     private GButton pauseButton;
     private final int STEP_SIZE = 10;
-    private final int GUN_LENGTH = 40; 
+    private final int GUN_LENGTH = 40; // Length of the gun barrel
 
     public StartGame(GameApp gameApp) {
         this.gameApp = gameApp;
@@ -19,17 +20,25 @@ public class StartGame {
     private void initGame() {
         gameApp.removeAll();
 
+        // Add background image
+        backgroundImage = new GImage("groundhd.png");
+        backgroundImage.setSize(gameApp.getWidth(), gameApp.getHeight());
+        gameApp.add(backgroundImage);
+
+        // Initialize player circle
         playerCircle = new GOval(gameApp.getWidth() / 2 - 25, gameApp.getHeight() / 2 - 25, 50, 50);
         playerCircle.setFilled(true);
         playerCircle.setColor(Color.BLUE);
         gameApp.add(playerCircle);
 
+        // Initialize gun line - Positioned initially pointing to the right
         double centerX = playerCircle.getX() + playerCircle.getWidth() / 2;
         double centerY = playerCircle.getY() + playerCircle.getHeight() / 2;
         gunLine = new GLine(centerX, centerY, centerX + GUN_LENGTH, centerY);
         gunLine.setColor(Color.BLACK);
         gameApp.add(gunLine);
 
+        // Initialize pause button
         pauseButton = new GButton("Pause", (int) (gameApp.getWidth() - 100), 20, 80, 30, Color.BLACK, Color.WHITE);
         pauseButton.addActionListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -42,6 +51,7 @@ public class StartGame {
     }
 
     public void show() {
+        if (backgroundImage != null) gameApp.add(backgroundImage);
         if (playerCircle != null) gameApp.add(playerCircle);
         if (gunLine != null) gameApp.add(gunLine);
         if (pauseButton != null) {
@@ -51,6 +61,7 @@ public class StartGame {
     }
 
     public void hide() {
+        if (backgroundImage != null) gameApp.remove(backgroundImage);
         if (playerCircle != null) gameApp.remove(playerCircle);
         if (gunLine != null) gameApp.remove(gunLine);
         if (pauseButton != null) {
@@ -59,6 +70,7 @@ public class StartGame {
         }
     }
 
+    // Handles key press events for movement
     public void handleKeyPress(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
@@ -115,6 +127,7 @@ public class StartGame {
         double gunEndX = centerX + Math.cos(angle) * (playerCircle.getWidth() / 2 + GUN_LENGTH);
         double gunEndY = centerY + Math.sin(angle) * (playerCircle.getHeight() / 2 + GUN_LENGTH);
 
+        // Set the gun line to point from the center of the player to the calculated endpoint
         gunLine.setStartPoint(centerX, centerY);
         gunLine.setEndPoint(gunEndX, gunEndY);
     }

@@ -5,23 +5,29 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class StartScreen2 {
-    private GameApp gameApp; // Reference to the main GameApp class
-    private GLabel instructionsLabel; // Label for displaying game instructions
+    private GameApp gameApp; 
+    private GLabel instructionsLabel; 
     private GButton startButton;
     private GButton settingsButton;
     private GButton instructionsButton;
+    private GImage backgroundImage;
+
 
     public StartScreen2(GameApp gameApp) {
         this.gameApp = gameApp;
     }
     
     public void show() {
-        gameApp.removeAll(); // Clear existing UI elements before adding new ones
+        gameApp.removeAll();
+        
+        backgroundImage = new GImage("universe.jpg");
+        backgroundImage.setSize(gameApp.getWidth(), gameApp.getHeight());
+        gameApp.add(backgroundImage);
 
         // Title label for the game
         GLabel titleLabel = new GLabel("Commander Dez", 585, 100);
         titleLabel.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 60));
-        titleLabel.setColor(Color.GREEN);
+        titleLabel.setColor(Color.WHITE);
         gameApp.add(titleLabel);
 
         // Settings button - Opens the settings screen when clicked
@@ -29,7 +35,7 @@ public class StartScreen2 {
         settingsButton.addActionListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                gameApp.showSettingsScreen(false); // Open settings from StartScreen2 (not from pause)
+                gameApp.showSettingsScreen(false);
             }
             @Override public void mousePressed(MouseEvent e) {}
             @Override public void mouseReleased(MouseEvent e) {}
@@ -39,7 +45,6 @@ public class StartScreen2 {
         gameApp.add(settingsButton.getRect());
         gameApp.add(settingsButton.getMessage());
 
-        // Instructions button - Displays game instructions when clicked
         instructionsButton = new GButton("Instructions", 730, 400, 100, 40, Color.BLACK, Color.WHITE);
         instructionsButton.addActionListener(new MouseListener() {
             @Override
@@ -84,7 +89,7 @@ public class StartScreen2 {
             "Survive as long as possible. Use W, A, S, D to move. " +
             "Use the mouse to aim and shoot. Use E to pick up items.", 400, 385);
         instructionsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        instructionsLabel.setColor(Color.BLACK);
+        instructionsLabel.setColor(Color.BLUE);
         gameApp.add(instructionsLabel);
     }
 }
