@@ -1,4 +1,5 @@
 import acm.program.GraphicsProgram;
+import acm.graphics.*;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -10,7 +11,7 @@ public class GameApp extends GraphicsProgram {
     private StartGame startGame;
     private PauseScreen pauseScreen;
     private boolean isPaused = false;
-    private boolean fromPauseScreen = false; 
+    private boolean fromPauseScreen = false;
 
     public void init() {
         startScreen = new StartScreen2(this);
@@ -26,51 +27,50 @@ public class GameApp extends GraphicsProgram {
     }
 
     public void showStartScreen() {
-        if (startGame != null) startGame.hide(); 
+        if (startGame != null) startGame.hide();
         startScreen.show();
     }
 
     public void showSettingsScreen(boolean openedFromPause) {
-    	
         fromPauseScreen = openedFromPause;
 
         if (fromPauseScreen) {
-            pauseScreen.hide(); 
+            pauseScreen.hide();
         } else {
             if (startGame != null) startGame.hide();
             startScreen.hide();
         }
-        
+
         settingsScreen.show();
     }
 
     public void startGame() {
         removeAll();
-        if (startGame == null) { 
+        if (startGame == null) {
             startGame = new StartGame(this);
         } else {
-            startGame.show(); 
+            startGame.show();
         }
         isPaused = false;
     }
 
     public void showPauseScreen() {
-        if (startGame != null) startGame.hide(); 
+        if (startGame != null) startGame.hide();
         pauseScreen.show();
         isPaused = true;
     }
 
     public void resumeGame() {
         if (startGame != null) {
-            pauseScreen.hide(); 
-            startGame.show(); 
+            pauseScreen.hide();
+            startGame.show();
         }
         isPaused = false;
     }
 
     public void quitToStartScreen() {
-        if (startGame != null) startGame.hide(); 
-        showStartScreen(); 
+        if (startGame != null) startGame.hide();
+        showStartScreen();
     }
 
     @Override
@@ -80,16 +80,29 @@ public class GameApp extends GraphicsProgram {
         }
     }
 
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if (startGame != null && !isPaused) {
+            startGame.updateAiming(e);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (startGame != null && !isPaused) {
+            startGame.handleShooting(e);
+        }
+    }
+
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
-    	if (isPaused && pauseScreen.isResumeButtonClicked(e.getX(), e.getY())) {
+        if (isPaused && pauseScreen.isResumeButtonClicked(e.getX(), e.getY())) {
             resumeGame();
         } else if (isPaused && pauseScreen.isSettingsButtonClicked(e.getX(), e.getY())) {
-            showSettingsScreen(true); 
+            showSettingsScreen(true);
         } else if (isPaused && pauseScreen.isQuitButtonClicked(e.getX(), e.getY())) {
             quitToStartScreen();
         } else if (settingsScreen.isApplyButtonClicked(e.getX(), e.getY())) {
@@ -97,9 +110,9 @@ public class GameApp extends GraphicsProgram {
         } else if (settingsScreen.isBackButtonClicked(e.getX(), e.getY())) {
             settingsScreen.hide();
             if (fromPauseScreen) {
-                resumeGame(); 
+                resumeGame();
             } else {
-                showStartScreen(); 
+                showStartScreen();
             }
         }
     }
@@ -124,5 +137,4 @@ public class GameApp extends GraphicsProgram {
 		
 	}
 }
-
 
