@@ -2,7 +2,8 @@ import acm.program.GraphicsProgram;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-
+import java.awt.Toolkit;
+import java.awt.Dimension;
 
 public class GameApp extends GraphicsProgram implements KeyListener {
     private StartScreen2 startScreen;
@@ -14,6 +15,9 @@ public class GameApp extends GraphicsProgram implements KeyListener {
         startScreen = new StartScreen2(this);
         settingsScreen = new SettingsScreen(this);
         pauseScreen = new PauseScreen(this);
+        
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(screenSize.width, screenSize.height);
         showStartScreen();
 
         addMouseListeners(); 

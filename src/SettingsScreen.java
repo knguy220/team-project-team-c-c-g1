@@ -2,6 +2,7 @@ import acm.graphics.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
+import javax.swing.Timer;
 
 public class SettingsScreen {
     private GameApp gameApp;
@@ -15,58 +16,66 @@ public class SettingsScreen {
     private int audioVolume = 50;
     private boolean draggingMusicSlider = false;
     private boolean draggingAudioSlider = false;
+    private GLabel confirmationLabel;
 
     public SettingsScreen(GameApp gameApp) {
         this.gameApp = gameApp;
     }
 
     public void show() {
-        gameApp.removeAll(); 
+        gameApp.removeAll();
+        int screenWidth = (int) gameApp.getWidth();
+        int screenHeight = (int) gameApp.getHeight();
 
-        GLabel titleLabel = new GLabel("Settings", 200, 100);
+        // Title label centered
+        GLabel titleLabel = new GLabel("Settings", screenWidth / 2 - 50, screenHeight / 6);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 32));
         titleLabel.setColor(Color.BLACK);
         gameApp.add(titleLabel);
 
-        GLabel musicLabel = new GLabel("Music Volume", 200, 200);
+        // Music volume label and slider, centered horizontally
+        GLabel musicLabel = new GLabel("Music Volume", screenWidth / 2 - 100, screenHeight / 3);
         musicLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         gameApp.add(musicLabel);
 
-        GRect musicSliderTrack = new GRect(300, 200, 200, 5);
+        GRect musicSliderTrack = new GRect(screenWidth / 2 - 100, screenHeight / 3 + 25, 200, 5);
         musicSliderTrack.setFilled(true);
         musicSliderTrack.setColor(Color.GRAY);
         gameApp.add(musicSliderTrack);
 
-        musicSliderKnob = new GOval(300 + musicVolume * 2 - 8, 195, 16, 16);
+        musicSliderKnob = new GOval(screenWidth / 2 - 100 + musicVolume * 2 - 8, screenHeight / 3 + 20, 16, 16);
         musicSliderKnob.setFilled(true);
         musicSliderKnob.setColor(Color.BLACK);
         gameApp.add(musicSliderKnob);
 
-        musicValueLabel = new GLabel(String.valueOf(musicVolume), 510, 205);
+        musicValueLabel = new GLabel(String.valueOf(musicVolume), screenWidth / 2 + 110, screenHeight / 3 + 30);
         gameApp.add(musicValueLabel);
 
-        GLabel audioLabel = new GLabel("Audio Volume", 200, 250);
+        // Audio volume label and slider, centered horizontally
+        GLabel audioLabel = new GLabel("Audio Volume", screenWidth / 2 - 100, screenHeight / 3 + 80);
         audioLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         gameApp.add(audioLabel);
 
-        GRect audioSliderTrack = new GRect(300, 250, 200, 5);
+        GRect audioSliderTrack = new GRect(screenWidth / 2 - 100, screenHeight / 3 + 105, 200, 5);
         audioSliderTrack.setFilled(true);
         audioSliderTrack.setColor(Color.GRAY);
         gameApp.add(audioSliderTrack);
 
-        audioSliderKnob = new GOval(300 + audioVolume * 2 - 8, 245, 16, 16);
+        audioSliderKnob = new GOval(screenWidth / 2 - 100 + audioVolume * 2 - 8, screenHeight / 3 + 100, 16, 16);
         audioSliderKnob.setFilled(true);
         audioSliderKnob.setColor(Color.BLACK);
         gameApp.add(audioSliderKnob);
 
-        audioValueLabel = new GLabel(String.valueOf(audioVolume), 510, 255);
+        audioValueLabel = new GLabel(String.valueOf(audioVolume), screenWidth / 2 + 110, screenHeight / 3 + 110);
         gameApp.add(audioValueLabel);
 
-        applyButton = new GButton("Apply", 200, 350, 100, 40, Color.BLACK, Color.WHITE);
+        // Apply button, centered horizontally
+        applyButton = new GButton("Apply", screenWidth / 2 - 50, screenHeight / 2 + 100, 100, 40, Color.BLACK, Color.WHITE);
         gameApp.add(applyButton.getRect());
         gameApp.add(applyButton.getMessage());
 
-        backButton = new GButton("Back", 350, 350, 100, 40, Color.BLACK, Color.WHITE);
+        // Back button, centered horizontally
+        backButton = new GButton("Back", screenWidth / 2 - 50, screenHeight / 2 + 160, 100, 40, Color.BLACK, Color.WHITE);
         gameApp.add(backButton.getRect());
         gameApp.add(backButton.getMessage());
     }
@@ -75,25 +84,19 @@ public class SettingsScreen {
         gameApp.removeAll();
     }
 
-    public void handleSliderDrag(MouseEvent e) {
-        if (musicSliderKnob.contains(e.getX(), e.getY()) || draggingMusicSlider) {
-            double newX = Math.min(Math.max(e.getX(), 300), 500);
-            musicSliderKnob.setLocation(newX - 8, musicSliderKnob.getY());
-            musicVolume = (int) ((newX - 300) / 2);
-            musicValueLabel.setLabel(String.valueOf(musicVolume));
-            draggingMusicSlider = true;
-        } else if (audioSliderKnob.contains(e.getX(), e.getY()) || draggingAudioSlider) {
-            double newX = Math.min(Math.max(e.getX(), 300), 500);
-            audioSliderKnob.setLocation(newX - 8, audioSliderKnob.getY());
-            audioVolume = (int) ((newX - 300) / 2);
-            audioValueLabel.setLabel(String.valueOf(audioVolume));
-            draggingAudioSlider = true;
-        }
-    }
+    public void applySettings() {
+        System.out.println("Settings applied: Music Volume = " + musicVolume + ", Audio Volume = " + audioVolume);
 
-    public void handleMouseReleased() {
-        draggingMusicSlider = false;
-        draggingAudioSlider = false;
+        // Display "Settings Applied" confirmation in the center
+        confirmationLabel = new GLabel("Settings Applied!", (int) gameApp.getWidth() / 2 - 60, (int) gameApp.getHeight() / 2 + 180);
+        confirmationLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        confirmationLabel.setColor(Color.BLACK);
+        gameApp.add(confirmationLabel);
+
+        // Timer to remove the confirmation message after 1 seconds
+        Timer timer = new Timer(1000, e -> gameApp.remove(confirmationLabel));
+        timer.setRepeats(false); // Trigger only once
+        timer.start();
     }
 
     public boolean isApplyButtonClicked(double x, double y) {
@@ -104,21 +107,39 @@ public class SettingsScreen {
         return backButton != null && backButton.getRect().contains(x, y);
     }
 
+    public void handleSliderDrag(MouseEvent e) {
+        int screenWidth = (int) gameApp.getWidth();
+        int screenHeight = (int) gameApp.getHeight();
+
+        if (musicSliderKnob.contains(e.getX(), e.getY()) || draggingMusicSlider) {
+            double newX = Math.min(Math.max(e.getX(), screenWidth / 2 - 100), screenWidth / 2 + 100);
+            musicSliderKnob.setLocation(newX - 8, musicSliderKnob.getY());
+            musicVolume = (int) ((newX - (screenWidth / 2 - 100)) / 2);
+            musicValueLabel.setLabel(String.valueOf(musicVolume));
+            draggingMusicSlider = true;
+        } else if (audioSliderKnob.contains(e.getX(), e.getY()) || draggingAudioSlider) {
+            double newX = Math.min(Math.max(e.getX(), screenWidth / 2 - 100), screenWidth / 2 + 100);
+            audioSliderKnob.setLocation(newX - 8, audioSliderKnob.getY());
+            audioVolume = (int) ((newX - (screenWidth / 2 - 100)) / 2);
+            audioValueLabel.setLabel(String.valueOf(audioVolume));
+            draggingAudioSlider = true;
+        }
+    }
+
+    public void handleMouseReleased() {
+        draggingMusicSlider = false;
+        draggingAudioSlider = false;
+    }
+
+    // Method to check if any slider is being dragged
     public boolean isDraggingSlider() {
         return draggingMusicSlider || draggingAudioSlider;
     }
 
-    public void applySettings() {
-        System.out.println("Settings applied: Music Volume = " + musicVolume + ", Audio Volume = " + audioVolume);
-        GLabel confirmationLabel = new GLabel("Settings Applied!", 200, 400);
-        confirmationLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        confirmationLabel.setColor(Color.GREEN);
-        gameApp.add(confirmationLabel);
-    }
-
+    // Method to go back to the start screen
     public void goBack() {
         hide();
-        gameApp.showStartScreen();
+        gameApp.showStartScreen(); // Transition back to the start screen
     }
 }
 
