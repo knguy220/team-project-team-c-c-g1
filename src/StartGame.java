@@ -1,38 +1,47 @@
 import acm.graphics.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class StartGame {
     private GameApp gameApp;
-    private GOval playerCircle; // The circle representing the player
-    private final int STEP_SIZE = 10; // Amount of movement in each key press
-    //test
-    /**
-     * Constructor that initializes StartGame with a reference to the main GameApp.
-     *
-     * @param gameApp The main GameApp instance to enable adding graphics objects
-     */
+    private GOval playerCircle; // Represents the player character as a circle
+    private GButton pauseButton; // Pause button at the top-right corner
+    private final int STEP_SIZE = 10; // Movement increment for each key press
+
     public StartGame(GameApp gameApp) {
         this.gameApp = gameApp;
         initGame();
     }
 
-    /**
-     * Initializes the game screen by adding the player circle.
-     */
+    // Initialize the game elements
     private void initGame() {
-        // Create a circle at the center of the screen
+        gameApp.removeAll(); // Clear previous screen elements
+
+        // Player circle setup in the center of the screen
         playerCircle = new GOval(gameApp.getWidth() / 2 - 25, gameApp.getHeight() / 2 - 25, 50, 50);
         playerCircle.setFilled(true);
         playerCircle.setColor(Color.BLUE);
-        gameApp.add(playerCircle); // Add the circle to GameApp
+        gameApp.add(playerCircle);
+
+        // Pause button setup in the top-right corner
+        pauseButton = new GButton("Pause", (int) (gameApp.getWidth() - 100), 20, 80, 30, Color.BLACK, Color.WHITE);
+        pauseButton.addActionListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                gameApp.showPauseScreen(); // Show pause screen when clicked
+            }
+            @Override public void mousePressed(MouseEvent e) {}
+            @Override public void mouseReleased(MouseEvent e) {}
+            @Override public void mouseEntered(MouseEvent e) {}
+            @Override public void mouseExited(MouseEvent e) {}
+        });
+        gameApp.add(pauseButton.getRect());
+        gameApp.add(pauseButton.getMessage());
     }
 
-    /**
-     * Handles key press events for moving the player circle.
-     *
-     * @param e KeyEvent containing the key code of the pressed key
-     */
+    // Handles key press events for movement
     public void handleKeyPress(KeyEvent e) {
         int keyCode = e.getKeyCode();
         switch (keyCode) {
@@ -51,3 +60,5 @@ public class StartGame {
         }
     }
 }
+
+
