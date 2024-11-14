@@ -41,6 +41,20 @@ public class StartGame {
         gameApp.add(pauseButton.getMessage());
     }
 
+    // Show method to re-add elements to the screen when resuming the game
+    public void show() {
+        gameApp.add(playerCircle); // Add the player circle back to the screen
+        gameApp.add(pauseButton.getRect());
+        gameApp.add(pauseButton.getMessage());
+    }
+
+    // Hide method to remove elements from the screen when pausing the game
+    public void hide() {
+        gameApp.remove(playerCircle); // Remove the player circle from the screen
+        gameApp.remove(pauseButton.getRect());
+        gameApp.remove(pauseButton.getMessage());
+    }
+
     // Handles key press events for movement
     public void handleKeyPress(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -60,5 +74,4 @@ public class StartGame {
         }
     }
 }
-
 

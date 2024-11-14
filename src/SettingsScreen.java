@@ -1,8 +1,8 @@
 import acm.graphics.*;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.MouseEvent;
 import javax.swing.Timer;
+import java.awt.event.MouseEvent;
 
 public class SettingsScreen {
     private GameApp gameApp;
@@ -27,13 +27,13 @@ public class SettingsScreen {
         int screenWidth = (int) gameApp.getWidth();
         int screenHeight = (int) gameApp.getHeight();
 
-        // Title label centered
+        // Title label
         GLabel titleLabel = new GLabel("Settings", screenWidth / 2 - 50, screenHeight / 6);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 32));
         titleLabel.setColor(Color.BLACK);
         gameApp.add(titleLabel);
 
-        // Music volume label and slider, centered horizontally
+        // Music volume label and slider
         GLabel musicLabel = new GLabel("Music Volume", screenWidth / 2 - 100, screenHeight / 3);
         musicLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         gameApp.add(musicLabel);
@@ -51,7 +51,7 @@ public class SettingsScreen {
         musicValueLabel = new GLabel(String.valueOf(musicVolume), screenWidth / 2 + 110, screenHeight / 3 + 30);
         gameApp.add(musicValueLabel);
 
-        // Audio volume label and slider, centered horizontally
+        // Audio volume label and slider
         GLabel audioLabel = new GLabel("Audio Volume", screenWidth / 2 - 100, screenHeight / 3 + 80);
         audioLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         gameApp.add(audioLabel);
@@ -69,12 +69,12 @@ public class SettingsScreen {
         audioValueLabel = new GLabel(String.valueOf(audioVolume), screenWidth / 2 + 110, screenHeight / 3 + 110);
         gameApp.add(audioValueLabel);
 
-        // Apply button, centered horizontally
+        // Apply button
         applyButton = new GButton("Apply", screenWidth / 2 - 50, screenHeight / 2 + 100, 100, 40, Color.BLACK, Color.WHITE);
         gameApp.add(applyButton.getRect());
         gameApp.add(applyButton.getMessage());
 
-        // Back button, centered horizontally
+        // Back button
         backButton = new GButton("Back", screenWidth / 2 - 50, screenHeight / 2 + 160, 100, 40, Color.BLACK, Color.WHITE);
         gameApp.add(backButton.getRect());
         gameApp.add(backButton.getMessage());
@@ -85,17 +85,15 @@ public class SettingsScreen {
     }
 
     public void applySettings() {
-        System.out.println("Settings applied: Music Volume = " + musicVolume + ", Audio Volume = " + audioVolume);
-
-        // Display "Settings Applied" confirmation in the center
-        confirmationLabel = new GLabel("Settings Applied!", (int) gameApp.getWidth() / 2 - 60, (int) gameApp.getHeight() / 2 + 180);
+        // Show confirmation message without navigation
+        confirmationLabel = new GLabel("Settings Applied!", (int) gameApp.getWidth() / 2 - 60, (int) gameApp.getHeight() / 2 + 90);
         confirmationLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        confirmationLabel.setColor(Color.BLACK);
+        confirmationLabel.setColor(Color.GREEN);
         gameApp.add(confirmationLabel);
 
-        // Timer to remove the confirmation message after 1 seconds
-        Timer timer = new Timer(1000, e -> gameApp.remove(confirmationLabel));
-        timer.setRepeats(false); // Trigger only once
+        // Timer to remove the confirmation message after 3 seconds
+        Timer timer = new Timer(3000, e -> gameApp.remove(confirmationLabel));
+        timer.setRepeats(false);
         timer.start();
     }
 
@@ -109,7 +107,6 @@ public class SettingsScreen {
 
     public void handleSliderDrag(MouseEvent e) {
         int screenWidth = (int) gameApp.getWidth();
-        int screenHeight = (int) gameApp.getHeight();
 
         if (musicSliderKnob.contains(e.getX(), e.getY()) || draggingMusicSlider) {
             double newX = Math.min(Math.max(e.getX(), screenWidth / 2 - 100), screenWidth / 2 + 100);
@@ -131,15 +128,9 @@ public class SettingsScreen {
         draggingAudioSlider = false;
     }
 
-    // Method to check if any slider is being dragged
     public boolean isDraggingSlider() {
         return draggingMusicSlider || draggingAudioSlider;
     }
-
-    // Method to go back to the start screen
-    public void goBack() {
-        hide();
-        gameApp.showStartScreen(); // Transition back to the start screen
-    }
 }
+
 
