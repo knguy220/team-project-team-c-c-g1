@@ -1,6 +1,7 @@
 import javax.swing.Timer;
 import acm.graphics.*;
 import acm.program.*;
+import java.awt.*;
 import java.awt.event.*;
 
 
@@ -19,6 +20,9 @@ public class Player extends GraphicsProgram implements ActionListener {
 	private int foot;
 	private double playerX;
 	private double playerY;
+	private String aName;
+	private double tX;
+	private double tY;
 	
 	
 	public void setSpeed(int s) {
@@ -41,10 +45,13 @@ public class Player extends GraphicsProgram implements ActionListener {
 	}
 	public void setImage(String name, double x, double y, double s) {
 		playerBody = new GImage(name,x,y);
-		playerX = x;
-		playerY = y;
+		aName = name;
 		playerBody.scale(s);
 		playerScale = s;
+		playerX = x;
+		playerY = y;
+		tX = x;
+		tY = y;
 	}
 	public GImage getImage() {
 		return playerBody;
@@ -70,19 +77,68 @@ public class Player extends GraphicsProgram implements ActionListener {
 	public void changeImage() {
 		if (getFoot() == -1) {
 			setImage(stand,playerX,playerY,playerScale);
+			aName = stand;
 		} else if (getFoot() == 0) {
 			setImage(walk1,playerX,playerY,playerScale);
+			aName = walk1;
 		} else if (getFoot() == 1) {
 			setImage(walk2,playerX,playerY,playerScale);
+			aName = walk2;
 		}
+	}
+	public void setPlayerX(double x) {
+		playerX = x;
+		tX = x;
+	}
+	public void setPlayerY(double y) {
+		playerY = y;
+		tY = y;
+	}
+	public double getPlayerX() {
+		return playerX;
+	}
+	public double getPlayerY() {
+		return playerY;
+	}
+	public void turningX(String d) {
+		if (d == "r") {
+			playerX++;
+		} else if (d == "l") {
+			playerX--;
+		} else return;
+		if (playerX >= tX+playerBody.getWidth()+1) {
+			playerX = tX+playerBody.getWidth();
+		}
+		if (playerX <= tX-1) {
+			playerX = tX;
+		}
+	}
+	public void turningY(String d) {
+		if (d == "d") {
+			playerY++;
+		} else if (d == "u") {
+			playerY--;
+		} else return;
+		if (playerY >= tY+playerBody.getHeight()+1) {
+			playerY = tY+playerBody.getHeight();
+		}
+		if (playerY <= tY-1) {
+			playerY = tY;
+		}
+	}
+	public void playerRotate(double x, double y) {
+		playerBody.setLocation(x, y);
+		double angle = Math.atan2(y, x);
+		playerBody.rotate(angle);
 	}
 	
 	public void init() {
 		setSize(800,800);
-		setImage(stand,200,200,0.5);
-		setMove(true);
-		setFoot(1);
-		changeImage();
+		GOval evil = new GOval(400,400,100,100);
+		evil.setColor(Color.BLUE);
+		evil.setFilled(true);
+		add(evil);
+		setImage(stand,evil.getX()-evil.getWidth()/4,evil.getY()-evil.getHeight()/3,0.5);
 		add(getImage());
 	}
 	
@@ -93,9 +149,12 @@ public class Player extends GraphicsProgram implements ActionListener {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+		Timer time = new Timer(100,this);
+		time.start();
 	}
 	public void actionPerformed(ActionEvent e) {
-		
+		//turningX("r");
+		turningY("d");
+		playerRotate(playerX,playerY);
 	}
 }
