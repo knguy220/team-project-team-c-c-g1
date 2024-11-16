@@ -1,54 +1,94 @@
-import javax.swing.*;
+//import java.awt.*;
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//public class Map {
+//    private static final int TILE_SIZE = 40;
+//    private static final int WALL = 1;
+//    private List<Position> enemySpawnPoints;
+//    private int[][] map = {
+//        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+//        {1, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+//        {1, 0, 1, 0, 1, 1, 0, 1, 0, 1},
+//        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+//        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+//    };
+//
+//    public Map() {
+//        enemySpawnPoints = new ArrayList<>();
+//        for (int y = 0; y < map.length; y++) {
+//            for (int x = 0; x < map[y].length; x++) {
+//                if (map[y][x] == 0) { // Floor tile
+//                    enemySpawnPoints.add(new Position(x, y));
+//                }
+//            }
+//        }
+//    }
+//
+//    public boolean isWall(int x, int y) {
+//        return map[y][x] == WALL;
+//    }
+//
+//    public Position getRandomSpawnPoint() {
+//        return enemySpawnPoints.get((int) (Math.random() * enemySpawnPoints.size()));
+//    }
+//
+//    public void render(Graphics g) {
+//        for (int y = 0; y < map.length; y++) {
+//            for (int x = 0; x < map[y].length; x++) {
+//                g.setColor(map[y][x] == WALL ? Color.BLACK : Color.LIGHT_GRAY);
+//                g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+//            }
+//        }
+//    }
+//}
+import acm.graphics.*;
 import java.awt.*;
-//comment
-public class Map extends JPanel {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Map {
     private static final int TILE_SIZE = 40;
-    private static final int MAP_WIDTH = 15;
-    private static final int MAP_HEIGHT = 10;
-
-
-    // Define tile types
-    private static final int FLOOR = 0;
     private static final int WALL = 1;
-
-    // Sample map layout using a 2D array
+    private List<Position> enemySpawnPoints;
     private int[][] map = {
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1},
-            {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-            {1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 1, 1, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
     public Map() {
-        setPreferredSize(new Dimension(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE));
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        enemySpawnPoints = new ArrayList<>();
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
-                if (map[y][x] == WALL) {
-                    g.setColor(Color.DARK_GRAY); // Color for wall tiles
-                } else {
-                    g.setColor(Color.LIGHT_GRAY); // Color for floor tiles
+                if (map[y][x] == 0) { // Floor tile
+                    enemySpawnPoints.add(new Position(x, y));
                 }
-                g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Wizard Game");
-        Map mapPanel = new Map();
+    public boolean isWall(int x, int y) {
+        return map[y][x] == WALL;
+    }
 
-        frame.add(mapPanel);
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    public Position getRandomSpawnPoint() {
+        return enemySpawnPoints.get((int) (Math.random() * enemySpawnPoints.size()));
+    }
+
+    public void render(GameApp gameApp) {
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++) {
+                GRect tile = new GRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                tile.setFilled(true);
+                tile.setColor(map[y][x] == WALL ? Color.BLACK : Color.LIGHT_GRAY);
+                gameApp.add(tile);
+            }
+        }
     }
 }
+
+
+
