@@ -147,10 +147,12 @@
 //        // Shooting mechanism code here
 //    }
 //}
+
 import acm.graphics.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+
 
 public class StartGame {
     private GameApp gameApp;
@@ -292,7 +294,6 @@ public class StartGame {
         // Shooting mechanism code here
     }
 }
-
 
 
 

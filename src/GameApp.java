@@ -268,7 +268,7 @@ public class GameApp extends GraphicsProgram {
 
     @Override
     public void run() {
-        // No additional logic needed; you can leave this method empty or add specific behavior
+        // No additional logic needed; WE can leave this method empty or add specific behavior
     }
 
     public static void main(String[] args) {
