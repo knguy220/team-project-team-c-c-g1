@@ -53,6 +53,16 @@ public class Player {
     }
 
   
+    public void updateHealth(int damage, int medkit) {
+        // Adjust health
+    	
+    	playerHealth += medkit;
+    	playerHealth = Math.max(playerHealth, MAX_HEALTH);
+    	
+        playerHealth -= damage;
+        playerHealth = Math.max(playerHealth, 0); 
+    }
+    
     
     public void show() {
         if (playerCircle != null) gameApp.add(playerCircle);
