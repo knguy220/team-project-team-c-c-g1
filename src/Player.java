@@ -7,8 +7,12 @@ public class Player {
     private GameApp gameApp;
     private GOval playerCircle;
     private GLine gunLine;
+    private GRect healthBarBackground;
+    private GRect updatingHealthBar;
     private final int STEP_SIZE = 10;
     private final int GUN_LENGTH;
+    private final int MAX_HEALTH = 100;
+    private int playerHealth;
 
     // Movement flags
     private boolean wPressed = false;
@@ -19,6 +23,7 @@ public class Player {
     public Player(GameApp gameApp, int gunLength) {
         this.gameApp = gameApp;
         this.GUN_LENGTH = gunLength;
+        this.playerHealth = MAX_HEALTH;
     }
 
     public void initialize() {
@@ -34,8 +39,21 @@ public class Player {
         gunLine = new GLine(centerX, centerY, centerX + GUN_LENGTH, centerY);
         gunLine.setColor(Color.BLACK);
         gameApp.add(gunLine);
+        
+        //Initialize health bar 
+        healthBarBackground = new GRect(10, 10, 200, 20);
+        healthBarBackground.setFilled(true);
+        healthBarBackground.setColor(Color.GRAY);
+        gameApp.add(healthBarBackground);
+
+        updatingHealthBar = new GRect(10, 10, 200, 20);
+        updatingHealthBar.setFilled(true);
+        updatingHealthBar.setColor(Color.GREEN);
+        gameApp.add(updatingHealthBar);
     }
 
+  
+    
     public void show() {
         if (playerCircle != null) gameApp.add(playerCircle);
         if (gunLine != null) gameApp.add(gunLine);
