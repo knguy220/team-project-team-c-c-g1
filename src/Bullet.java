@@ -5,7 +5,7 @@ import javax.swing.Timer;
 
 public class Bullet {
     private static final int BULLET_SIZE = 5;
-    private static final int BULLET_SPEED = 15;
+    private static final int BULLET_SPEED = 50;
     private static final int BULLET_LIFETIME = 5000; 
     private static final int SHOOT_COOLDOWN = 500; 
     private GOval bulletShape;

@@ -81,6 +81,13 @@ public class GameApp extends GraphicsProgram {
     }
 
     @Override
+    public void keyReleased(KeyEvent e) {
+        if (startGame != null && !isPaused) {
+            startGame.handleKeyRelease(e);
+        }
+    }
+
+    @Override
     public void mouseMoved(MouseEvent e) {
         if (startGame != null && !isPaused) {
             startGame.updateAiming(e);
@@ -133,5 +140,6 @@ public class GameApp extends GraphicsProgram {
         new GameApp().start();
     }
 }
+
 
 
