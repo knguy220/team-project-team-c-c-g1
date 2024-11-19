@@ -193,6 +193,7 @@ public class StartGame {
 	public void removeBullet(Bullet bullet) {
 		bullets.remove(bullet);
 		gameApp.remove(bullet.getBulletShape());
+		gameApp.remove(bullet.getBulletImage());
 	}
 
 	private void update() {

@@ -71,6 +71,10 @@ public class Bullet {
     public GOval getBulletShape() {
         return bulletShape;
     }
+    
+    public GImage getBulletImage() {
+    	return bulletImage;
+    }
 
     /**
      * Returns the size of the bullet.
