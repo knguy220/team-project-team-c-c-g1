@@ -41,7 +41,8 @@ public class Player {
         playerShape.setColor(Color.BLUE);
 
         // Create the gun line
-        gunLine = new GLine(startX + PLAYER_SIZE / 2, startY + PLAYER_SIZE / 2, startX + PLAYER_SIZE / 2 + gunLength, startY + PLAYER_SIZE / 2);
+        gunLine = new GLine(startX + PLAYER_SIZE / 2, startY + PLAYER_SIZE / 2, 
+                            startX + PLAYER_SIZE / 2 + gunLength, startY + PLAYER_SIZE / 2);
         gunLine.setColor(Color.BLACK);
 
         // Create the health bar
@@ -132,7 +133,6 @@ public class Player {
         }
     }
 
-
     /**
      * Handles key releases to stop movement in specific directions.
      */
@@ -171,6 +171,13 @@ public class Player {
         // Update health bar width
         double healthBarWidth = (double) playerHealth / MAX_HEALTH * HEALTH_BAR_WIDTH;
         updatingHealthBar.setSize(healthBarWidth, HEALTH_BAR_HEIGHT);
+    }
+
+    /**
+     * Returns whether the player is alive.
+     */
+    public boolean isAlive() {
+        return playerHealth > 0;
     }
 
     /**
@@ -227,6 +234,7 @@ public class Player {
         return y + PLAYER_SIZE / 2;
     }
 }
+
 
 
 /*import javax.swing.Timer;

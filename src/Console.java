@@ -10,81 +10,57 @@ import java.util.List;
 public class Console {
     private GameApp gameApp;
     private List<Enemy> enemies;
+    private int enemiesDefeated;
 
     public Console(GameApp gameApp) {
         this.gameApp = gameApp;
         this.enemies = new ArrayList<>();
+        this.enemiesDefeated = 0; // Initialize counter
     }
 
-     //Spawns a new enemy off-screen at a random position.
+    // Method to spawn a new enemy
     public void spawnEnemy() {
-        double x, y;
-        double screenWidth = gameApp.getWidth();
-        double screenHeight = gameApp.getHeight();
-
-        // Randomly decide which side of the screen the enemy spawns
-        switch ((int) (Math.random() * 4)) {
-            case 0: // Top of the screen
-                x = Math.random() * screenWidth;
-                y = -Enemy.getEnemySize();
-                break;
-            case 1: // Bottom of the screen
-                x = Math.random() * screenWidth;
-                y = screenHeight + Enemy.getEnemySize();
-                break;
-            case 2: // Left of the screen
-                x = -Enemy.getEnemySize();
-                y = Math.random() * screenHeight;
-                break;
-            default: // Right of the screen
-                x = screenWidth + Enemy.getEnemySize();
-                y = Math.random() * screenHeight;
-                break;
-        }
-
-        // Create and spawn the enemy
-        Enemy newEnemy = new Enemy(gameApp, x, y);
-        enemies.add(newEnemy);
-        newEnemy.spawn();
+        double x = Math.random() > 0.5 ? -50 : gameApp.getWidth() + 50; // Off-screen X
+        double y = Math.random() > 0.5 ? -50 : gameApp.getHeight() + 50; // Off-screen Y
+        enemies.add(new Enemy(gameApp, x, y));
     }
 
-     //Updates the behavior of all enemies to follow the player.
+    // Method to remove an enemy
+    public void removeEnemy(Enemy enemy) {
+        gameApp.remove(enemy.getEnemyShape());
+        enemies.remove(enemy);
+        enemiesDefeated++; // Increment counter when an enemy is removed
+    }
+
+    // Update enemies' positions to follow the player
     public void updateEnemies(Player player) {
         for (Enemy enemy : enemies) {
-            enemy.updateBehavior(player);
+            enemy.moveTowardsPlayer(player.getCenterX(), player.getCenterY());
         }
     }
 
-     //Returns the list of currently active enemies.
+    // Show all enemies
+    public void showAllEnemies() {
+        for (Enemy enemy : enemies) {
+            gameApp.add(enemy.getEnemyShape());
+        }
+    }
+
+    // Hide all enemies
+    public void hideAllEnemies() {
+        for (Enemy enemy : enemies) {
+            gameApp.remove(enemy.getEnemyShape());
+        }
+    }
+
+    // Get the list of current enemies
     public List<Enemy> getEnemies() {
         return enemies;
     }
 
-     //Removes an enemy from the game.
-    public void removeEnemy(Enemy enemy) {
-        enemies.remove(enemy);
-        enemy.destroy();
-    }
-
-     //Clears all enemies from the game.
-    public void clearEnemies() {
-        for (Enemy enemy : enemies) {
-            enemy.destroy();
-        }
-        enemies.clear();
-    }
-
-     //Hides all enemies (used when pausing gameplay).
-    public void hideAllEnemies() {
-        for (Enemy enemy : enemies) {
-            enemy.destroy();
-        }
-    }
-
-     //Respawns all enemies on the screen (used when resuming gameplay).
-    public void showAllEnemies() {
-        for (Enemy enemy : enemies) {
-            enemy.spawn();
-        }
+    // Get the number of defeated enemies
+    public int getEnemiesDefeated() {
+        return enemiesDefeated;
     }
 }
+

@@ -9,8 +9,9 @@ public class GameApp extends GraphicsProgram {
     private StartScreen2 startScreen;
     private SettingsScreen settingsScreen;
     private PauseScreen pauseScreen;
+    private GameOverScreen gameOverScreen;
 
-    public enum GameState { ACTIVE, PAUSED, IN_MENU }
+    public enum GameState { ACTIVE, PAUSED, IN_MENU, GAME_OVER }
 
     private GameState gameState = GameState.IN_MENU;
 
@@ -52,14 +53,14 @@ public class GameApp extends GraphicsProgram {
     }
 
     public void startGame() {
-        removeAll();
-        if (startGame == null) {
-            startGame = new StartGame(this);
-        } else {
-            startGame.resumeGameLoop();
-            startGame.show();
+        removeAll(); // Clear all elements from the current screen
+        if (startGame != null) {
+            startGame.pauseGameLoop(); // Stop any ongoing game loop
+            startGame = null; // Reset the StartGame instance
         }
-        gameState = GameState.ACTIVE;
+        startGame = new StartGame(this); // Create a fresh instance of StartGame
+        startGame.show(); // Show the game screen
+        gameState = GameState.ACTIVE; // Set the game state to active
     }
 
     public void showPauseScreen() {
@@ -69,6 +70,13 @@ public class GameApp extends GraphicsProgram {
         }
         gameState = GameState.PAUSED;
         pauseScreen.show();
+    }
+
+    public void showGameOverScreen(int playerScore) {
+        removeAll(); // Clear all elements from the screen
+        gameOverScreen = new GameOverScreen(this, startScreen.getUsername()); // Reinitialize GameOverScreen
+        gameOverScreen.show(playerScore); // Display the Game Over screen
+        gameState = GameState.GAME_OVER;
     }
 
     public void resumeGame() {
@@ -109,10 +117,16 @@ public class GameApp extends GraphicsProgram {
             } else if (pauseScreen.isQuitButtonClicked(e.getX(), e.getY())) {
                 quitToStartScreen();
             }
-        } else if (settingsScreen.isApplyButtonClicked(e.getX(), e.getY())) {
-            settingsScreen.applySettings();
-        } else if (settingsScreen.isBackButtonClicked(e.getX(), e.getY())) {
-            settingsScreen.backToPrevious(); // Correct Back button behavior
+        } else if (gameState == GameState.GAME_OVER) {
+            if (gameOverScreen != null) {
+                gameOverScreen.handleMouseClick(e); // Handle clicks on Game Over screen
+            }
+        } else if (gameState == GameState.IN_MENU) {
+            if (settingsScreen.isApplyButtonClicked(e.getX(), e.getY())) {
+                settingsScreen.applySettings();
+            } else if (settingsScreen.isBackButtonClicked(e.getX(), e.getY())) {
+                settingsScreen.backToPrevious(); // Correct Back button behavior
+            }
         }
     }
 

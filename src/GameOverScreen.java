@@ -1,99 +1,106 @@
-import java.awt.event.MouseEvent;
+import acm.graphics.*;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import acm.graphics.GImage;
-import acm.graphics.GLabel;
-import acm.graphics.GObject;
-import acm.graphics.GRect;
-import acm.program.GraphicsProgram;
+import java.awt.event.MouseEvent;
 
+public class GameOverScreen {
+    private GameApp gameApp;
+    private GLabel titleLabel;
+    private GLabel scoreLabel;
+    private GLabel playAgainLabel;
+    private GLabel returnToStartLabel;
+    private GImage restartIcon;
+    private GButton returnToStartButton;
+    private GImage background;
 
-public class GameOverScreen extends GraphicsProgram implements ActionListener {
-	private GLabel title;
-	private GLabel score;
-	private GLabel again;
+    private String username;
 
-	private GImage icon;
-	private GImage background;
-	
-	public static final int WINDOW_HEIGHT = 600;
-	public static final int WINDOW_WIDTH = 600; 
-	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        addMouseListeners();
-        
+    public GameOverScreen(GameApp gameApp, String username) {
+        this.gameApp = gameApp;
+        this.username = username;
+    }
+
+    /**
+     * Initializes and displays the Game Over screen.
+     */
+    public void show(int playerScore) {
+        // Add background
         background = new GImage("background.jpg");
-        background.setSize(WINDOW_WIDTH, WINDOW_HEIGHT); 
-        add(background, 0, 0);
-        
-		title = new GLabel ("Game Over!");
-		title.setColor(Color.black);
-		title.setFont("Arial-BOLD-36");
-		double titleX = (WINDOW_WIDTH - title.getWidth()) / 2;
-		double titleY = WINDOW_HEIGHT / 6; 
-		title.setLocation(titleX, titleY);
-		add(title);
-		    
-		score = new GLabel (/*userName +*/ "-----'s score: " + /*userScore + */ "---- points", WINDOW_HEIGHT/3, WINDOW_WIDTH/2);
-		score.setColor(Color.black);
-		score.setFont("Arial-BOLD-24");
-		double scoreX = (WINDOW_WIDTH - score.getWidth()) / 2; 
-	    double scoreY = WINDOW_HEIGHT / 2; 
-	    score.setLocation(scoreX, scoreY);
-	    add(score);
-	      
-	    // Restart Icon
-        icon = new GImage("restart.jpg");
-        icon.setSize(75, 75);
-        double iconX = (WINDOW_WIDTH - icon.getWidth()) / 2;
-        double iconY = WINDOW_HEIGHT * 0.75;
-        icon.setLocation(iconX, iconY);
-        add(icon);
+        background.setSize(gameApp.getWidth(), gameApp.getHeight());
+        gameApp.add(background);
 
-        // "Play Again?" Label
-        again = new GLabel("Play Again?");
-        again.setColor(Color.black);
-        again.setFont("Arial-BOLD-30");
-        double againX = (WINDOW_WIDTH - again.getWidth()) / 2; 
-        double againY = iconY - 10; 
-        again.setLocation(againX, againY);
-        add(again);
-	    
-	    //test 2:15
-	}
-	@Override
-	/*public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void MouseReleased (MouseEvent e) {
-		
-	}*/ 
-	public void mouseClicked(MouseEvent e) {
-        GObject clickedObject = getElementAt(e.getX(), e.getY());
+        // Add title label
+        titleLabel = new GLabel("Game Over!");
+        titleLabel.setFont("Arial-Bold-36");
+        titleLabel.setColor(Color.BLACK);
+        double titleX = (gameApp.getWidth() - titleLabel.getWidth()) / 2;
+        double titleY = gameApp.getHeight() / 6.0;
+        titleLabel.setLocation(titleX, titleY);
+        gameApp.add(titleLabel);
 
-        if (clickedObject == icon) {
+        // Add score label with username
+        scoreLabel = new GLabel(username + "'s score: " + playerScore + " points");
+        scoreLabel.setFont("Arial-Bold-24");
+        scoreLabel.setColor(Color.BLACK);
+        double scoreX = (gameApp.getWidth() - scoreLabel.getWidth()) / 2;
+        double scoreY = gameApp.getHeight() / 2.0;
+        scoreLabel.setLocation(scoreX, scoreY);
+        gameApp.add(scoreLabel);
+
+        // Add restart icon
+        restartIcon = new GImage("restart.jpg");
+        restartIcon.setSize(75, 75);
+        double iconX = (gameApp.getWidth() - restartIcon.getWidth()) / 2;
+        double iconY = gameApp.getHeight() * 0.75;
+        restartIcon.setLocation(iconX, iconY);
+        gameApp.add(restartIcon);
+
+        // Add "Play Again?" label
+        playAgainLabel = new GLabel("Play Again?");
+        playAgainLabel.setFont("Arial-Bold-30");
+        playAgainLabel.setColor(Color.BLACK);
+        double playAgainX = (gameApp.getWidth() - playAgainLabel.getWidth()) / 2;
+        double playAgainY = iconY - 10;
+        playAgainLabel.setLocation(playAgainX, playAgainY);
+        gameApp.add(playAgainLabel);
+
+        // Add "Return to Start Screen" button
+        returnToStartButton = new GButton("Return to Start Screen", 
+            (int) (gameApp.getWidth() / 2 - 100), (int) (iconY + 100), 200, 40, Color.BLACK, Color.WHITE);
+        gameApp.add(returnToStartButton.getRect());
+        gameApp.add(returnToStartButton.getMessage());
+
+        // Add mouse listener to detect clicks
+        gameApp.addMouseListeners();
+    }
+
+    /**
+     * Handles mouse clicks on the Game Over screen.
+     */
+    public void handleMouseClick(MouseEvent e) {
+        if (restartIcon != null && restartIcon.contains(e.getX(), e.getY())) {
             restartGame();
+        } else if (returnToStartButton != null && returnToStartButton.getRect().contains(e.getX(), e.getY())) {
+            returnToStartScreen();
         }
     }
-	
-	private void restartGame() {
-        // Logic to restart the game, such as resetting variables or going to the start screen.
-        System.out.println("Restarting game...");
-        // You can replace this print statement with actual restart logic.
-    }
-	
-	/*public void MouseMoved (MouseEvent e) {
-		
-	}*/
 
-	public static void main(String args[]) {
-		new GameOverScreen().start();
-	}
+    /**
+     * Restarts the game by navigating to the StartGame screen.
+     */
+    private void restartGame() {
+        System.out.println("Restarting game...");
+        gameApp.startGame(); // Reset and start the game
+    }
+
+
+    /**
+     * Returns to the StartScreen2.
+     */
+    private void returnToStartScreen() {
+        System.out.println("Returning to Start Screen...");
+        gameApp.showStartScreen();
+    }
 }
+
+
+
