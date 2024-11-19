@@ -22,21 +22,27 @@ public class StartGame {
 	private boolean isSpawningWave = false;
 
 	public StartGame(GameApp gameApp) {
-		this.gameApp = gameApp;
-		this.bullets = new ArrayList<>();
-		this.player = new Player(gameApp, 100, 100, GUN_LENGTH); // Player starts at (100, 100)
-		this.console = new Console(gameApp);
+	    this.gameApp = gameApp;
+	    this.bullets = new ArrayList<>();
 
-		initializeGame();
+	    // Calculate the center of the screen
+	    int startX = (int) (gameApp.getWidth() / 2 - Player.PLAYER_SIZE / 2);
+	    int startY = (int) (gameApp.getHeight() / 2 - Player.PLAYER_SIZE / 2);
 
-		// Game loop timer to update gameplay elements
-		gameLoopTimer = new Timer(20, e -> update());
-		gameLoopTimer.start();
+	    this.player = new Player(gameApp, startX, startY, GUN_LENGTH);
+	    this.console = new Console(gameApp);
 
-		// Wave spawning timer
-		waveTimer = new Timer(9000, e -> startNextWave());
-		waveTimer.start();
+	    initializeGame();
+
+	    // Game loop timer to update gameplay elements
+	    gameLoopTimer = new Timer(20, e -> update());
+	    gameLoopTimer.start();
+
+	    // Wave spawning timer
+	    waveTimer = new Timer(10000, e -> startNextWave());
+	    waveTimer.start();
 	}
+
 
 	private void initializeGame() {
 		gameApp.removeAll();

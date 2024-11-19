@@ -94,7 +94,7 @@ public class SettingsScreen {
         // Show "Settings Applied!" for 2 seconds
         GLabel confirmationLabel = new GLabel("Settings Applied!", gameApp.getWidth() / 2 - 80, gameApp.getHeight() / 2 + 50);
         confirmationLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        confirmationLabel.setColor(Color.GREEN);
+        confirmationLabel.setColor(Color.BLACK);
         gameApp.add(confirmationLabel);
 
         Timer timer = new Timer(2000, e -> gameApp.remove(confirmationLabel));

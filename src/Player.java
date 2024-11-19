@@ -10,7 +10,7 @@ public class Player {
     private GRect healthBarBackground;
     private GRect updatingHealthBar;
 
-    private static final int PLAYER_SIZE = 40; 
+    public static final int PLAYER_SIZE = 40; 
     private static final int MAX_HEALTH = 100; 
     private static final int HEALTH_BAR_WIDTH = 200; 
     private static final int HEALTH_BAR_HEIGHT = 20; 
