@@ -1,9 +1,11 @@
 //handles updating the game
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Timer;
 import acm.graphics.GLabel;
 import acm.graphics.GRect;
+
 
 public class Console {
     private GameApp gameApp;
@@ -103,8 +105,44 @@ public class Console {
         gameApp.remove(enemy.getEnemyShape());
         enemies.remove(enemy);
         enemiesDefeated++;
+        
+        createDamageNumber(enemy.getEnemyShape().getX() + Enemy.ENEMY_SIZE / 2,
+                enemy.getEnemyShape().getY() + Enemy.ENEMY_SIZE / 2,
+                "100"); // Example damage value
     }
 
+    private void createDamageNumber(double x, double y, String damage) {
+        GLabel damageLabel = new GLabel(damage);
+        damageLabel.setFont("Arial-Bold-18");
+        damageLabel.setColor(Color.RED);
+        damageLabel.setLocation(x - damageLabel.getWidth() / 2, y);
+        gameApp.add(damageLabel);
+
+        new Thread(() -> {
+            try {
+                for (int frame = 0; frame < 20; frame++) {
+                    Thread.sleep(30);
+
+                    // Move the damage number upwards
+                    damageLabel.move(0, -2);
+
+                    // Gradually fade out
+                    Color currentColor = damageLabel.getColor();
+                    int alpha = Math.max(0, currentColor.getAlpha() - 13); // Reduce alpha
+                    damageLabel.setColor(new Color(
+                            currentColor.getRed(),
+                            currentColor.getGreen(),
+                            currentColor.getBlue(),
+                            alpha
+                    ));
+                }
+                gameApp.remove(damageLabel); // Remove the label after animation
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+    
     /**
      * Updates enemy positions to follow the player.
      */
