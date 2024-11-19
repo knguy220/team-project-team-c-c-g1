@@ -10,15 +10,18 @@ public class Player {
     private GRect healthBarBackground;
     private GRect updatingHealthBar;
 
+
     public static final int PLAYER_SIZE = 40; 
     private static final int MAX_HEALTH = 100; 
     private static final int HEALTH_BAR_WIDTH = 200; 
-    private static final int HEALTH_BAR_HEIGHT = 20; 
+    public static final int HEALTH_BAR_HEIGHT = 20; 
 
     private double x, y; // Position
     private double velocityX = 0;
     private double velocityY = 0;
+    
     private int playerHealth = MAX_HEALTH;
+
 
     private boolean movingUp = false;
     private boolean movingDown = false;
@@ -53,7 +56,10 @@ public class Player {
         updatingHealthBar = new GRect(10, 10, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
         updatingHealthBar.setFilled(true);
         updatingHealthBar.setColor(Color.GREEN);
+        
     }
+        
+
 
     /**
      * Initializes the player and health bar on the screen.
@@ -76,11 +82,14 @@ public class Player {
         x = Math.max(0, Math.min(gameApp.getWidth() - PLAYER_SIZE, x));
         y = Math.max(0, Math.min(gameApp.getHeight() - PLAYER_SIZE, y));
 
-        // Update player's position
+        // Update player's position with hover offset
         playerShape.setLocation(x, y);
 
         // Update gun line based on current aiming angle
         updateGunLine();
+        
+       // Add trail effect
+        addTrail();
     }
 
     /**
@@ -156,6 +165,36 @@ public class Player {
                 break;
         }
     }
+    
+    /**
+     * Adds a trail effect behind the player.
+     */
+    private void addTrail() {
+        GOval trail = new GOval(x + PLAYER_SIZE / 4, y + PLAYER_SIZE / 4, PLAYER_SIZE / 2, PLAYER_SIZE / 2);
+        trail.setFilled(true);
+        trail.setColor(new Color(0, 0, 255, 50)); // Transparent blue
+        gameApp.add(trail);
+
+        new Thread(() -> {
+            try {
+                for (int i = 0; i < 10; i++) {
+                    Thread.sleep(30);
+                    trail.setSize(trail.getWidth() - 2, trail.getHeight() - 2);
+                    trail.setLocation(trail.getX() + 1, trail.getY() + 1);
+                    Color currentColor = trail.getColor();
+                    trail.setColor(new Color(
+                            currentColor.getRed(),
+                            currentColor.getGreen(),
+                            currentColor.getBlue(),
+                            Math.max(0, currentColor.getAlpha() - 5)
+                    ));
+                }
+                gameApp.remove(trail);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
     /**
      * Updates the health bar when the player takes damage or heals.
@@ -172,6 +211,7 @@ public class Player {
         double healthBarWidth = (double) playerHealth / MAX_HEALTH * HEALTH_BAR_WIDTH;
         updatingHealthBar.setSize(healthBarWidth, HEALTH_BAR_HEIGHT);
     }
+    
 
     /**
      * Returns whether the player is alive.

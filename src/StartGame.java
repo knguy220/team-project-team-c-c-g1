@@ -8,7 +8,7 @@ import javax.swing.Timer;
 
 public class StartGame {
     private GameApp gameApp;
-    private GImage backgroundImage;
+    // private GImage backgroundImage; // Commented out the background image
     private GButton pauseButton;
     private final int GUN_LENGTH = 40;
     private Player player;
@@ -16,6 +16,10 @@ public class StartGame {
     private static final int MAX_BULLETS = 20;
     private Console console;
     private Timer gameLoopTimer;
+
+
+    private int score = 0; // Player's score
+    private GLabel scoreLabel; // Score label for display
 
     public StartGame(GameApp gameApp) {
         this.gameApp = gameApp;
@@ -31,20 +35,22 @@ public class StartGame {
         initializeGame();
 
         // Game loop timer to update gameplay elements
-        gameLoopTimer = new Timer(20, e -> update());
+        gameLoopTimer = new Timer(30, e -> update());
         gameLoopTimer.start();
     }
 
     private void initializeGame() {
         gameApp.removeAll();
 
-        // Add background image
-        backgroundImage = new GImage("groundhd.png");
-        backgroundImage.setSize(gameApp.getWidth(), gameApp.getHeight());
-        gameApp.add(backgroundImage);
-
         // Initialize player
         player.initialize();
+
+        // Initialize score label
+        scoreLabel = new GLabel("Score: 0");
+        scoreLabel.setFont("Arial-Bold-20");
+        scoreLabel.setColor(Color.BLACK); // Black color for better visibility
+        scoreLabel.setLocation(10, 40); // Position south of the health bar
+        gameApp.add(scoreLabel);
 
         // Initialize pause button
         pauseButton = new GButton("Pause", (int) (gameApp.getWidth() - 100), 20, 80, 30, Color.BLACK, Color.WHITE);
@@ -58,9 +64,9 @@ public class StartGame {
         gameApp.add(pauseButton.getMessage());
     }
 
+
     public void show() {
-        if (backgroundImage != null)
-            gameApp.add(backgroundImage);
+        // if (backgroundImage != null) gameApp.add(backgroundImage);
         if (pauseButton != null) {
             gameApp.add(pauseButton.getRect());
             gameApp.add(pauseButton.getMessage());
@@ -69,6 +75,9 @@ public class StartGame {
         // Show player
         player.show();
         player.resetMovement();
+
+        // Add score label
+        gameApp.add(scoreLabel);
 
         // Add existing bullets to the screen
         for (Bullet bullet : bullets) {
@@ -84,8 +93,7 @@ public class StartGame {
     }
 
     public void hide() {
-        if (backgroundImage != null)
-            gameApp.remove(backgroundImage);
+        // if (backgroundImage != null) gameApp.remove(backgroundImage);
         if (pauseButton != null) {
             gameApp.remove(pauseButton.getRect());
             gameApp.remove(pauseButton.getMessage());
@@ -98,12 +106,42 @@ public class StartGame {
             gameApp.remove(bullet.getBulletShape());
         }
 
+        // Remove score label
+        gameApp.remove(scoreLabel);
+
         // Hide enemies and pause timers
         console.hideAllEnemies();
         pauseGameLoop();
         console.pauseWaveTimer();
     }
 
+    public void updateScore(int points) {
+        score += points;
+        scoreLabel.setLabel("Score: " + score);
+
+        // Dynamic animation for the score label
+        new Thread(() -> {
+            try {
+                // Initial hover and scale-up effect
+                for (int i = 0; i < 10; i++) {
+                    scoreLabel.setFont("Arial-Bold-" + (20 + i)); // Gradually increase font size
+                    Thread.sleep(15); // Smooth transition
+                }
+
+                // Hover back to original position and font size
+                for (int i = 0; i < 10; i++) {
+                    scoreLabel.setFont("Arial-Bold-" + (30 - i)); // Gradually decrease font size
+                    Thread.sleep(15); // Smooth transition
+                }
+
+                // Ensure it resets back to the default
+                scoreLabel.setFont("Arial-Bold-20");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+    
     public void pauseGameLoop() {
         if (gameLoopTimer != null) {
             gameLoopTimer.stop();
@@ -189,6 +227,7 @@ public class StartGame {
             }
         }
     }
+    
 
     private boolean isPlayerCollidingWithEnemy(Player player, Enemy enemy) {
         double playerX = player.getCenterX();
@@ -214,6 +253,7 @@ public class StartGame {
                 Enemy enemy = console.getEnemies().get(j);
                 if (isBulletCollidingWithEnemy(bullet, enemy)) {
                     console.removeEnemy(enemy);
+                    updateScore(1); // Increment score by 1 for each enemy killed
                     bullet.createImpactAnimation();
                     bullet.destroy();
                     break;
@@ -221,6 +261,7 @@ public class StartGame {
             }
         }
     }
+
 
     private boolean isBulletCollidingWithEnemy(Bullet bullet, Enemy enemy) {
         double bulletX = bullet.getBulletShape().getX() + Bullet.getBulletSize() / 2;
@@ -236,3 +277,4 @@ public class StartGame {
         return player;
     }
 }
+

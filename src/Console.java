@@ -17,26 +17,26 @@ public class Console {
     private GLabel waveLabel;
     private GRect waveLabelBackground;
 
-    private static final double BASE_ENEMY_SPEED = 3.0; // Increased base speed
+    private static final double BASE_ENEMY_SPEED = 6.0; // Increased base speed
     private static final int BASE_SPAWN_DELAY = 600;   // Faster spawn rate
 
     public Console(GameApp gameApp) {
         this.gameApp = gameApp;
         this.enemies = new ArrayList<>();
         this.enemiesDefeated = 0;
-        this.waveNumber = 1; 
+        this.waveNumber = 0; 
         this.isSpawningWave = false;
 
         // Initialize wave label background
         waveLabelBackground = new GRect(gameApp.getWidth() / 2.0 - 75, 20, 150, 40);
         waveLabelBackground.setFilled(true);
-        waveLabelBackground.setColor(java.awt.Color.BLACK);
+        waveLabelBackground.setColor(java.awt.Color.WHITE);
         gameApp.add(waveLabelBackground);
 
         // Initialize wave label
         waveLabel = new GLabel("", gameApp.getWidth() / 2.0, 50);
         waveLabel.setFont("Arial-Bold-24");
-        waveLabel.setColor(java.awt.Color.WHITE);
+        waveLabel.setColor(java.awt.Color.BLACK);
         gameApp.add(waveLabel);
 
         // Initialize wave spawning timer
@@ -56,16 +56,26 @@ public class Console {
         isSpawningWave = true;
         waveNumber++;
 
-        // Update and display wave number
+        // Update wave number display
         waveLabel.setLabel("Wave " + waveNumber);
         waveLabel.setLocation(
             (gameApp.getWidth() - waveLabel.getWidth()) / 2, 
-            waveLabelBackground.getY() + waveLabel.getAscent() + 10
+            60 // Ensure it's below health bar and score
+        );
+        waveLabelBackground.setLocation(
+            (gameApp.getWidth() / 2.0 - 75), 50
         );
 
-        int enemyCount = Math.min(5 + waveNumber * 2, 50); // Increase enemies per wave
-        int spawnDelay = Math.max(100, BASE_SPAWN_DELAY - waveNumber * 50); // Reduce spawn delay per wave
-        double enemySpeed = BASE_ENEMY_SPEED + waveNumber * 0.5; // Faster enemies per wave
+        // Bring wave label to front
+        gameApp.remove(waveLabel);
+        gameApp.remove(waveLabelBackground);
+        gameApp.add(waveLabelBackground);
+        gameApp.add(waveLabel);
+
+        // Logic for spawning enemies
+        int enemyCount = Math.min(5 + waveNumber * 2, 30);
+        int spawnDelay = Math.max(100, BASE_SPAWN_DELAY - waveNumber * 50);
+        double enemySpeed = BASE_ENEMY_SPEED + waveNumber * 0.5;
 
         for (int i = 0; i < enemyCount; i++) {
             int finalI = i;
@@ -78,13 +88,14 @@ public class Console {
             spawnTimer.start();
         }
 
-        // Delay before the next wave starts
+        // Delay before next wave starts
         Timer nextWaveTimer = new Timer(15000, e -> startNextWave());
         nextWaveTimer.setRepeats(false);
         nextWaveTimer.start();
 
         isSpawningWave = false;
     }
+
 
     /**
      * Spawns a standard enemy at a random off-screen position with specified speed.
@@ -108,35 +119,55 @@ public class Console {
         
         createDamageNumber(enemy.getEnemyShape().getX() + Enemy.ENEMY_SIZE / 2,
                 enemy.getEnemyShape().getY() + Enemy.ENEMY_SIZE / 2,
-                "100"); // Example damage value
+                "10"); // Example damage value
     }
 
     private void createDamageNumber(double x, double y, String damage) {
+        // Determine the color of the damage number based on value
+        int damageValue = Integer.parseInt(damage);
+        Color damageColor;
+        if (damageValue > 50) {
+            damageColor = Color.RED; // High damage
+        } else if (damageValue > 20) {
+            damageColor = Color.ORANGE; // Medium damage
+        } else {
+            damageColor = Color.YELLOW; // Low damage
+        }
+
+        // Create the damage label
         GLabel damageLabel = new GLabel(damage);
-        damageLabel.setFont("Arial-Bold-18");
-        damageLabel.setColor(Color.RED);
+        damageLabel.setFont("Arial-Bold-20"); // Base font size
+        damageLabel.setColor(damageColor);
         damageLabel.setLocation(x - damageLabel.getWidth() / 2, y);
         gameApp.add(damageLabel);
 
+        // Animation logic in a separate thread
         new Thread(() -> {
             try {
-                for (int frame = 0; frame < 20; frame++) {
+                for (int frame = 0; frame < 30; frame++) {
                     Thread.sleep(30);
 
-                    // Move the damage number upwards
-                    damageLabel.move(0, -2);
+                    // Move the damage number upwards with a slight curve
+                    double offsetX = Math.sin(frame * 0.2) * 2; // Slight horizontal curve
+                    damageLabel.move(offsetX, -2);
 
                     // Gradually fade out
                     Color currentColor = damageLabel.getColor();
-                    int alpha = Math.max(0, currentColor.getAlpha() - 13); // Reduce alpha
+                    int alpha = Math.max(0, currentColor.getAlpha() - 8); // Reduce alpha
                     damageLabel.setColor(new Color(
                             currentColor.getRed(),
                             currentColor.getGreen(),
                             currentColor.getBlue(),
                             alpha
                     ));
+
+                    // Scale the damage number for emphasis in the first few frames
+                    if (frame < 10) {
+                        damageLabel.setFont("Arial-Bold-" + (20 + frame));
+                    }
                 }
-                gameApp.remove(damageLabel); // Remove the label after animation
+                // Remove the damage label after animation
+                gameApp.remove(damageLabel);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
