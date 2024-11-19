@@ -16,10 +16,6 @@ public class StartGame {
     private static final int MAX_BULLETS = 20;
     private Console console;
     private Timer gameLoopTimer;
-    private Timer waveTimer;
-
-    private int waveNumber = 1;
-    private boolean isSpawningWave = false;
 
     public StartGame(GameApp gameApp) {
         this.gameApp = gameApp;
@@ -37,10 +33,6 @@ public class StartGame {
         // Game loop timer to update gameplay elements
         gameLoopTimer = new Timer(20, e -> update());
         gameLoopTimer.start();
-
-        // Wave spawning timer
-        waveTimer = new Timer(10000, e -> startNextWave());
-        waveTimer.start();
     }
 
     private void initializeGame() {
@@ -88,7 +80,7 @@ public class StartGame {
 
         // Resume timers
         resumeGameLoop();
-        resumeWaveTimer();
+        console.resumeWaveTimer();
     }
 
     public void hide() {
@@ -109,43 +101,7 @@ public class StartGame {
         // Hide enemies and pause timers
         console.hideAllEnemies();
         pauseGameLoop();
-        pauseWaveTimer();
-    }
-
-    private void startNextWave() {
-        if (gameApp.getGameState() != GameApp.GameState.ACTIVE || isSpawningWave) {
-            return; // Only spawn waves if the game is active and not already spawning
-        }
-
-        isSpawningWave = true;
-        int enemyCount = Math.min(waveNumber * 3, 20); // Gradual increase, cap at 20 enemies
-        int spawnDelay = 500; // Delay between individual enemy spawns (in ms)
-
-        for (int i = 0; i < enemyCount; i++) {
-            int finalI = i;
-            Timer spawnTimer = new Timer(spawnDelay * finalI, e -> {
-                if (gameApp.getGameState() == GameApp.GameState.ACTIVE && console.getEnemies().size() < 20) {
-                    console.spawnEnemy();
-                }
-            });
-            spawnTimer.setRepeats(false);
-            spawnTimer.start();
-        }
-
-        waveNumber++; // Increment wave number for the next wave
-        isSpawningWave = false;
-    }
-
-    public void pauseWaveTimer() {
-        if (waveTimer != null) {
-            waveTimer.stop();
-        }
-    }
-
-    public void resumeWaveTimer() {
-        if (waveTimer != null && !waveTimer.isRunning()) {
-            waveTimer.start();
-        }
+        console.pauseWaveTimer();
     }
 
     public void pauseGameLoop() {
@@ -191,7 +147,6 @@ public class StartGame {
 
             Bullet bullet = new Bullet(gameApp, this, playerCenterX, playerCenterY, directionX, directionY);
             bullets.add(bullet);
-
         }
     }
 
@@ -225,9 +180,6 @@ public class StartGame {
         }
     }
 
-    /**
-     * Check for collisions between the player and enemies.
-     */
     private void checkPlayerEnemyCollisions() {
         for (Enemy enemy : console.getEnemies()) {
             if (isPlayerCollidingWithEnemy(player, enemy)) {
@@ -238,9 +190,6 @@ public class StartGame {
         }
     }
 
-    /**
-     * Determine if the player is colliding with an enemy.
-     */
     private boolean isPlayerCollidingWithEnemy(Player player, Enemy enemy) {
         double playerX = player.getCenterX();
         double playerY = player.getCenterY();
@@ -251,15 +200,12 @@ public class StartGame {
         return distance < (Player.PLAYER_SIZE / 2 + Enemy.getEnemySize() / 2);
     }
 
-
     private void triggerGameOver() {
         pauseGameLoop();
-        pauseWaveTimer();
+        console.pauseWaveTimer();
         int finalScore = console.getEnemiesDefeated(); // Get the player's score
         gameApp.showGameOverScreen(finalScore); // Navigate to Game Over screen
     }
-
-
 
     private void checkCollisions() {
         for (int i = bullets.size() - 1; i >= 0; i--) {
@@ -268,11 +214,7 @@ public class StartGame {
                 Enemy enemy = console.getEnemies().get(j);
                 if (isBulletCollidingWithEnemy(bullet, enemy)) {
                     console.removeEnemy(enemy);
-
-                    // Trigger impact animation
                     bullet.createImpactAnimation();
-
-                    // Destroy the bullet
                     bullet.destroy();
                     break;
                 }
@@ -294,4 +236,3 @@ public class StartGame {
         return player;
     }
 }
-

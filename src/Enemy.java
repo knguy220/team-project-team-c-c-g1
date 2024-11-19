@@ -13,8 +13,8 @@ public class Enemy {
         enemyShape.setFilled(true);
         enemyShape.setColor(Color.RED);
 
-        // Define the speed of the enemy
-        this.speed = 2; // Adjust as necessary for game balance
+        // Define default speed for the enemy
+        this.speed = 2.0;
 
         // Add the enemy to the game
         gameApp.add(enemyShape);
@@ -43,6 +43,15 @@ public class Enemy {
 
         // Move the enemy in the direction of the player
         enemyShape.move(directionX * speed, directionY * speed);
+    }
+
+    /**
+     * Sets the speed of the enemy.
+     *
+     * @param speed The new speed value for the enemy.
+     */
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
     /**
