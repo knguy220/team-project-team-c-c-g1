@@ -1,17 +1,19 @@
 import acm.program.GraphicsProgram;
-import acm.graphics.*;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class GameApp extends GraphicsProgram {
+    private StartGame startGame;
     private StartScreen2 startScreen;
     private SettingsScreen settingsScreen;
-    private StartGame startGame;
     private PauseScreen pauseScreen;
-    private boolean isPaused = false;
-    private boolean fromPauseScreen = false;
+    private GameOverScreen gameOverScreen;
+
+    public enum GameState { ACTIVE, PAUSED, IN_MENU, GAME_OVER }
+
+    private GameState gameState = GameState.IN_MENU;
 
     public void init() {
         startScreen = new StartScreen2(this);
@@ -27,119 +29,160 @@ public class GameApp extends GraphicsProgram {
     }
 
     public void showStartScreen() {
-        if (startGame != null) startGame.hide();
+        if (startGame != null) {
+            startGame.hide();
+            startGame.pauseGameLoop();
+        }
+        gameState = GameState.IN_MENU;
         startScreen.show();
     }
 
     public void showSettingsScreen(boolean openedFromPause) {
-        fromPauseScreen = openedFromPause;
-
-        if (fromPauseScreen) {
+        if (openedFromPause) {
             pauseScreen.hide();
         } else {
-            if (startGame != null) startGame.hide();
+            if (startGame != null) {
+                startGame.hide();
+                startGame.pauseGameLoop();
+            }
             startScreen.hide();
         }
 
-        settingsScreen.show();
+        gameState = GameState.IN_MENU;
+        settingsScreen.show(openedFromPause);
     }
 
     public void startGame() {
-        removeAll();
-        if (startGame == null) {
-            startGame = new StartGame(this);
-        } else {
-            startGame.show();
+        removeAll(); // Clear all elements from the current screen
+        if (startGame != null) {
+            startGame.pauseGameLoop(); // Stop any ongoing game loop
+            startGame = null; // Reset the StartGame instance
         }
-        isPaused = false;
+        startGame = new StartGame(this); // Create a fresh instance of StartGame
+        startGame.show(); // Show the game screen
+        gameState = GameState.ACTIVE; // Set the game state to active
     }
 
     public void showPauseScreen() {
-        if (startGame != null) startGame.hide();
+        if (startGame != null) {
+            startGame.hide();
+            startGame.pauseGameLoop();
+        }
+        gameState = GameState.PAUSED;
         pauseScreen.show();
-        isPaused = true;
+    }
+
+    public void showGameOverScreen(int playerScore) {
+        removeAll(); // Clear all elements from the screen
+        gameOverScreen = new GameOverScreen(this, startScreen.getUsername()); // Reinitialize GameOverScreen
+        gameOverScreen.show(playerScore); // Display the Game Over screen
+        gameState = GameState.GAME_OVER;
     }
 
     public void resumeGame() {
         if (startGame != null) {
             pauseScreen.hide();
             startGame.show();
+            startGame.resumeGameLoop();
         }
-        isPaused = false;
+        gameState = GameState.ACTIVE;
     }
 
     public void quitToStartScreen() {
-        if (startGame != null) startGame.hide();
+        if (startGame != null) {
+            startGame.hide();
+            startGame.pauseGameLoop();
+        }
         showStartScreen();
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (startGame != null && !isPaused) {
-            startGame.handleKeyPress(e);
-        }
+    public GameState getGameState() {
+        return gameState;
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (startGame != null && !isPaused) {
-            startGame.handleKeyRelease(e);
+    public Player getPlayer() {
+        if (startGame != null) {
+            return startGame.getPlayer();
         }
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        if (startGame != null && !isPaused) {
-            startGame.updateAiming(e);
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (startGame != null && !isPaused) {
-            startGame.handleShooting(e);
-        }
+        return null;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (isPaused && pauseScreen.isResumeButtonClicked(e.getX(), e.getY())) {
-            resumeGame();
-        } else if (isPaused && pauseScreen.isSettingsButtonClicked(e.getX(), e.getY())) {
-            showSettingsScreen(true);
-        } else if (isPaused && pauseScreen.isQuitButtonClicked(e.getX(), e.getY())) {
-            quitToStartScreen();
-        } else if (settingsScreen.isApplyButtonClicked(e.getX(), e.getY())) {
-            settingsScreen.applySettings();
-        } else if (settingsScreen.isBackButtonClicked(e.getX(), e.getY())) {
-            settingsScreen.hide();
-            if (fromPauseScreen) {
+        if (gameState == GameState.PAUSED) {
+            if (pauseScreen.isResumeButtonClicked(e.getX(), e.getY())) {
                 resumeGame();
-            } else {
-                showStartScreen();
+            } else if (pauseScreen.isSettingsButtonClicked(e.getX(), e.getY())) {
+                showSettingsScreen(true); // Opens settings from pause
+            } else if (pauseScreen.isQuitButtonClicked(e.getX(), e.getY())) {
+                quitToStartScreen();
+            }
+        } else if (gameState == GameState.GAME_OVER) {
+            if (gameOverScreen != null) {
+                gameOverScreen.handleMouseClick(e); // Handle clicks on Game Over screen
+            }
+        } else if (gameState == GameState.IN_MENU) {
+            if (settingsScreen.isApplyButtonClicked(e.getX(), e.getY())) {
+                settingsScreen.applySettings();
+            } else if (settingsScreen.isBackButtonClicked(e.getX(), e.getY())) {
+                settingsScreen.backToPrevious(); // Correct Back button behavior
             }
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        settingsScreen.handleSliderDrag(e);
+        if (gameState == GameState.IN_MENU) {
+            settingsScreen.handleSliderDrag(e);
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        settingsScreen.handleMouseReleased();
+        if (gameState == GameState.IN_MENU) {
+            settingsScreen.handleMouseReleased();
+        }
     }
 
     @Override
-    public void run() {
-        // No additional logic needed; we can leave this method empty or add specific behavior
+    public void keyPressed(KeyEvent e) {
+        if (startGame != null && gameState == GameState.ACTIVE) {
+            startGame.handleKeyPress(e);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (startGame != null && gameState == GameState.ACTIVE) {
+            startGame.handleKeyRelease(e);
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if (startGame != null && gameState == GameState.ACTIVE) {
+            startGame.updateAiming(e);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (startGame != null && gameState == GameState.ACTIVE) {
+            startGame.handleShooting(e);
+        }
     }
 
     public static void main(String[] args) {
         new GameApp().start();
     }
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }
+
 
 
 
