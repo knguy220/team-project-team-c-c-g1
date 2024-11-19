@@ -49,7 +49,7 @@ public class StartGame {
         scoreLabel = new GLabel("Score: 0");
         scoreLabel.setFont("Arial-Bold-20");
         scoreLabel.setColor(Color.BLACK); // Black color for better visibility
-        scoreLabel.setLocation(10, 40); // Position south of the health bar
+        scoreLabel.setLocation(10, 50); // Position south of the health bar
         gameApp.add(scoreLabel);
 
         // Initialize pause button
