@@ -39,7 +39,7 @@ public class GameOverScreen {
 
         // Add score label with username
         scoreLabel = new GLabel(username + "'s score: " + playerScore + " points");
-        scoreLabel.setFont("Arial-Bold-24");
+        scoreLabel.setFont("Arial-Bold-36");
         scoreLabel.setColor(Color.BLACK);
         double scoreX = (gameApp.getWidth() - scoreLabel.getWidth()) / 2;
         double scoreY = gameApp.getHeight() / 2.0;
@@ -101,6 +101,7 @@ public class GameOverScreen {
         gameApp.showStartScreen();
     }
 }
+
 
 
 

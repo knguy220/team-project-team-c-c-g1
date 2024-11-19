@@ -50,16 +50,19 @@ import java.util.List;
 public class Map {
     private static final int TILE_SIZE = 40;
     private static final int WALL = 1;
+    private static final int FLOOR = 0;
     private List<Position> enemySpawnPoints;
-    private int[][] map = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-        {1, 0, 1, 0, 1, 1, 0, 1, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-    };
+    private int[][] map = {};
+    private int cols;
+    private int rows;
 
-    public Map() {
+    public Map(int screenWidth, int screenHeight) {
+    	
+    	cols = (int) (screenWidth/ TILE_SIZE);
+    	rows = (int) (screenHeight/ TILE_SIZE);
+    	
+    	map = new int[rows][cols];
+    	
         enemySpawnPoints = new ArrayList<>();
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
@@ -68,7 +71,24 @@ public class Map {
                 }
             }
         }
+        
+        generateMap(rows, cols);
     }
+    
+    private void generateMap (int rows, int cols) {
+    	 // Create a simple border map (walls around the edges)
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                if (y == 0 || x == 0 || y == rows - 1 || x == cols - 1) {
+                    map[y][x] = WALL; // Border walls
+                } else {
+                    map[y][x] = FLOOR; // Open floor
+                    enemySpawnPoints.add(new Position(x, y));
+                }
+            }
+        }
+    }
+    
 
     public boolean isWall(int x, int y) {
         return map[y][x] == WALL;
@@ -88,6 +108,19 @@ public class Map {
             }
         }
     }
+
+	public static int getTileSize() {
+		return TILE_SIZE;
+	}
+
+	public int getCols() {
+		return cols;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+    
 }
 
 
