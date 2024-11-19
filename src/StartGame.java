@@ -174,26 +174,80 @@ public class StartGame {
 	}
 
 	public void handleShooting(MouseEvent e) {
-		if (Bullet.canShoot() && bullets.size() < MAX_BULLETS) {
-			double centerX = player.getCenterX();
-			double centerY = player.getCenterY();
-			double mouseX = e.getX();
-			double mouseY = e.getY();
+	    if (Bullet.canShoot() && bullets.size() < MAX_BULLETS) {
+	        double playerCenterX = player.getCenterX();
+	        double playerCenterY = player.getCenterY();
+	        double mouseX = e.getX();
+	        double mouseY = e.getY();
 
-			// Calculate direction of bullet
-			double angle = Math.atan2(mouseY - centerY, mouseX - centerX);
-			double directionX = Math.cos(angle);
-			double directionY = Math.sin(angle);
+	        // Calculate direction of bullet
+	        double angle = Math.atan2(mouseY - playerCenterY, mouseX - playerCenterX);
+	        double directionX = Math.cos(angle);
+	        double directionY = Math.sin(angle);
 
-			Bullet bullet = new Bullet(gameApp, this, centerX, centerY, directionX, directionY);
-			bullets.add(bullet);
-		}
+	        Bullet bullet = new Bullet(gameApp, this, playerCenterX, playerCenterY, directionX, directionY);
+	        bullets.add(bullet);
+
+	        // Create muzzle flash aligned with the aiming direction
+	        createMuzzleFlash(playerCenterX, playerCenterY, angle);
+	    }
 	}
+
+
+
+
+	private void createMuzzleFlash(double playerCenterX, double playerCenterY, double angle) {
+	    // Calculate the position of the muzzle flash at the end of the barrel
+	    double flashX = playerCenterX + Math.cos(angle) * 40; 
+	    double flashY = playerCenterY + Math.sin(angle) * 40;
+
+	    // Multi-layer glow effect
+	    List<GOval> glowLayers = new ArrayList<>();
+	    for (int i = 0; i < 3; i++) {
+	        int size = 40 - i * 10; // Decreasing size for each layer
+	        GOval glow = new GOval(flashX - size / 2, flashY - size / 2, size, size);
+	        glow.setFilled(true);
+	        glow.setColor(new Color(255, (int) (215 - i * 50), 0, 100 - i * 30)); // Gradual color shift
+	        gameApp.add(glow);
+	        glowLayers.add(glow);
+	    }
+
+	    // Animate the glow layers fading and shrinking
+	    new Thread(() -> {
+	        try {
+	            for (int frame = 0; frame < 5; frame++) {
+	                Thread.sleep(30);
+
+	                // Shrink and fade the glow layers
+	                for (GOval glow : glowLayers) {
+	                    glow.setSize(glow.getWidth() - 2, glow.getHeight() - 2);
+	                    glow.setLocation(glow.getX() + 1, glow.getY() + 1); // Re-center shrinking
+	                    Color currentColor = glow.getColor();
+	                    glow.setColor(new Color(
+	                        currentColor.getRed(),
+	                        currentColor.getGreen(),
+	                        currentColor.getBlue(),
+	                        Math.max(0, currentColor.getAlpha() - 20) // Gradual fade-out
+	                    ));
+	                }
+	            }
+
+	            // Remove all glow layers
+	            for (GOval glow : glowLayers) {
+	                gameApp.remove(glow);
+	            }
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }).start();
+	}
+
+
+
 
 	public void removeBullet(Bullet bullet) {
 		bullets.remove(bullet);
 		gameApp.remove(bullet.getBulletShape());
-		gameApp.remove(bullet.getBulletImage());
 	}
 
 	private void update() {
@@ -214,18 +268,24 @@ public class StartGame {
 	}
 
 	private void checkCollisions() {
-		for (int i = bullets.size() - 1; i >= 0; i--) {
-			Bullet bullet = bullets.get(i);
-			for (int j = console.getEnemies().size() - 1; j >= 0; j--) {
-				Enemy enemy = console.getEnemies().get(j);
-				if (isBulletCollidingWithEnemy(bullet, enemy)) {
-					console.removeEnemy(enemy);
-					removeBullet(bullet);
-					break;
-				}
-			}
-		}
+	    for (int i = bullets.size() - 1; i >= 0; i--) {
+	        Bullet bullet = bullets.get(i);
+	        for (int j = console.getEnemies().size() - 1; j >= 0; j--) {
+	            Enemy enemy = console.getEnemies().get(j);
+	            if (isBulletCollidingWithEnemy(bullet, enemy)) {
+	                console.removeEnemy(enemy);
+
+	                // Trigger impact animation
+	                bullet.createImpactAnimation();
+
+	                // Destroy the bullet
+	                bullet.destroy();
+	                break;
+	            }
+	        }
+	    }
 	}
+
 
 	private boolean isBulletCollidingWithEnemy(Bullet bullet, Enemy enemy) {
 		double bulletX = bullet.getBulletShape().getX() + Bullet.getBulletSize() / 2;
