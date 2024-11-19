@@ -5,6 +5,7 @@ public class Bullet {
     private GameApp gameApp;
     private StartGame startGame;
     private GOval bulletShape;
+    private GImage bulletImage;
     private static final int BULLET_SIZE = 12; // Bullet size
     private static final Color BULLET_COLOR = Color.YELLOW; // Bullet color
     private static final double BULLET_SPEED_MULTIPLIER = 15; // Increased bullet speed
@@ -30,6 +31,11 @@ public class Bullet {
 
         // Add bullet to the game screen
         gameApp.add(bulletShape);
+        
+        bulletImage = new GImage("Bullet.png"); 
+        bulletImage.setSize(BULLET_SIZE * 2, BULLET_SIZE * 2); 
+        bulletImage.setLocation(startX, startY);
+        gameApp.add(bulletImage);
     }
 
     /**
@@ -47,6 +53,7 @@ public class Bullet {
 
         // Update the bullet's location
         bulletShape.setLocation(x, y);
+        bulletImage.setLocation(x, y);
     }
 
     /**
@@ -54,6 +61,7 @@ public class Bullet {
      */
     public void destroy() {
         gameApp.remove(bulletShape);
+        gameApp.remove(bulletImage);
         startGame.removeBullet(this);
     }
 
