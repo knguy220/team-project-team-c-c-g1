@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Timer;
 import acm.graphics.GLabel;
-import acm.graphics.GRect;
 
 
 public class Console {
@@ -15,7 +14,6 @@ public class Console {
     private boolean isSpawningWave;
     private Timer waveTimer;
     private GLabel waveLabel;
-    private GRect waveLabelBackground;
 
     private static final double BASE_ENEMY_SPEED = 6.0; // Increased base speed
     private static final int BASE_SPAWN_DELAY = 600;   // Faster spawn rate
@@ -26,12 +24,6 @@ public class Console {
         this.enemiesDefeated = 0;
         this.waveNumber = 0; 
         this.isSpawningWave = false;
-
-        // Initialize wave label background
-        waveLabelBackground = new GRect(gameApp.getWidth() / 2.0 - 75, 20, 150, 40);
-        waveLabelBackground.setFilled(true);
-        waveLabelBackground.setColor(java.awt.Color.WHITE);
-        gameApp.add(waveLabelBackground);
 
         // Initialize wave label
         waveLabel = new GLabel("", gameApp.getWidth() / 2.0, 50);
@@ -62,14 +54,9 @@ public class Console {
             (gameApp.getWidth() - waveLabel.getWidth()) / 2, 
             60 // Ensure it's below health bar and score
         );
-        waveLabelBackground.setLocation(
-            (gameApp.getWidth() / 2.0 - 75), 50
-        );
 
         // Bring wave label to front
         gameApp.remove(waveLabel);
-        gameApp.remove(waveLabelBackground);
-        gameApp.add(waveLabelBackground);
         gameApp.add(waveLabel);
 
         // Logic for spawning enemies
