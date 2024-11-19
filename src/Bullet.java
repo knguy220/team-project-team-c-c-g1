@@ -33,7 +33,7 @@ public class Bullet {
         gameApp.add(bulletShape);
         
         bulletImage = new GImage("fireBullet.png"); 
-        bulletImage.setSize(BULLET_SIZE * 2, BULLET_SIZE * 2); 
+        bulletImage.setSize(BULLET_SIZE, BULLET_SIZE * 2); 
         bulletImage.setLocation(startX, startY);
         gameApp.add(bulletImage);
     }
