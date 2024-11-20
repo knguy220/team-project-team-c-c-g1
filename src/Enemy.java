@@ -7,6 +7,7 @@ public class Enemy {
 
     public static final int ENEMY_SIZE = 30;
 
+
     public Enemy(GameApp gameApp, double startX, double startY) {
         // Create the enemy shape
         enemyShape = new GOval(startX, startY, ENEMY_SIZE, ENEMY_SIZE);
