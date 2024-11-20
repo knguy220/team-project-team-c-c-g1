@@ -2,6 +2,7 @@ import acm.graphics.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class Player {
     private GameApp gameApp;
@@ -10,6 +11,7 @@ public class Player {
     private GLine gunLine;
     private GRect healthBarBackground;
     private GRect updatingHealthBar;
+    
 
 
     public static final int PLAYER_SIZE = 40; 
@@ -290,6 +292,8 @@ public class Player {
     public double getCenterY() {
         return y + PLAYER_SIZE / 2;
     }
+    
+    
 }
 
 
