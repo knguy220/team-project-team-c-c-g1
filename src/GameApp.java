@@ -10,6 +10,11 @@ public class GameApp extends GraphicsProgram {
     private SettingsScreen settingsScreen;
     private PauseScreen pauseScreen;
     private GameOverScreen gameOverScreen;
+    private Sound backgroundMusic;
+    private Sound pauseSound;
+    private Sound gameOverSound;
+    private Sound clickSound;
+
 
     public enum GameState { ACTIVE, PAUSED, IN_MENU, GAME_OVER }
 
@@ -25,8 +30,25 @@ public class GameApp extends GraphicsProgram {
 
         showStartScreen();
         addMouseListeners();
-        addKeyListeners();
-    }
+        addKeyListeners(); 
+        
+       
+            // Initialize sounds
+            backgroundMusic = new Sound("path/to/background_music.wav");
+            pauseSound = new Sound("path/to/pause_sound.wav");
+            gameOverSound = new Sound("path/to/game_over_sound.wav");
+            clickSound = new Sound("path/to/click_sound.wav");
+
+            // Play background music in a loop
+            backgroundMusic.loop();
+
+
+            // Show start screen and add listeners
+            showStartScreen();
+            addMouseListeners();
+            addKeyListeners();
+        }
+
 
     public void showStartScreen() {
         if (startGame != null) {
@@ -61,6 +83,9 @@ public class GameApp extends GraphicsProgram {
         startGame = new StartGame(this); // Create a fresh instance of StartGame
         startGame.show(); // Show the game screen
         gameState = GameState.ACTIVE; // Set the game state to active
+        
+        clickSound.play();
+        backgroundMusic.stop(); 
     }
 
     public void showPauseScreen() {
