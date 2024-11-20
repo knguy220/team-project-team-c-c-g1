@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 
 public class Player {
     private GameApp gameApp;
+   private Map map;
     private GOval playerShape;
     private GLine gunLine;
     private GRect healthBarBackground;
@@ -32,8 +33,9 @@ public class Player {
 
     private double aimAngle = 0; // Default aiming angle
 
-    public Player(GameApp gameApp, int startX, int startY, int gunLength) {
+    public Player(GameApp gameApp, int startX, int startY, int gunLength, Map map) {
         this.gameApp = gameApp;
+        this.map = map;
         this.x = startX;
         this.y = startY;
         this.gunLength = gunLength;
@@ -75,8 +77,11 @@ public class Player {
      * Updates the player's movement and UI elements.
      */
     public void updateMovement() {
-        x += velocityX;
-        y += velocityY;
+       double newX = x + velocityX;
+       double newY = y + velocityY;
+        
+        if (canMoveTo(newX, y)) x = newX;
+        if (canMoveTo(x, newY)) y = newY;
 
         // Ensure the player stays within screen boundaries
         x = Math.max(0, Math.min(gameApp.getWidth() - PLAYER_SIZE, x));
@@ -91,7 +96,19 @@ public class Player {
        // Add trail effect
         addTrail();
     }
+    
+    private boolean canMoveTo(double newX, double newY) {
+        int tileX = (int) (newX / Map.getTileSize());
+        int tileY = (int) (newY / Map.getTileSize());
 
+        // Check if the position is within the map bounds
+        if (tileX < 0 || tileY < 0 || tileX >= map.getCols() || tileY >= map.getRows()) {
+            return false;
+        }
+
+        // Check if the target tile is a wall
+        return !map.isWall(tileX, tileY);
+    }
     /**
      * Updates the player's aim direction based on mouse position.
      */

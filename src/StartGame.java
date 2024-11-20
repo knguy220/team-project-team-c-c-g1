@@ -9,6 +9,7 @@ import javax.swing.Timer;
 public class StartGame {
     private GameApp gameApp;
     // private GImage backgroundImage; // Commented out the background image
+    private Map gameMap;
     private GButton pauseButton;
     private final int GUN_LENGTH = 40;
     private Player player;
@@ -23,13 +24,19 @@ public class StartGame {
 
     public StartGame(GameApp gameApp) {
         this.gameApp = gameApp;
+        
+        int screenWidth = (int) gameApp.getWidth();
+        int screenHeight = (int) gameApp.getWidth();
+        
+        this.gameMap = new Map(screenWidth, screenHeight);
+        
         this.bullets = new ArrayList<>();
 
         // Calculate the center of the screen
         int startX = (int) (gameApp.getWidth() / 2 - Player.PLAYER_SIZE / 2);
         int startY = (int) (gameApp.getHeight() / 2 - Player.PLAYER_SIZE / 2);
 
-        this.player = new Player(gameApp, startX, startY, GUN_LENGTH);
+        this.player = new Player(gameApp, startX, startY, GUN_LENGTH, gameMap);
         this.console = new Console(gameApp);
 
         initializeGame();
@@ -44,12 +51,14 @@ public class StartGame {
 
         // Initialize player
         player.initialize();
-
+        
+        gameMap.render(gameApp);
+        
         // Initialize score label
         scoreLabel = new GLabel("Score: 0");
         scoreLabel.setFont("Arial-Bold-20");
         scoreLabel.setColor(Color.BLACK); // Black color for better visibility
-        scoreLabel.setLocation(10, 40); // Position south of the health bar
+        scoreLabel.setLocation(10, 50); // Position south of the health bar
         gameApp.add(scoreLabel);
 
         // Initialize pause button

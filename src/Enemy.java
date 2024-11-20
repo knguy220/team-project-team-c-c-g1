@@ -75,4 +75,3 @@ public class Enemy {
         gameApp.remove(enemyShape);
     }
 }
-
