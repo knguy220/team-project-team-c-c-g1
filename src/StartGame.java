@@ -17,7 +17,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class StartGame {
     private GameApp gameApp;
-    // private GImage backgroundImage; // Commented out the background image
+    private GImage backgroundImage; // Commented out the background image
     private Map gameMap;
     private GButton pauseButton;
     private final int GUN_LENGTH = 40;
