@@ -4,8 +4,6 @@ import java.awt.Color;
 public class Enemy {
     private GOval enemyShape;
     private double speed;
-<<<<<<< HEAD
-=======
 
     public static final int ENEMY_SIZE = 30;
 
@@ -77,9 +75,7 @@ public class Enemy {
         gameApp.remove(enemyShape);
     }
 }
->>>>>>> branch 'main' of https://github.com/Fall2024Comp55/team-project-team-c-c-g.git
 
-<<<<<<< HEAD
     public static final int ENEMY_SIZE = 30;
 
     public Enemy(GameApp gameApp, double startX, double startY) {
@@ -150,5 +146,3 @@ public class Enemy {
         gameApp.remove(enemyShape);
     }
 }
-=======
->>>>>>> branch 'main' of https://github.com/Fall2024Comp55/team-project-team-c-c-g.git
