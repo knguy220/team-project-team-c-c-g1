@@ -11,7 +11,7 @@ public class Player {
     private GLine gunLine;
     private GRect healthBarBackground;
     private GRect updatingHealthBar;
-    private ArrayList<Weapon> inventory;
+    
 
 
     public static final int PLAYER_SIZE = 40; 
@@ -292,6 +292,8 @@ public class Player {
     public double getCenterY() {
         return y + PLAYER_SIZE / 2;
     }
+    
+    
 }
 
 
