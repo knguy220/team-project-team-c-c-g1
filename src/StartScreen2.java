@@ -187,7 +187,8 @@ public class StartScreen2 {
 
         instructionsLabel = new GLabel(
             "Survive as long as possible. Use W, A, S, D to move. " +
-            "Use the mouse to aim and shoot. Use E to pick up items.", 400, 385);
+            "Use the mouse to aim and shoot. Use E to pick up items. " + 
+            "Use the keys 1 through 5 to cycle between weapons and Powerups", 300, 370);
         instructionsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         instructionsLabel.setColor(Color.WHITE);
         gameApp.add(instructionsLabel);

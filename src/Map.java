@@ -1,4 +1,3 @@
-
 import acm.graphics.*;
 import java.awt.*;
 import java.util.ArrayList;
