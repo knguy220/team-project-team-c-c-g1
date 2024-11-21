@@ -1,6 +1,7 @@
+
 public class Settings {
-    private static int musicVolume = 50; // Default values
-    private static int audioVolume = 50;
+    private static int musicVolume = 50; // Default value
+    private static int audioVolume = 50; // Default value
 
     public static int getMusicVolume() {
         return musicVolume;
