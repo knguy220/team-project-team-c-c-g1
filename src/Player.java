@@ -100,15 +100,31 @@ public class Player {
     }
     
     private boolean canMoveTo(double newX, double newY) {
-        int tileX = (int) (newX / Map.getTileSize());
-        int tileY = (int) (newY / Map.getTileSize());
+        // Convert player's bounding box corners to tile coordinates
+        int tileTopLeftX = (int) (newX / Map.getTileSize());
+        int tileTopLeftY = (int) (newY / Map.getTileSize());
 
-        // Check if the position is within the map bounds
+        int tileTopRightX = (int) ((newX + PLAYER_SIZE - 1) / Map.getTileSize());
+        int tileTopRightY = tileTopLeftY;
+
+        int tileBottomLeftX = tileTopLeftX;
+        int tileBottomLeftY = (int) ((newY + PLAYER_SIZE - 1) / Map.getTileSize());
+
+        int tileBottomRightX = tileTopRightX;
+        int tileBottomRightY = tileBottomLeftY;
+
+        // Check if all corners are within bounds and not walls
+        return isValidTile(tileTopLeftX, tileTopLeftY) &&
+               isValidTile(tileTopRightX, tileTopRightY) &&
+               isValidTile(tileBottomLeftX, tileBottomLeftY) &&
+               isValidTile(tileBottomRightX, tileBottomRightY);
+    }
+
+    private boolean isValidTile(int tileX, int tileY) {
+        // Ensure tile is within bounds and not a wall
         if (tileX < 0 || tileY < 0 || tileX >= map.getCols() || tileY >= map.getRows()) {
             return false;
         }
-
-        // Check if the target tile is a wall
         return !map.isWall(tileX, tileY);
     }
     /**
