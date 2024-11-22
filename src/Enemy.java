@@ -8,7 +8,7 @@ public class Enemy {
     private int damage;
 
     public static final int ENEMY_SIZE = 30;
-
+    //sdsdffsdfds
 
     public Enemy(GameApp gameApp, double startX, double startY) {
         // Create the enemy shape

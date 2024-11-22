@@ -56,7 +56,7 @@ public class Console {
             (gameApp.getWidth() - waveLabel.getWidth()) / 2, 
             60 // Ensure it's below health bar and score
         );
-
+        //ggggg
         // Bring wave label to front
         gameApp.remove(waveLabel);
         gameApp.add(waveLabel);
