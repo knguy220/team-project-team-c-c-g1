@@ -5,10 +5,19 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Timer;
+import java.io.File; 
+import java.io.IOException; 
+import java.util.Scanner; 
+import javax.sound.sampled.AudioInputStream; 
+import javax.sound.sampled.AudioSystem; 
+import javax.sound.sampled.Clip; 
+import javax.sound.sampled.LineUnavailableException; 
+import javax.sound.sampled.UnsupportedAudioFileException; 
+
 
 public class StartGame {
     private GameApp gameApp;
-    // private GImage backgroundImage; // Commented out the background image
+    //private GImage backgroundImage; // Commented out the background image
     private Map gameMap;
     private GButton pauseButton;
     private final int GUN_LENGTH = 40;
@@ -17,8 +26,7 @@ public class StartGame {
     private static final int MAX_BULLETS = 20;
     private Console console;
     private Timer gameLoopTimer;
-
-
+    
     private int score = 0; // Player's score
     private GLabel scoreLabel; // Score label for display
 
@@ -225,8 +233,8 @@ public class StartGame {
         if (!player.isAlive()) {
             triggerGameOver();
         }
-    }
-
+    } 
+    
     private void checkPlayerEnemyCollisions() {
         for (Enemy enemy : console.getEnemies()) {
             if (isPlayerCollidingWithEnemy(player, enemy)) {
@@ -273,7 +281,8 @@ public class StartGame {
                 }
             }
         }
-    }
+    } 
+    
 
 
     private boolean isBulletCollidingWithEnemy(Bullet bullet, Enemy enemy) {

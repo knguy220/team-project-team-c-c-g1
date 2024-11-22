@@ -11,7 +11,7 @@ public class Boosts {
 	private GImage ammoIcon;*/
 	
 	private int medBoost = 25;
-	private int ammoBoost = 15;
+	//private int ammoBoost = 15;
 	
 	private GameApp gameApp;
 
@@ -76,9 +76,9 @@ public class Boosts {
 		player.updateHealth(0, medBoost);
 	}
 	//any headers?
-	public void addAmmo() {
+	//public void addAmmo() {
 		//a function that updates ammunition?
-	}
+	//}
 	/*
 	public void createMedKit(double x, double y, double s) {
 		GImage medkit = new GImage("MedKit.jpg", x, y);
