@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player {
     private GameApp gameApp;
@@ -11,6 +12,7 @@ public class Player {
     private GLine gunLine;
     private GRect healthBarBackground;
     private GRect updatingHealthBar;
+    private GImage body;
     
 
 
@@ -30,6 +32,7 @@ public class Player {
     private boolean movingDown = false;
     private boolean movingLeft = false;
     private boolean movingRight = false;
+    private boolean isMoving = false;
 
     private int gunLength;
 
@@ -46,6 +49,10 @@ public class Player {
         playerShape = new GOval(startX, startY, PLAYER_SIZE, PLAYER_SIZE);
         playerShape.setFilled(true);
         playerShape.setColor(Color.BLUE);
+        
+        // Create the player image
+        body = new GImage("DezLeft.png", startX-8, startY-8);
+        body.scale(0.08);
 
         // Create the gun line
         gunLine = new GLine(startX + PLAYER_SIZE / 2, startY + PLAYER_SIZE / 2, 
@@ -70,6 +77,7 @@ public class Player {
      */
     public void initialize() {
         gameApp.add(playerShape);
+        gameApp.add(body);        
         gameApp.add(gunLine);
         gameApp.add(healthBarBackground);
         gameApp.add(updatingHealthBar);
@@ -91,6 +99,9 @@ public class Player {
 
         // Update player's position with hover offset
         playerShape.setLocation(x, y);
+        body.setLocation(x-8,y-8);
+        
+        // Pseudo-animation for player image
 
         // Update gun line based on current aiming angle
         updateGunLine();
@@ -157,6 +168,7 @@ public class Player {
      */
     public void handleKeyPress(KeyEvent e) {
         int speed = 8; // Updated speed for faster movement
+        isMoving = true;
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 movingUp = true;
@@ -169,10 +181,12 @@ public class Player {
             case KeyEvent.VK_A:
                 movingLeft = true;
                 velocityX = -speed;
+                body.setImage("DezLeft.png");
                 break;
             case KeyEvent.VK_D:
                 movingRight = true;
                 velocityX = speed;
+                body.setImage("DezRight.png");
                 break;
         }
     }
@@ -181,6 +195,7 @@ public class Player {
      * Handles key releases to stop movement in specific directions.
      */
     public void handleKeyRelease(KeyEvent e) {
+    	isMoving = false;
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 movingUp = false;
@@ -259,6 +274,7 @@ public class Player {
      * Resets all movement states and stops the player.
      */
     public void resetMovement() {
+    	isMoving = false;
         movingUp = false;
         movingDown = false;
         movingLeft = false;
@@ -280,6 +296,7 @@ public class Player {
      */
     public void show() {
         gameApp.add(playerShape);
+        gameApp.add(body);
         gameApp.add(gunLine);
         gameApp.add(healthBarBackground);
         gameApp.add(updatingHealthBar);
@@ -290,6 +307,7 @@ public class Player {
      */
     public void hide() {
         gameApp.remove(playerShape);
+        gameApp.remove(body);
         gameApp.remove(gunLine);
         gameApp.remove(healthBarBackground);
         gameApp.remove(updatingHealthBar);
