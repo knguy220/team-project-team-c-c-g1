@@ -100,25 +100,33 @@ public class Console {
         	enemy.setDamage(25);
         	enemy.setHealth(50);
         	enemy.setColor(Color.green);
+        	enemy.setBody("GreenLeft.png");
+        	enemy.setOffSet(10);
         } else if (type == 2) {
         	enemy.setSpeed(speed*0.5);
         	enemy.setDamage(10);
         	enemy.setHealth(25);
         	enemy.setColor(Color.blue);
+        	enemy.setBody("BlueLeft.png");
+        	enemy.setOffSet(12);
         } else if (type == 1) {
         	enemy.setSpeed(speed*0.75);
         	enemy.setDamage(1);
         	enemy.setHealth(10);
         	enemy.setColor(Color.red);
+        	enemy.setBody("RedLeft.png");
+        	enemy.setOffSet(14);
         }
         enemies.add(enemy);
         gameApp.add(enemy.getEnemyShape());
+        gameApp.add(enemy.getBody());
     }
     /**
      * Removes an enemy from the game.
      */
     public void removeEnemy(Enemy enemy) {
         gameApp.remove(enemy.getEnemyShape());
+        gameApp.remove(enemy.getBody());
         enemies.remove(enemy);
         enemiesDefeated++;
         createDamageNumber(enemy.getEnemyShape().getX() + Enemy.ENEMY_SIZE / 2,
@@ -211,6 +219,7 @@ public class Console {
     public void showAllEnemies() {
         for (Enemy enemy : enemies) {
             gameApp.add(enemy.getEnemyShape());
+            gameApp.add(enemy.getBody());
         }
     }
 
@@ -220,6 +229,7 @@ public class Console {
     public void hideAllEnemies() {
         for (Enemy enemy : enemies) {
             gameApp.remove(enemy.getEnemyShape());
+            gameApp.remove(enemy.getBody());
         }
     }
 
