@@ -49,6 +49,7 @@ public class Player {
         playerShape = new GOval(startX, startY, PLAYER_SIZE, PLAYER_SIZE);
         playerShape.setFilled(true);
         playerShape.setColor(Color.BLUE);
+        playerShape.setVisible(false);
         
         // Create the player image
         body = new GImage("DezLeft.png", startX-8, startY-8);

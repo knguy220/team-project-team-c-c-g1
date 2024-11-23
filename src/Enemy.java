@@ -18,6 +18,7 @@ public class Enemy {
         enemyShape = new GOval(startX, startY, ENEMY_SIZE, ENEMY_SIZE);
         enemyShape.setFilled(true);
         enemyShape.setColor(Color.RED);
+        enemyShape.setVisible(false);
         body = new GImage("RedLeft.png",startX-offSet,startY-offSet);
         body.scale(0.08);
 
@@ -34,6 +35,7 @@ public class Enemy {
         enemyShape = new GOval(startX, startY, ENEMY_SIZE, ENEMY_SIZE);
         enemyShape.setFilled(true);
         enemyShape.setColor(c);
+        enemyShape.setVisible(false);
         body = new GImage("RedLeft.png",startX-offSet,startY-offSet);
         body.scale(0.08);
 
