@@ -212,6 +212,7 @@ import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class GameApp extends GraphicsProgram {
     private StartGame startGame;
@@ -228,31 +229,6 @@ public class GameApp extends GraphicsProgram {
 
     private GameState gameState = GameState.IN_MENU;
 
-    
-//    public void init() {
-//        startScreen = new StartScreen2(this);
-//        settingsScreen = new SettingsScreen(this);
-//        pauseScreen = new PauseScreen(this);
-//
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        setSize(screenSize.width, screenSize.height);
-//
-//        // Initialize sounds with paths relative to the project directory
-//        try {
-//            backgroundMusic = new Sound("media/kanye.wav");
-//            
-//
-//            // Loop background music
-//            backgroundMusic.loop();
-//        } catch (RuntimeException e) {
-//            System.err.println("Error loading sounds: " + e.getMessage());
-//        }
-//
-//        // Show start screen and add listeners
-//        showStartScreen();
-//        addMouseListeners();
-//        addKeyListeners();
-//    } 
     @Override
     public void init() {
         // Initialize the screens and other game elements

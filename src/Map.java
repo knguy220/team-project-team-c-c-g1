@@ -6,13 +6,13 @@ import java.util.List;
 public class Map {
     private static final int TILE_SIZE = 40;
     private static final int WALL = 1;
-    //private static final int FLOOR = 0;
+    private static final int FLOOR = 0;
     private List<Position> enemySpawnPoints;
     private int[][] map = {};
     private int cols;
     private int rows;
     
-    //int screenWidth;
+    int screenWidth;
 
     public Map(int screenWidth, int screenHeight) {
     	
