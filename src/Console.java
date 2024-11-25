@@ -2,6 +2,8 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import javax.swing.Timer;
 import acm.graphics.GLabel;
 
@@ -54,7 +56,7 @@ public class Console {
             (gameApp.getWidth() - waveLabel.getWidth()) / 2, 
             60 // Ensure it's below health bar and score
         );
-
+        //ggggg
         // Bring wave label to front
         gameApp.remove(waveLabel);
         gameApp.add(waveLabel);
@@ -62,7 +64,7 @@ public class Console {
         // Logic for spawning enemies
         int enemyCount = Math.min(5 + waveNumber * 2, 30);
         int spawnDelay = Math.max(100, BASE_SPAWN_DELAY - waveNumber * 50);
-        double enemySpeed = BASE_ENEMY_SPEED + waveNumber * 0.5;
+        double enemySpeed = BASE_ENEMY_SPEED + waveNumber;
 
         for (int i = 0; i < enemyCount; i++) {
             int finalI = i;
@@ -90,20 +92,43 @@ public class Console {
     public void spawnEnemy(double speed) {
         double x = Math.random() > 0.5 ? -50 : gameApp.getWidth() + 50; // Off-screen X
         double y = Math.random() > 0.5 ? -50 : gameApp.getHeight() + 50; // Off-screen Y
-        Enemy enemy = new Enemy(gameApp, x, y);
-        enemy.setSpeed(speed);
+        Random rand = new Random();
+        int type = rand.nextInt(3)+1;
+        Enemy enemy = new Enemy(gameApp,x,y);
+        if (type == 3) {
+        	enemy.setSpeed(speed*0.25);
+        	enemy.setDamage(25);
+        	enemy.setHealth(50);
+        	enemy.setColor(Color.green);
+        	enemy.setBody("GreenLeft.png");
+        	enemy.setOffSet(10);
+        } else if (type == 2) {
+        	enemy.setSpeed(speed*0.5);
+        	enemy.setDamage(10);
+        	enemy.setHealth(25);
+        	enemy.setColor(Color.blue);
+        	enemy.setBody("BlueLeft.png");
+        	enemy.setOffSet(12);
+        } else if (type == 1) {
+        	enemy.setSpeed(speed*0.75);
+        	enemy.setDamage(1);
+        	enemy.setHealth(10);
+        	enemy.setColor(Color.red);
+        	enemy.setBody("RedLeft.png");
+        	enemy.setOffSet(14);
+        }
         enemies.add(enemy);
         gameApp.add(enemy.getEnemyShape());
+        gameApp.add(enemy.getBody());
     }
-
     /**
      * Removes an enemy from the game.
      */
     public void removeEnemy(Enemy enemy) {
         gameApp.remove(enemy.getEnemyShape());
+        gameApp.remove(enemy.getBody());
         enemies.remove(enemy);
         enemiesDefeated++;
-        
         createDamageNumber(enemy.getEnemyShape().getX() + Enemy.ENEMY_SIZE / 2,
                 enemy.getEnemyShape().getY() + Enemy.ENEMY_SIZE / 2,
                 "10"); // Example damage value
@@ -194,6 +219,7 @@ public class Console {
     public void showAllEnemies() {
         for (Enemy enemy : enemies) {
             gameApp.add(enemy.getEnemyShape());
+            gameApp.add(enemy.getBody());
         }
     }
 
@@ -203,6 +229,7 @@ public class Console {
     public void hideAllEnemies() {
         for (Enemy enemy : enemies) {
             gameApp.remove(enemy.getEnemyShape());
+            gameApp.remove(enemy.getBody());
         }
     }
 

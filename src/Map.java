@@ -6,7 +6,7 @@ import java.util.List;
 public class Map {
     private static final int TILE_SIZE = 40;
     private static final int WALL = 1;
-    private static final int FLOOR = 0;
+    //private static final int FLOOR = 0;
     private List<Position> enemySpawnPoints;
     private int[][] map = {};
     private int cols;
@@ -34,32 +34,23 @@ public class Map {
     }
     
     private void generateMap (int rows, int cols) {
-    	 // Create a simple border map (walls around the edges)
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-                if (y == 0 || x == 0 || y == rows - 1 || x == cols - 1) {
-                    map[y][x] = WALL; // Border walls
-                } else {
-                    map[y][x] = FLOOR; // Open floor
-                    enemySpawnPoints.add(new Position(x, y));
-                }
-            }
-        }
+    	 
+        
         addRandomWalls(rows, cols, 20, 4);
     }
     
     private void addRandomWalls(int rows, int cols, int numWalls, int maxWallSize) {
         for (int i = 0; i < numWalls; i++) {
-        	 int wallWidth = (int) (Math.random() * maxWallSize) + 1; // Random width (1 to maxWallSize)
-             int wallHeight = (int) (Math.random() * maxWallSize) + 1; // Random height (1 to maxWallSize)
+        	 int wallWidth = (int) (Math.random() * maxWallSize) + 1; 
+             int wallHeight = (int) (Math.random() * maxWallSize) + 1;
              
              int startX, startY;
-            // Find a random position that is not already a wall or on the border
+            
             do {
-                startX = (int) (Math.random() * (cols - wallWidth - 1)) + 1; // Avoid borders
-                startY = (int) (Math.random() * (rows - wallHeight - 1)) + 1; // Avoid borders
+                startX = (int) (Math.random() * (cols - wallWidth - 1)) + 1; 
+                startY = (int) (Math.random() * (rows - wallHeight - 1)) + 1; 
             } while  (!canPlaceWallCluster(startX, startY, wallWidth, wallHeight));
-            // Remove the position from enemy spawn points, if applicable
+            
             for (int y = startY; y < startY + wallHeight; y++) {
                 for (int x = startX; x < startX + wallWidth; x++) {
                     map[y][x] = WALL;
@@ -73,7 +64,7 @@ public class Map {
         for (int y = startY; y < startY + height; y++) {
             for (int x = startX; x < startX + width; x++) {
                 if (map[y][x] == WALL) { 
-                    return false; // Cluster overlaps an existing wall
+                    return false; 
                 }
             }
         }
