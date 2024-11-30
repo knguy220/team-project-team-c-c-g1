@@ -8,6 +8,7 @@ public class Map {
     private static final int WALL = 1;
     private static final int FLOOR = 0;
     private List<Position> enemySpawnPoints;
+    private List<Weapon> inventory;
     private int[][] map = {};
     private int cols;
     private int rows;
@@ -31,6 +32,17 @@ public class Map {
         }
         
         generateMap(rows, cols);
+        
+        Weapon HazmatSuit = new Weapon(WeaponType.HAZMATSUIT, 20);
+        inventory.add(HazmatSuit);
+        
+        Weapon flySwat = new Weapon(WeaponType.FLYSWAT, 45);
+        inventory.add(flySwat);
+        
+        Weapon BugRepellent = new Weapon(WeaponType.BUGREPELLENT, 100);
+        inventory.add(BugRepellent);
+
+
     }
     
     private void generateMap (int rows, int cols) {
