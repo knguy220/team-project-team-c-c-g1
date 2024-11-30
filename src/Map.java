@@ -24,6 +24,7 @@ public class Map {
     	
     	map = new int[rows][cols];
     	
+    	inventory = new ArrayList<>(); //new
         enemySpawnPoints = new ArrayList<>();
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
@@ -37,6 +38,9 @@ public class Map {
         
     }
     public void fillInventory(int screenHeight){
+    	Weapon Gun = new Weapon(WeaponType.GUN, 15);
+        inventory.add(Gun);
+        
     	Weapon HazmatSuit = new Weapon(WeaponType.HAZMATSUIT, 20);
         inventory.add(HazmatSuit);
         
