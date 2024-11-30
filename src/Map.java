@@ -14,6 +14,8 @@ public class Map {
     private int rows;
     
     int screenWidth;
+    private GRect inventoryBox;
+    private List<GLabel> weaponLabels;
 
     public Map(int screenWidth, int screenHeight) {
     	
@@ -33,7 +35,9 @@ public class Map {
         
         generateMap(rows, cols);
         
-        Weapon HazmatSuit = new Weapon(WeaponType.HAZMATSUIT, 20);
+    }
+    public void fillInventory(int screenHeight){
+    	Weapon HazmatSuit = new Weapon(WeaponType.HAZMATSUIT, 20);
         inventory.add(HazmatSuit);
         
         Weapon flySwat = new Weapon(WeaponType.FLYSWAT, 45);
@@ -41,9 +45,27 @@ public class Map {
         
         Weapon BugRepellent = new Weapon(WeaponType.BUGREPELLENT, 100);
         inventory.add(BugRepellent);
-
+        
+        weaponLabels = new ArrayList<>();
+        initializeInventoryDisplay(screenHeight);
 
     }
+    private void initializeInventoryDisplay(int screenHeight){
+    	int inventoryBoxWidth = screenWidth / 4;  // Adjust the width based on how many items you want to show
+        int inventoryBoxHeight = 50;
+        inventoryBox = new GRect(0, screenHeight - inventoryBoxHeight, inventoryBoxWidth, inventoryBoxHeight);
+        inventoryBox.setFilled(true);
+        inventoryBox.setColor(Color.GRAY);
+        
+        for (int i = 0; i < inventory.size(); i++) {
+            Weapon weapon = inventory.get(i);
+            GLabel weaponLabel = new GLabel(weapon.getWeapon().toString(), 10 + i * 60, screenHeight - 30);
+            weaponLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+            weaponLabel.setColor(Color.WHITE);
+            weaponLabels.add(weaponLabel);
+        }
+        
+    } 
     
     private void generateMap (int rows, int cols) {
     	 
@@ -100,6 +122,8 @@ public class Map {
                 gameApp.add(tile);
             }
         }
+        
+
     }
 
 	public static int getTileSize() {

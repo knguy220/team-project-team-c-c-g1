@@ -13,7 +13,7 @@ public Weapon (WeaponType type, int damageCaused){
 	this.damageCaused = damageCaused;
 }
 
-public WeaponType getWeapon(WeaponType type) {
+public WeaponType getWeapon() {
 	return this.type;
 }
 
