@@ -223,7 +223,7 @@ public class GameApp extends GraphicsProgram {
     private Sound backgroundMusic;
     private Sound clickSound;
     private Sound pauseSound;
-    private Sound gameOverSound;
+    private Sound GunSound;
     
     public enum GameState { ACTIVE, PAUSED, IN_MENU, GAME_OVER }
 
@@ -243,7 +243,8 @@ public class GameApp extends GraphicsProgram {
         // Initialize the background music
         try {
             // Initialize the background music from the media folder
-            backgroundMusic = new Sound("media/kanye.wav");
+            backgroundMusic = new Sound("media/Theme.wav"
+            		+ "");
 
             // Ensure the background music starts looping
             if (backgroundMusic != null) {
@@ -252,7 +253,7 @@ public class GameApp extends GraphicsProgram {
 
             // Additional sound initializations (if needed for other game sounds)
             // Example: pauseSound = new Sound("Audio/pause_sound.wav");
-            // Example: gameOverSound = new Sound("Audio/game_over_sound.wav");
+            // Example: GunSound = new Sound("Audio/game_over_sound.wav");
             // Example: clickSound = new Sound("Audio/click_sound.wav");
 
         } catch (RuntimeException e) {
@@ -361,8 +362,8 @@ public class GameApp extends GraphicsProgram {
             pauseSound.setVolume(audioVolume);  // Adjusting the pause sound volume
         }
 
-        if (gameOverSound != null) {
-            gameOverSound.setVolume(audioVolume);  // Adjusting the game over sound volume
+        if (GunSound != null) {
+            GunSound.setVolume(audioVolume);  // Adjusting the game over sound volume
         }
 
         // Add more sound objects if needed
