@@ -44,7 +44,7 @@ public class GameApp extends GraphicsProgram {
 
             // Additional sound initializations 
             // Example: pauseSound = new Sound("Audio/pause_sound.wav");
-            // Example: GunSound = new Sound("media/Laser Gun - Sound Effect for editing_0.wav");
+            GunSound = new Sound("media/Laser Gun - Sound Effect for editing_0.wav");
             // Example: clickSound = new Sound("Audio/click_sound.wav");
 
         } catch (RuntimeException e) {
