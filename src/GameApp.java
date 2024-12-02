@@ -242,18 +242,17 @@ public class GameApp extends GraphicsProgram {
 
         // Initialize the background music
         try {
-            // Initialize the background music from the media folder
             backgroundMusic = new Sound("media/Theme.wav"
             		+ "");
 
             // Ensure the background music starts looping
             if (backgroundMusic != null) {
-                backgroundMusic.loop();  // Start looping the background music
+                backgroundMusic.loop();  
             }
 
-            // Additional sound initializations (if needed for other game sounds)
+            // Additional sound initializations 
             // Example: pauseSound = new Sound("Audio/pause_sound.wav");
-            // Example: GunSound = new Sound("Audio/game_over_sound.wav");
+            // Example: GunSound = new Sound("media/Laser Gun - Sound Effect for editing_0.wav");
             // Example: clickSound = new Sound("Audio/click_sound.wav");
 
         } catch (RuntimeException e) {

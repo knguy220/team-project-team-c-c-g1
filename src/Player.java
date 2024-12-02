@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Player {
     private GameApp gameApp;
-   private Map map;
+    private Map map;
     private GOval playerShape;
     private GLine gunLine;
     private GRect healthBarBackground;
