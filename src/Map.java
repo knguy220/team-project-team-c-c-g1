@@ -129,7 +129,7 @@ public class Map {
         
 
     }
-
+    
 	public static int getTileSize() {
 		return TILE_SIZE;
 	}
