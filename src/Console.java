@@ -16,6 +16,7 @@ public class Console {
     private boolean isSpawningWave;
     private Timer waveTimer;
     private GLabel waveLabel;
+    private Boosts medKits;
 
     private static final double BASE_ENEMY_SPEED = 6.0; // Increased base speed
     private static final int BASE_SPAWN_DELAY = 600;   // Faster spawn rate
@@ -26,6 +27,7 @@ public class Console {
         this.enemiesDefeated = 0;
         this.waveNumber = 0; 
         this.isSpawningWave = false;
+        this.medKits = new Boosts(gameApp, false);
 
         // Initialize wave label
         waveLabel = new GLabel("", gameApp.getWidth() / 2.0, 50);
@@ -76,6 +78,7 @@ public class Console {
             spawnTimer.setRepeats(false);
             spawnTimer.start();
         }
+        spawnMedKits();
 
         // Delay before next wave starts
         Timer nextWaveTimer = new Timer(15000, e -> startNextWave());
@@ -132,6 +135,17 @@ public class Console {
         createDamageNumber(enemy.getEnemyShape().getX() + Enemy.ENEMY_SIZE / 2,
                 enemy.getEnemyShape().getY() + Enemy.ENEMY_SIZE / 2,
                 "10"); // Example damage value
+    }
+    public void spawnMedKits() {
+    	Random medKitR = new Random();
+        int medKitNumber = medKitR.nextInt(5);
+        for (int i = 0; i < medKitNumber; i++) {
+        	Random xr = new Random();
+        	Random yr = new Random();
+        	double x = xr.nextDouble(gameApp.getWidth()-50) + 50;
+        	double y = yr.nextDouble(gameApp.getHeight()-50) + 50;
+        	medKits.createMedKit(x, y, 0.05);
+        }
     }
 
     private void createDamageNumber(double x, double y, String damage) {

@@ -39,7 +39,7 @@ public class Boosts {
 	}
 	
 	public void createMedKit(double x, double y, double s) {
-		GImage medkit = new GImage("MedKit.jpg", x, y);
+		GImage medkit = new GImage("MedKit_Trans.png", x, y);
 		medkit.scale(s);
 		medKit.add(medkit);
 		gameApp.add(medkit);

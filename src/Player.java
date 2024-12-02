@@ -13,6 +13,7 @@ public class Player {
     private GRect healthBarBackground;
     private GRect updatingHealthBar;
     private GImage body;
+    private boolean pressedE;
     
 
 
@@ -32,7 +33,6 @@ public class Player {
     private boolean movingDown = false;
     private boolean movingLeft = false;
     private boolean movingRight = false;
-    private boolean isMoving = false;
 
     private int gunLength;
 
@@ -169,7 +169,6 @@ public class Player {
      */
     public void handleKeyPress(KeyEvent e) {
         int speed = 8; // Updated speed for faster movement
-        isMoving = true;
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 movingUp = true;
@@ -189,6 +188,9 @@ public class Player {
                 velocityX = speed;
                 body.setImage("DezRight.png");
                 break;
+            case KeyEvent.VK_E:
+            	pressedE = true;
+            	break;
         }
     }
 
@@ -196,7 +198,6 @@ public class Player {
      * Handles key releases to stop movement in specific directions.
      */
     public void handleKeyRelease(KeyEvent e) {
-    	isMoving = false;
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 movingUp = false;
@@ -214,6 +215,9 @@ public class Player {
                 movingRight = false;
                 if (!movingLeft) velocityX = 0;
                 break;
+            case KeyEvent.VK_E:
+            	pressedE = false;
+            	break;
         }
     }
     
@@ -275,7 +279,6 @@ public class Player {
      * Resets all movement states and stops the player.
      */
     public void resetMovement() {
-    	isMoving = false;
         movingUp = false;
         movingDown = false;
         movingLeft = false;
@@ -326,6 +329,10 @@ public class Player {
      */
     public double getCenterY() {
         return y + PLAYER_SIZE / 2;
+    }
+    
+    public boolean getPressedE() {
+    	return pressedE;
     }
     
     
