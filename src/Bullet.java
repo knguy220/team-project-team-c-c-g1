@@ -30,6 +30,7 @@ public class Bullet {
 
         // Add bullet to the game screen
         gameApp.add(bulletShape);
+        
     }
 
     public void updatePosition() {
