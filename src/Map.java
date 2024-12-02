@@ -60,7 +60,7 @@ public class Map {
         inventoryBox = new GRect(0, screenHeight - inventoryBoxHeight, inventoryBoxWidth, inventoryBoxHeight);
         inventoryBox.setFilled(true);
         inventoryBox.setColor(Color.GRAY);
-        
+               
         for (int i = 0; i < inventory.size(); i++) {
             Weapon weapon = inventory.get(i);
             GLabel weaponLabel = new GLabel(weapon.getWeapon().toString(), 10 + i * 60, screenHeight - 30);
