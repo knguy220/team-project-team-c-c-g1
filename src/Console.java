@@ -138,7 +138,7 @@ public class Console {
     }
     public void spawnMedKits() {
     	Random medKitR = new Random();
-        int medKitNumber = medKitR.nextInt(5);
+        int medKitNumber = medKitR.nextInt(3);
         for (int i = 0; i < medKitNumber; i++) {
         	Random xr = new Random();
         	Random yr = new Random();
@@ -146,6 +146,15 @@ public class Console {
         	double y = yr.nextDouble(gameApp.getHeight()-50) + 50;
         	medKits.createMedKit(x, y, 0.05);
         }
+    }
+    public boolean checkPlayerMedKit(Player p) {
+    	return medKits.medKitOverlapping(p);
+    }
+    public void healPlayer(Player p) {
+    	medKits.addHealth(p);
+    }
+    public void removeMedKit() {
+    	medKits.removeMedKit();
     }
 
     private void createDamageNumber(double x, double y, String damage) {
