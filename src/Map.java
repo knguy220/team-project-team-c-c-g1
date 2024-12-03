@@ -18,6 +18,8 @@ public class Map {
     private List<GLabel> weaponLabels;
 
     public Map(int screenWidth, int screenHeight) {
+    	this.screenWidth = screenWidth;
+
     	
     	cols = (int) (screenWidth/ TILE_SIZE);
     	rows = (int) (screenHeight/ TILE_SIZE);
@@ -36,6 +38,8 @@ public class Map {
         
         generateMap(rows, cols);
         
+        fillInventory(screenHeight);
+        
     }
     public void fillInventory(int screenHeight){
     	Weapon Gun = new Weapon(WeaponType.GUN, 15);
@@ -51,25 +55,41 @@ public class Map {
         inventory.add(BugRepellent);
         
         weaponLabels = new ArrayList<>();
+        System.out.println("Initializing Inventory:");
+        for (Weapon weapon : inventory) {
+            System.out.println("Added to inventory: " + weapon.getWeapon());
+        }
+
         initializeInventoryDisplay(screenHeight);
 
     }
-    private void initializeInventoryDisplay(int screenHeight){
-    	int inventoryBoxWidth = screenWidth / 4;  // Adjust the width based on how many items you want to show
+    private void initializeInventoryDisplay(int screenHeight) {
+        int inventoryBoxWidth = screenWidth / 4; // Adjust the width based on how many items to show
+        System.out.println(screenHeight);
         int inventoryBoxHeight = 50;
-        inventoryBox = new GRect(0, screenHeight - inventoryBoxHeight, inventoryBoxWidth, inventoryBoxHeight);
+        inventoryBox = new GRect(0, screenHeight - 640, inventoryBoxWidth, inventoryBoxHeight);
+        //inventoryBox = new GRect(0, 800, 360, 50);
+        // Change this
+        
+        
         inventoryBox.setFilled(true);
         inventoryBox.setColor(Color.GRAY);
-               
+
+        weaponLabels = new ArrayList<>();
         for (int i = 0; i < inventory.size(); i++) {
             Weapon weapon = inventory.get(i);
-            GLabel weaponLabel = new GLabel(weapon.getWeapon().toString(), 10 + i * 60, screenHeight - 30);
+            //GLabel weaponLabel = new GLabel(weapon.getWeapon().toString(), 10 + i * 60, screenHeight - 30);
+            GLabel weaponLabel = new GLabel(weapon.getWeapon().toString(),  i * 90, 820);
+            
+            
             weaponLabel.setFont(new Font("Arial", Font.PLAIN, 14));
             weaponLabel.setColor(Color.WHITE);
             weaponLabels.add(weaponLabel);
         }
-        
-    } 
+
+        System.out.println("Inventory box and labels initialized.");
+    }
+
     
     private void generateMap (int rows, int cols) {
     	 
@@ -126,10 +146,25 @@ public class Map {
                 gameApp.add(tile);
             }
         }
-        
-
+        renderInventory(gameApp);
     }
-    
+
+    private void renderInventory(GameApp gameApp) {
+        // Add inventory box
+        gameApp.add(inventoryBox);
+        System.out.println(inventoryBox);
+        inventoryBox.sendToFront();
+        //System.out.println("Inventory Box: " + inventoryBox.getBounds());
+        for (GLabel label : weaponLabels) {
+            System.out.println("Label: " + label.getLabel() + " at " + label.getLocation());
+        }
+
+
+        // Add weapon labels
+        for (GLabel weaponLabel : weaponLabels) {
+            gameApp.add(weaponLabel);
+        }
+    }
 	public static int getTileSize() {
 		return TILE_SIZE;
 	}
