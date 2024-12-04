@@ -67,7 +67,7 @@ public class Map {
         int inventoryBoxWidth = screenWidth / 4; // Adjust the width based on how many items to show
         System.out.println(screenHeight);
         int inventoryBoxHeight = 50;
-        inventoryBox = new GRect(0, screenHeight - 640, inventoryBoxWidth, inventoryBoxHeight);
+        inventoryBox = new GRect(0, 790, inventoryBoxWidth, 790 + inventoryBoxHeight);
         //inventoryBox = new GRect(0, 800, 360, 50);
         // Change this
         
@@ -151,6 +151,8 @@ public class Map {
 
     private void renderInventory(GameApp gameApp) {
         // Add inventory box
+    	System.out.println("------------------------------------------------------");
+    	System.out.println(inventoryBox == null);
         gameApp.add(inventoryBox);
         System.out.println(inventoryBox);
         inventoryBox.sendToFront();
