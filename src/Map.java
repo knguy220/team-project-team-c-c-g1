@@ -85,6 +85,7 @@ public class Map {
             weaponLabel.setFont(new Font("Arial", Font.PLAIN, 14));
             weaponLabel.setColor(Color.WHITE);
             weaponLabels.add(weaponLabel);
+            
         }
 
         System.out.println("Inventory box and labels initialized.");
