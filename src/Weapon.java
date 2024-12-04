@@ -2,7 +2,8 @@
 public class Weapon {
 	private WeaponType type;
 	private int damageCaused; 
-	private int enemiesKilled = 0;
+	private Console console;
+	private int enemiesKilled; 
 	private HazmatSuit hazmat; 
 	private FlySwat flySwat;
 	private BugRepellent BR;
@@ -26,7 +27,7 @@ public void setDamage(int damageCaused){
 }
 
 public void EnemyKilledThreshold(){
-	enemiesKilled++;
+	enemiesKilled = console.getEnemiesDefeated();
 	if(enemiesKilled == 10){
 		hazmat.Activate();
 	}

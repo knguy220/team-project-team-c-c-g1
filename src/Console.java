@@ -63,7 +63,7 @@ public class Console {
         // Bring wave label to front
         gameApp.remove(waveLabel);
         gameApp.add(waveLabel);
-
+        //helo
         // Logic for spawning enemies
         int enemyCount = Math.min(5 + waveNumber * 2, 30);
         int spawnDelay = Math.max(100, BASE_SPAWN_DELAY - waveNumber * 50);
@@ -135,13 +135,16 @@ public class Console {
         if (isDead) {
         	enemiesDefeated++;
         }
-        createDamageNumber(enemy.getEnemyShape().getX() + Enemy.ENEMY_SIZE / 2,
-                enemy.getEnemyShape().getY() + Enemy.ENEMY_SIZE / 2,
-                "10"); // Example damage value
+        if (!isDead) {
+        	String d = Integer.toString(enemy.getDamage());
+        	createDamageNumber(enemy.getEnemyShape().getX() + Enemy.ENEMY_SIZE / 2,
+                    enemy.getEnemyShape().getY() + Enemy.ENEMY_SIZE / 2,
+                    d); // Example damage value
+        }
     }
     public void spawnMedKits() {
     	Random medKitR = new Random();
-        int medKitNumber = medKitR.nextInt(3);
+        int medKitNumber = medKitR.nextInt(3)+1;
         for (int i = 0; i < medKitNumber; i++) {
         	Random xr = new Random();
         	Random yr = new Random();
