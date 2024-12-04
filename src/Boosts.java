@@ -78,7 +78,7 @@ public class Boosts {
 		medKit.remove(index);
 		gameApp.remove(index);
 	}
-	public void addHealth(Player player) {
+	public void addHealth(Player player) { 
 		player.updateHealth(0, medBoost);
 	}
 	//any headers?
