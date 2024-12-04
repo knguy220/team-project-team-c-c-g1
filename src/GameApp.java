@@ -34,7 +34,7 @@ public class GameApp extends GraphicsProgram {
 
         // Initialize the background music
         try {
-            backgroundMusic = new Sound("media/Theme.wav"
+            backgroundMusic = new Sound("media/theme2.wav"
             		+ "");
 
             // Ensure the background music starts looping
@@ -154,10 +154,9 @@ public class GameApp extends GraphicsProgram {
         }
 
         if (GunSound != null) {
-            GunSound.setVolume(audioVolume);  // Adjusting the game over sound volume
+            GunSound.setVolume(audioVolume);  // Adjusting the gun effects  volume
         }
 
-        // Add more sound objects if needed
     }
     
     @Override

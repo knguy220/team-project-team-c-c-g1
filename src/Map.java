@@ -82,7 +82,7 @@ public class Map {
             GLabel weaponLabel = new GLabel(weapon.getWeapon().toString(),  i * 90, 820);
             
             
-            weaponLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+            //weaponLabel.setFont(new Font("Arial", Font.PLAIN, 14));
             weaponLabel.setColor(Color.WHITE);
             weaponLabels.add(weaponLabel);
         }
