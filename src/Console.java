@@ -127,11 +127,13 @@ public class Console {
     /**
      * Removes an enemy from the game.
      */
-    public void removeEnemy(Enemy enemy) {
+    public void removeEnemy(Enemy enemy, boolean isDead) {
         gameApp.remove(enemy.getEnemyShape());
         gameApp.remove(enemy.getBody());
         enemies.remove(enemy);
-        enemiesDefeated++;
+        if (isDead) {
+        	enemiesDefeated++;
+        }
         createDamageNumber(enemy.getEnemyShape().getX() + Enemy.ENEMY_SIZE / 2,
                 enemy.getEnemyShape().getY() + Enemy.ENEMY_SIZE / 2,
                 "10"); // Example damage value

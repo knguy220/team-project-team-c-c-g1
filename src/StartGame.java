@@ -262,7 +262,7 @@ public class StartGame {
         for (Enemy enemy : console.getEnemies()) {
             if (isPlayerCollidingWithEnemy(player, enemy)) {
                 player.updateHealth(enemy.getDamage(), 0); // Decrease health by 10
-                console.removeEnemy(enemy); // Optionally remove the enemy upon collision
+                console.removeEnemy(enemy,false); // Optionally remove the enemy upon collision
                 break;
             }
         }
@@ -301,9 +301,9 @@ public class StartGame {
                     //console.removeEnemy(enemy);
                 	enemy.updateHealth(10);
                 	if (!enemy.isAlive()) {
-                		console.removeEnemy(enemy);
+                		console.removeEnemy(enemy,true);
+                		updateScore(1); // Increment score by 1 for each enemy killed
                 	}
-                    updateScore(1); // Increment score by 1 for each enemy killed
                     bullet.createImpactAnimation();
                     bullet.destroy();
                     break;
