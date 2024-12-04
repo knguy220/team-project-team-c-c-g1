@@ -228,6 +228,8 @@ public class StartGame {
 
         // Check for player and enemy collisions
         checkPlayerEnemyCollisions();
+        
+        checkingPlayerAndMedKit();
 
         // Trigger Game Over when health reaches 0
         if (!player.isAlive()) {
@@ -244,7 +246,13 @@ public class StartGame {
             }
         }
     }
-    
+    private void checkingPlayerAndMedKit() {
+    	if (player.getPressedE() && console.checkPlayerMedKit(player)) {
+    		console.healPlayer(player);
+    		console.removeMedKit();
+    		
+    	}
+    }
 
     private boolean isPlayerCollidingWithEnemy(Player player, Enemy enemy) {
         double playerX = player.getCenterX();

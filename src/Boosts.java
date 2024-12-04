@@ -10,8 +10,9 @@ public class Boosts {
 	/*private GImage medIcon;
 	private GImage ammoIcon;*/
 	
-	private int medBoost = 25;
+	private int medBoost = 50;
 	//private int ammoBoost = 15;
+	private GImage index;
 	
 	private GameApp gameApp;
 
@@ -39,7 +40,7 @@ public class Boosts {
 	}
 	
 	public void createMedKit(double x, double y, double s) {
-		GImage medkit = new GImage("MedKit.jpg", x, y);
+		GImage medkit = new GImage("MedKit_Trans.png", x, y);
 		medkit.scale(s);
 		medKit.add(medkit);
 		gameApp.add(medkit);
@@ -67,10 +68,15 @@ public class Boosts {
 	public boolean medKitOverlapping(Player player) {
 		for (GImage m: medKit) {
 			if (player.getCenterX() > m.getX() && player.getCenterX() < m.getX() + m.getWidth() && player.getCenterY() > m.getY() && player.getCenterY() < m.getY() + m.getHeight()) {
+				index = m;
 				return true;
 			}
 		}
 		return false;
+	}
+	public void removeMedKit() {
+		medKit.remove(index);
+		gameApp.remove(index);
 	}
 	public void addHealth(Player player) {
 		player.updateHealth(0, medBoost);
