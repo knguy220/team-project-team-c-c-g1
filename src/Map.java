@@ -73,7 +73,7 @@ public class Map {
         
         
         inventoryBox.setFilled(true);
-        inventoryBox.setColor(Color.DARK_GRAY);
+        inventoryBox.setColor(Color.GRAY);
 
         weaponLabels = new ArrayList<>();
         for (int i = 0; i < inventory.size(); i++) {
@@ -85,7 +85,6 @@ public class Map {
             weaponLabel.setFont(new Font("Arial", Font.PLAIN, 14));
             weaponLabel.setColor(Color.WHITE);
             weaponLabels.add(weaponLabel);
-            
         }
 
         System.out.println("Inventory box and labels initialized.");

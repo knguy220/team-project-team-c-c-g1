@@ -32,9 +32,9 @@ public class Console {
         // Initialize wave label
         waveLabel = new GLabel("", gameApp.getWidth() / 2.0, 50);
         waveLabel.setFont("Arial-Bold-24");
+        waveLabel.setColor(java.awt.Color.BLACK);
         waveLabel.setColor(java.awt.Color.RED);
         gameApp.add(waveLabel);
-        
 
         // Initialize wave spawning timer
         waveTimer = new Timer(1000, e -> startNextWave()); // Short delay to prepare for the first wave
@@ -214,7 +214,7 @@ public class Console {
             }
         }).start();
     }
-    
+
     /**
      * Updates enemy positions to follow the player.
      */
