@@ -65,7 +65,7 @@ public class StartGame {
         // Initialize score label
         scoreLabel = new GLabel("Score: 0");
         scoreLabel.setFont("Arial-Bold-20");
-        scoreLabel.setColor(Color.BLACK); // Black color for better visibility
+        scoreLabel.setColor(Color.WHITE); // Black color for better visibility
         scoreLabel.setLocation(10, 50); // Position south of the health bar
         gameApp.add(scoreLabel);
 

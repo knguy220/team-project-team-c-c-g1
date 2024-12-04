@@ -32,7 +32,7 @@ public class Console {
         // Initialize wave label
         waveLabel = new GLabel("", gameApp.getWidth() / 2.0, 50);
         waveLabel.setFont("Arial-Bold-24");
-        waveLabel.setColor(java.awt.Color.BLACK);
+        waveLabel.setColor(java.awt.Color.RED);
         gameApp.add(waveLabel);
 
         // Initialize wave spawning timer
