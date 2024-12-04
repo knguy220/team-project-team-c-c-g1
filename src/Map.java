@@ -73,7 +73,7 @@ public class Map {
         
         
         inventoryBox.setFilled(true);
-        inventoryBox.setColor(Color.GRAY);
+        inventoryBox.setColor(Color.DARK_GRAY);
 
         weaponLabels = new ArrayList<>();
         for (int i = 0; i < inventory.size(); i++) {
