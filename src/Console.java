@@ -62,7 +62,7 @@ public class Console {
         // Bring wave label to front
         gameApp.remove(waveLabel);
         gameApp.add(waveLabel);
-
+        //helo
         // Logic for spawning enemies
         int enemyCount = Math.min(5 + waveNumber * 2, 30);
         int spawnDelay = Math.max(100, BASE_SPAWN_DELAY - waveNumber * 50);
