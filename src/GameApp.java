@@ -225,6 +225,12 @@ public class GameApp extends GraphicsProgram {
         }
     }
 
+    public void playGunSound() {
+        if (GunSound != null) {
+            GunSound.play();
+        }
+    }
+
     public static void main(String[] args) {
         new GameApp().start();
     }

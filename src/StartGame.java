@@ -188,6 +188,23 @@ public class StartGame {
         player.updateAiming(e);
     }
 
+//    public void handleShooting(MouseEvent e) {
+//        if (Bullet.canShoot() && bullets.size() < MAX_BULLETS) {
+//            double playerCenterX = player.getCenterX();
+//            double playerCenterY = player.getCenterY();
+//            double mouseX = e.getX();
+//            double mouseY = e.getY();
+//
+//            // Calculate direction of bullet
+//            double angle = Math.atan2(mouseY - playerCenterY, mouseX - playerCenterX);
+//            double directionX = Math.cos(angle);
+//            double directionY = Math.sin(angle);
+//
+//            Bullet bullet = new Bullet(gameApp, this, playerCenterX, playerCenterY, directionX, directionY);
+//            bullets.add(bullet);
+//        }
+//    } 
+    
     public void handleShooting(MouseEvent e) {
         if (Bullet.canShoot() && bullets.size() < MAX_BULLETS) {
             double playerCenterX = player.getCenterX();
@@ -202,8 +219,12 @@ public class StartGame {
 
             Bullet bullet = new Bullet(gameApp, this, playerCenterX, playerCenterY, directionX, directionY);
             bullets.add(bullet);
+
+            // Play gun sound
+            gameApp.playGunSound();
         }
     }
+
 
     public void removeBullet(Bullet bullet) {
         bullets.remove(bullet);
