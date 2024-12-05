@@ -30,6 +30,8 @@ public void EnemyKilledThreshold(){
 	enemiesKilled = console.getEnemiesDefeated();
 	if(enemiesKilled == 10){
 		hazmat.Activate();
+		System.out.println("------------------------------------------------------");
+		System.out.println("Activated");
 	}
 	if(enemiesKilled == 25){
 		flySwat.Activate();
