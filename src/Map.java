@@ -7,6 +7,7 @@ public class Map {
     private static final int TILE_SIZE = 40;
     private static final int WALL = 1;
     private static final int FLOOR = 0;
+    private int selectedWeaponIndex = 0; 
     private List<Position> enemySpawnPoints;
     private List<Weapon> inventory;
     private int[][] map = {};
@@ -167,6 +168,24 @@ public class Map {
             gameApp.add(weaponLabel);
         }
     }
+    public void switchWeapon(int weaponIndex) {
+        if (weaponIndex >= 0 && weaponIndex < inventory.size()) {
+            selectedWeaponIndex = weaponIndex;
+            System.out.println("Switched to: " + inventory.get(selectedWeaponIndex).getWeapon());
+            updateInventoryDisplay();
+        }
+    }
+    private void updateInventoryDisplay() {
+        for (int i = 0; i < weaponLabels.size(); i++) {
+            if (i == selectedWeaponIndex) {
+                weaponLabels.get(i).setColor(Color.YELLOW); // Highlight selected weapon
+            } else {
+                weaponLabels.get(i).setColor(Color.WHITE);
+            }
+        }
+    }
+
+
 	public static int getTileSize() {
 		return TILE_SIZE;
 	}
