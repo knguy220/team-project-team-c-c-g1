@@ -16,9 +16,9 @@ public class PauseScreen {
         pausedLabel.setFont(new Font("Serif", Font.BOLD, 48));
         pausedLabel.setColor(Color.RED);
 
-        resumeButton = new GButton("Resume", 0, 0, 150, 50, Color.BLACK, Color.WHITE);
-        settingsButton = new GButton("Settings", 0, 0, 150, 50, Color.BLACK, Color.WHITE);
-        quitButton = new GButton("Quit", 0, 0, 150, 50, Color.BLACK, Color.WHITE);
+        resumeButton = new GButton("Resume", 0, 0, 150, 50, Color.DARK_GRAY, Color.WHITE);
+        settingsButton = new GButton("Settings", 0, 0, 150, 50, Color.DARK_GRAY, Color.WHITE);
+        quitButton = new GButton("Quit", 0, 0, 150, 50, Color.DARK_GRAY, Color.WHITE);
     }
 
     public void show() {
