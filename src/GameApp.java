@@ -196,7 +196,7 @@ public class GameApp extends GraphicsProgram {
         }
     }
 
-    @Override
+   @Override
     public void keyPressed(KeyEvent e) {
         if (startGame != null && gameState == GameState.ACTIVE) {
             startGame.handleKeyPress(e);

@@ -174,10 +174,7 @@ public class StartGame {
     public void handleKeyPress(KeyEvent e) {
         player.handleKeyPress(e);
 
-        // Trigger GameOverScreen with 'Q'
-        if (e.getKeyCode() == KeyEvent.VK_Q) {
-            triggerGameOver();
-        }
+      
     }
 
     public void handleKeyRelease(KeyEvent e) {
