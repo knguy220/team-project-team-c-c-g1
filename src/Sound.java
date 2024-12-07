@@ -44,7 +44,7 @@ public class Sound {
         if (clip != null) {
             clip.setFramePosition(0); // Rewind to the beginning
             clip.start();
-            System.out.println("Sound play started.");
+       //     System.out.println("Sound play started.");
         } else {
             System.err.println("Clip is not initialized.");
         }
