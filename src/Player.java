@@ -188,11 +188,30 @@ public class Player {
                 velocityX = speed;
                 body.setImage("DezRight.png");
                 break;
+            case KeyEvent.VK_1: // Equip gun
+                equipItem("Gun");
+                break;
+            case KeyEvent.VK_2: // Equip hazmat suit
+                equipItem("HazmatSuit");
+                break;
+            case KeyEvent.VK_3: // Equip flyswatter
+                equipItem("FlySwat");
+                break;
+            case KeyEvent.VK_4: // Equip bug repellent
+                equipItem("BugRepellent");
+                break;
             case KeyEvent.VK_E:
-            	pressedE = true;
-            	break;
+                pressedE = true;
+                break;
         }
     }
+
+    // A helper method to handle equipping items
+    private void equipItem(String itemName) {
+        System.out.println("Equipped: " + itemName); // For debugging
+        // Add logic to change the player's equipped item and update the UI, if necessary
+    }
+
 
     /**
      * Handles key releases to stop movement in specific directions.
@@ -201,25 +220,33 @@ public class Player {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 movingUp = false;
-                if (!movingDown) velocityY = 0;
+                velocityY = 0; // Stop vertical movement
                 break;
             case KeyEvent.VK_S:
                 movingDown = false;
-                if (!movingUp) velocityY = 0;
+                velocityY = 0; // Stop vertical movement
                 break;
             case KeyEvent.VK_A:
                 movingLeft = false;
-                if (!movingRight) velocityX = 0;
+                velocityX = 0; // Stop horizontal movement
                 break;
             case KeyEvent.VK_D:
                 movingRight = false;
-                if (!movingLeft) velocityX = 0;
+                velocityX = 0; // Stop horizontal movement
+                break;
+            case KeyEvent.VK_1:
+            case KeyEvent.VK_2:
+            case KeyEvent.VK_3:
+            case KeyEvent.VK_4:
+                // Handle cases for stopping equipping actions if necessary
+                // Currently, equipping might be an instantaneous action, so no action needed here
                 break;
             case KeyEvent.VK_E:
-            	pressedE = false;
-            	break;
+                pressedE = false; // Reset interaction state
+                break;
         }
     }
+
     
     /**
      * Adds a trail effect behind the player.
