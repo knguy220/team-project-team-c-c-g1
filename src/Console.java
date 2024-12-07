@@ -17,6 +17,7 @@ public class Console {
     private Timer waveTimer;
     private GLabel waveLabel;
     private Boosts medKits;
+    private Map map;
 
     private static final double BASE_ENEMY_SPEED = 6.0; // Increased base speed
     private static final int BASE_SPAWN_DELAY = 600;   // Faster spawn rate
@@ -28,6 +29,26 @@ public class Console {
         this.waveNumber = 0; 
         this.isSpawningWave = false;
         this.medKits = new Boosts(gameApp, false);
+
+        // Initialize wave label
+        waveLabel = new GLabel("", gameApp.getWidth() / 2.0, 50);
+        waveLabel.setFont("Arial-Bold-24");
+        waveLabel.setColor(java.awt.Color.RED);
+        gameApp.add(waveLabel);
+
+        // Initialize wave spawning timer
+        waveTimer = new Timer(1000, e -> startNextWave()); // Short delay to prepare for the first wave
+        waveTimer.setRepeats(false); // Only runs once at the start
+        waveTimer.start();
+    }
+    public Console(GameApp gameApp, Map m) {
+        this.gameApp = gameApp;
+        this.enemies = new ArrayList<>();
+        this.enemiesDefeated = 0;
+        this.waveNumber = 0;
+        this.isSpawningWave = false;
+        this.map = m;
+        this.medKits = new Boosts(gameApp, false,m);
 
         // Initialize wave label
         waveLabel = new GLabel("", gameApp.getWidth() / 2.0, 50);
@@ -79,6 +100,7 @@ public class Console {
             spawnTimer.start();
         }
         spawnMedKits();
+        
 
         // Delay before next wave starts
         Timer nextWaveTimer = new Timer(15000, e -> startNextWave());
@@ -246,6 +268,7 @@ public class Console {
             gameApp.add(enemy.getEnemyShape());
             gameApp.add(enemy.getBody());
         }
+        medKits.showMedKits();
     }
 
     /**
@@ -256,6 +279,7 @@ public class Console {
             gameApp.remove(enemy.getEnemyShape());
             gameApp.remove(enemy.getBody());
         }
+        medKits.hideMedKits();
     }
 
     /**

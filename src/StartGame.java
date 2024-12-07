@@ -45,7 +45,7 @@ public class StartGame {
         int startY = (int) (gameApp.getHeight() / 2 - Player.PLAYER_SIZE / 2);
 
         this.player = new Player(gameApp, startX, startY, GUN_LENGTH, gameMap);
-        this.console = new Console(gameApp);
+        this.console = new Console(gameApp,gameMap);
 
         initializeGame();
 
@@ -234,6 +234,7 @@ public class StartGame {
 
         // Update enemies to follow the player
         console.updateEnemies(player);
+        
 
         // Update bullets
         for (int i = bullets.size() - 1; i >= 0; i--) {

@@ -7,7 +7,7 @@ public class Boosts {
 	private List<GImage> ammo;
 	private List<GImage> medKit;
 	private List<GImage> mistakes;
-	
+	private Map map;
 	/*private GImage medIcon;
 	private GImage ammoIcon;*/
 	
@@ -39,18 +39,30 @@ public class Boosts {
 			this.medKit = new ArrayList<>();
 		}
 	}
+	public Boosts (GameApp ga, boolean isAmmo, Map m) {
+		this.gameApp = ga;
+		this.map = m;
+		if (isAmmo) {
+			this.ammo = new ArrayList<>();
+		} else {
+			this.medKit = new ArrayList<>();
+		}
+	}
 	
 	public void createMedKit(double x, double y, double s) {
 		GImage medkit = new GImage("MedKit_Trans.png", x, y);
 		medkit.scale(s);
+		
 		medKit.add(medkit);
 		gameApp.add(medkit);
 	}
 	public void createAmmo(double x, double y, double s) {
 		GImage a = new GImage("Bullet.png", x, y);
 		a.scale(s);
-		ammo.add(a);
-		gameApp.add(a);
+		if (ifInsideWall(x,y,a)) {
+			ammo.add(a);
+			gameApp.add(a);
+		}
 	}
 	public List<GImage> getAmmo() {
 		return ammo;
@@ -82,35 +94,45 @@ public class Boosts {
 	public void addHealth(Player player) { 
 		player.updateHealth(0, medBoost);
 	}
-	public void ifInsideWall(Map m) {
-		for (GImage e: medKit) {
-			double sizeOfImage = e.getX()*e.getHeight();
-			int topLeftX = (int) (e.getX()/Map.getTileSize());
-			int topLeftY = (int) (e.getY()/Map.getTileSize());
-			int topRightX = (int) ((e.getX()+sizeOfImage-1)/Map.getTileSize());
-			int topRightY = topLeftY;
-			int bottomLeftX = topLeftX;
-			int bottomLeftY = (int) ((e.getX()+sizeOfImage-1)/Map.getTileSize());
-			int bottomRightX = topRightX;
-			int bottomRightY = bottomLeftY;
-			if (!checkingWall(topLeftX,topLeftY,m) && !checkingWall(topRightX,topRightY,m) && 
-					!checkingWall(bottomLeftX,bottomLeftY,m) && !checkingWall(bottomRightX,bottomRightY,m)) {
-				mistakes.add(e);
-			}
-		}
+	public boolean ifInsideWall(double x, double y, GImage m) {
+		int tileTopLeftX = (int) (x / Map.getTileSize());
+        int tileTopLeftY = (int) (y / Map.getTileSize());
+
+        int tileTopRightX = (int) ((x + m.getWidth() - 1) / Map.getTileSize());
+        int tileTopRightY = tileTopLeftY;
+
+        int tileBottomLeftX = tileTopLeftX;
+        int tileBottomLeftY = (int) ((y + m.getHeight() - 1) / Map.getTileSize());
+
+        int tileBottomRightX = tileTopRightX;
+        int tileBottomRightY = tileBottomLeftY;
+        
+        return checkingWall(tileTopLeftX,tileTopLeftY) && 
+        		checkingWall(tileTopRightX,tileTopRightY) &&
+        		checkingWall(tileBottomLeftX,tileBottomLeftY) &&
+        		checkingWall(tileBottomRightX,tileBottomRightY);
 	}
 	public void erasingMistake() {
 		for (GImage m: mistakes) {
 			medKit.remove(m);
 			gameApp.remove(m);
-			mistakes.remove(m);
 		}
 	}
-	public boolean checkingWall(int x, int y, Map m) {
-		if (x < 0 || y < 0 || x >= m.getCols() || y >= m.getRows()) {
+	private boolean checkingWall(int x, int y) {
+		if (x < 0 || y < 0 || x >= map.getCols() || y >= map.getRows()) {
 			return false;
 		}
-		return !m.isWall(x, y);
+		return !map.isWall(x, y);
+	}
+	public void hideMedKits() {
+		for (GImage m: medKit) {
+			gameApp.remove(m);
+		}
+	}
+	public void showMedKits() {
+		for (GImage m: medKit) {
+			gameApp.add(m);
+		}
 	}
 	//any headers?
 	//public void addAmmo() {
