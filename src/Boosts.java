@@ -6,6 +6,7 @@ import java.util.List;
 public class Boosts {
 	private List<GImage> ammo;
 	private List<GImage> medKit;
+	private List<GImage> mistakes;
 	
 	/*private GImage medIcon;
 	private GImage ammoIcon;*/
@@ -80,6 +81,36 @@ public class Boosts {
 	}
 	public void addHealth(Player player) { 
 		player.updateHealth(0, medBoost);
+	}
+	public void ifInsideWall(Map m) {
+		for (GImage e: medKit) {
+			double sizeOfImage = e.getX()*e.getHeight();
+			int topLeftX = (int) (e.getX()/Map.getTileSize());
+			int topLeftY = (int) (e.getY()/Map.getTileSize());
+			int topRightX = (int) ((e.getX()+sizeOfImage-1)/Map.getTileSize());
+			int topRightY = topLeftY;
+			int bottomLeftX = topLeftX;
+			int bottomLeftY = (int) ((e.getX()+sizeOfImage-1)/Map.getTileSize());
+			int bottomRightX = topRightX;
+			int bottomRightY = bottomLeftY;
+			if (!checkingWall(topLeftX,topLeftY,m) && !checkingWall(topRightX,topRightY,m) && 
+					!checkingWall(bottomLeftX,bottomLeftY,m) && !checkingWall(bottomRightX,bottomRightY,m)) {
+				mistakes.add(e);
+			}
+		}
+	}
+	public void erasingMistake() {
+		for (GImage m: mistakes) {
+			medKit.remove(m);
+			gameApp.remove(m);
+			mistakes.remove(m);
+		}
+	}
+	public boolean checkingWall(int x, int y, Map m) {
+		if (x < 0 || y < 0 || x >= m.getCols() || y >= m.getRows()) {
+			return false;
+		}
+		return !m.isWall(x, y);
 	}
 	//any headers?
 	//public void addAmmo() {
