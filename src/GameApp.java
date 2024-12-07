@@ -1,4 +1,3 @@
-
 import acm.program.GraphicsProgram;
 import java.awt.Toolkit;
 import java.awt.Dimension;
