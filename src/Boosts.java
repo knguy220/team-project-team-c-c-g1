@@ -56,8 +56,6 @@ public class Boosts {
 			medKit.add(medkit);
 			gameApp.add(medkit);
 		}
-		medKit.add(medkit);
-		gameApp.add(medkit);
 	}
 	public void createAmmo(double x, double y, double s) {
 		GImage a = new GImage("Bullet.png", x, y);
