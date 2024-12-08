@@ -259,7 +259,7 @@ public class Player {
 
         new Thread(() -> {
             try {
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 5; i++) {
                     Thread.sleep(30);
                     trail.setSize(trail.getWidth() - 2, trail.getHeight() - 2);
                     trail.setLocation(trail.getX() + 1, trail.getY() + 1);

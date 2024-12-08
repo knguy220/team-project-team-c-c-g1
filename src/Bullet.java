@@ -83,7 +83,7 @@ public class Bullet {
         // Animate explosion expansion and fade
         new Thread(() -> {
             try {
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < 10; i++) {
                     Thread.sleep(30);
                     explosion.setSize(explosion.getWidth() + 5, explosion.getHeight() + 5);
                     explosion.setLocation(explosion.getX() - 2.5, explosion.getY() - 2.5);
@@ -104,7 +104,7 @@ public class Bullet {
      * Creates particles for a visual effect at the given position.
      */
     private void createParticles(double x, double y) {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 10; i++) {
             double angle = Math.random() * 2 * Math.PI;
             double speed = Math.random() * 4 + 2;
             double size = Math.random() * 8 + 3; // Randomize particle size
