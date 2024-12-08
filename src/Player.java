@@ -2,8 +2,6 @@ import acm.graphics.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class Player {
     private GameApp gameApp;
@@ -14,8 +12,7 @@ public class Player {
     private GRect updatingHealthBar;
     private GImage body;
     private boolean pressedE;
-    
-
+    private PowerUps powerUps;
 
     public static final int PLAYER_SIZE = 40; 
     private static final int MAX_HEALTH = 100; 
@@ -28,14 +25,12 @@ public class Player {
     
     private int playerHealth = MAX_HEALTH;
 
-
     private boolean movingUp = false;
     private boolean movingDown = false;
     private boolean movingLeft = false;
     private boolean movingRight = false;
 
     private int gunLength;
-
     private double aimAngle = 0; // Default aiming angle
 
     public Player(GameApp gameApp, int startX, int startY, int gunLength, Map map) {
@@ -50,9 +45,9 @@ public class Player {
         playerShape.setFilled(true);
         playerShape.setColor(Color.BLUE);
         playerShape.setVisible(false);
-        
+
         // Create the player image
-        body = new GImage("DezLeft.png", startX-8, startY-8);
+        body = new GImage("DezLeft.png", startX - 8, startY - 8);
         body.scale(0.08);
 
         // Create the gun line
@@ -68,10 +63,14 @@ public class Player {
         updatingHealthBar = new GRect(10, 10, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
         updatingHealthBar.setFilled(true);
         updatingHealthBar.setColor(Color.GREEN);
-        
     }
-        
 
+    /**
+     * Sets the PowerUps instance for the player.
+     */
+    public void setPowerUps(PowerUps powerUps) {
+        this.powerUps = powerUps;
+    }
 
     /**
      * Initializes the player and health bar on the screen.
@@ -88,9 +87,20 @@ public class Player {
      * Updates the player's movement and UI elements.
      */
     public void updateMovement() {
-       double newX = x + velocityX;
-       double newY = y + velocityY;
-        
+        // Reset velocity
+        velocityX = 0;
+        velocityY = 0;
+
+        // Calculate movement direction based on flags
+        if (movingUp) velocityY = -8; // Move up
+        if (movingDown) velocityY = 8; // Move down
+        if (movingLeft) velocityX = -8; // Move left
+        if (movingRight) velocityX = 8; // Move right
+
+        // Apply movement
+        double newX = x + velocityX;
+        double newY = y + velocityY;
+
         if (canMoveTo(newX, y)) x = newX;
         if (canMoveTo(x, newY)) y = newY;
 
@@ -98,19 +108,14 @@ public class Player {
         x = Math.max(0, Math.min(gameApp.getWidth() - PLAYER_SIZE, x));
         y = Math.max(0, Math.min(gameApp.getHeight() - PLAYER_SIZE, y));
 
-        // Update player's position with hover offset
+        // Update the player's position on the screen
         playerShape.setLocation(x, y);
-        body.setLocation(x-8,y-8);
-        
-        // Pseudo-animation for player image
+        body.setLocation(x - 8, y - 8);
 
-        // Update gun line based on current aiming angle
+        // Update gun line based on the new position
         updateGunLine();
-        
-       // Add trail effect
-        addTrail();
     }
-    
+
     private boolean canMoveTo(double newX, double newY) {
         // Convert player's bounding box corners to tile coordinates
         int tileTopLeftX = (int) (newX / Map.getTileSize());
@@ -139,9 +144,11 @@ public class Player {
         }
         return !map.isWall(tileX, tileY);
     }
-    /**
-     * Updates the player's aim direction based on mouse position.
-     */
+    
+    public double getAimAngle() {
+        return aimAngle;
+    }
+
     public void updateAiming(MouseEvent e) {
         double mouseX = e.getX();
         double mouseY = e.getY();
@@ -153,9 +160,6 @@ public class Player {
         updateGunLine();
     }
 
-    /**
-     * Updates the gun line based on the current aiming angle.
-     */
     private void updateGunLine() {
         double gunX = x + PLAYER_SIZE / 2 + gunLength * Math.cos(aimAngle);
         double gunY = y + PLAYER_SIZE / 2 + gunLength * Math.sin(aimAngle);
@@ -164,41 +168,31 @@ public class Player {
         gunLine.setEndPoint(gunX, gunY);
     }
 
-    /**
-     * Handles key presses to set movement directions.
-     */
     public void handleKeyPress(KeyEvent e) {
         int speed = 8; // Updated speed for faster movement
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 movingUp = true;
-                velocityY = -speed;
                 break;
             case KeyEvent.VK_S:
                 movingDown = true;
-                velocityY = speed;
                 break;
             case KeyEvent.VK_A:
                 movingLeft = true;
-                velocityX = -speed;
                 body.setImage("DezLeft.png");
                 break;
             case KeyEvent.VK_D:
                 movingRight = true;
-                velocityX = speed;
                 body.setImage("DezRight.png");
                 break;
-            case KeyEvent.VK_1: // Equip gun
-                equipItem("Gun");
+            case KeyEvent.VK_2:
+                if (powerUps != null) powerUps.activateHazmatSuit();
                 break;
-            case KeyEvent.VK_2: // Equip hazmat suit
-                equipItem("HazmatSuit");
+            case KeyEvent.VK_3:
+                if (powerUps != null) powerUps.activateFlySwat();
                 break;
-            case KeyEvent.VK_3: // Equip flyswatter
-                equipItem("FlySwat");
-                break;
-            case KeyEvent.VK_4: // Equip bug repellent
-                equipItem("BugRepellent");
+            case KeyEvent.VK_4:
+                if (powerUps != null) powerUps.activateBugRepellent();
                 break;
             case KeyEvent.VK_E:
                 pressedE = true;
@@ -206,81 +200,30 @@ public class Player {
         }
     }
 
-    // A helper method to handle equipping items
-    private void equipItem(String itemName) {
-        System.out.println("Equipped: " + itemName); // For debugging
-        // Add logic to change the player's equipped item and update the UI, if necessary
-    }
-
-
-    /**
-     * Handles key releases to stop movement in specific directions.
-     */
     public void handleKeyRelease(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 movingUp = false;
-                velocityY = 0; // Stop vertical movement
+                velocityY = 0;
                 break;
             case KeyEvent.VK_S:
                 movingDown = false;
-                velocityY = 0; // Stop vertical movement
+                velocityY = 0;
                 break;
             case KeyEvent.VK_A:
                 movingLeft = false;
-                velocityX = 0; // Stop horizontal movement
+                velocityX = 0;
                 break;
             case KeyEvent.VK_D:
                 movingRight = false;
-                velocityX = 0; // Stop horizontal movement
-                break;
-            case KeyEvent.VK_1:
-            case KeyEvent.VK_2:
-            case KeyEvent.VK_3:
-            case KeyEvent.VK_4:
-                // Handle cases for stopping equipping actions if necessary
-                // Currently, equipping might be an instantaneous action, so no action needed here
+                velocityX = 0;
                 break;
             case KeyEvent.VK_E:
-                pressedE = false; // Reset interaction state
+                pressedE = false;
                 break;
         }
     }
 
-    
-    /**
-     * Adds a trail effect behind the player.
-     */
-    private void addTrail() {
-        GOval trail = new GOval(x + PLAYER_SIZE / 4, y + PLAYER_SIZE / 4, PLAYER_SIZE / 2, PLAYER_SIZE / 2);
-        trail.setFilled(true);
-        trail.setColor(new Color(0, 0, 255, 50)); // Transparent blue
-        gameApp.add(trail);
-
-        new Thread(() -> {
-            try {
-                for (int i = 0; i < 5; i++) {
-                    Thread.sleep(30);
-                    trail.setSize(trail.getWidth() - 2, trail.getHeight() - 2);
-                    trail.setLocation(trail.getX() + 1, trail.getY() + 1);
-                    Color currentColor = trail.getColor();
-                    trail.setColor(new Color(
-                            currentColor.getRed(),
-                            currentColor.getGreen(),
-                            currentColor.getBlue(),
-                            Math.max(0, currentColor.getAlpha() - 5)
-                    ));
-                }
-                gameApp.remove(trail);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    /**
-     * Updates the health bar when the player takes damage or heals.
-     */
     public void updateHealth(int damage, int medkit) {
         // Adjust health
         playerHealth += medkit;
@@ -293,18 +236,11 @@ public class Player {
         double healthBarWidth = (double) playerHealth / MAX_HEALTH * HEALTH_BAR_WIDTH;
         updatingHealthBar.setSize(healthBarWidth, HEALTH_BAR_HEIGHT);
     }
-    
 
-    /**
-     * Returns whether the player is alive.
-     */
     public boolean isAlive() {
         return playerHealth > 0;
     }
 
-    /**
-     * Resets all movement states and stops the player.
-     */
     public void resetMovement() {
         movingUp = false;
         movingDown = false;
@@ -314,17 +250,11 @@ public class Player {
         velocityY = 0;
     }
 
-    /**
-     * Stops the player from moving.
-     */
     public void stopMoving() {
         velocityX = 0;
         velocityY = 0;
     }
 
-    /**
-     * Shows the player and health bar on the screen.
-     */
     public void show() {
         gameApp.add(playerShape);
         gameApp.add(body);
@@ -333,9 +263,6 @@ public class Player {
         gameApp.add(updatingHealthBar);
     }
 
-    /**
-     * Hides the player and health bar from the screen.
-     */
     public void hide() {
         gameApp.remove(playerShape);
         gameApp.remove(body);
@@ -344,25 +271,15 @@ public class Player {
         gameApp.remove(updatingHealthBar);
     }
 
-    /**
-     * Returns the player's center X position.
-     */
     public double getCenterX() {
         return x + PLAYER_SIZE / 2;
     }
 
-    /**
-     * Returns the player's center Y position.
-     */
     public double getCenterY() {
         return y + PLAYER_SIZE / 2;
     }
-    
+
     public boolean getPressedE() {
-    	return pressedE;
+        return pressedE;
     }
-    
-    
 }
-
-

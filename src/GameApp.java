@@ -3,7 +3,6 @@ import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.File;
 
 public class GameApp extends GraphicsProgram {
     private StartGame startGame;
@@ -14,8 +13,13 @@ public class GameApp extends GraphicsProgram {
     private Sound backgroundMusic;
     private Sound clickSound;
     private Sound pauseSound;
-    private Sound GunSound;
-    
+    private Sound gunSound;
+
+    // Power-up sounds
+    private Sound hazmatSound;
+    private Sound flySwatSound;
+    private Sound bugRepellentSound;
+
     public enum GameState { ACTIVE, PAUSED, IN_MENU, GAME_OVER }
 
     private GameState gameState = GameState.IN_MENU;
@@ -33,27 +37,33 @@ public class GameApp extends GraphicsProgram {
 
         // Initialize the background music
         try {
-            backgroundMusic = new Sound("media/theme2.wav"
-            		+ "");
+            backgroundMusic = new Sound("media/theme2.wav");
 
             // Ensure the background music starts looping
             if (backgroundMusic != null) {
-                backgroundMusic.loop();  
+                backgroundMusic.loop();
             }
 
-            // Additional sound initializations 
-            // Example: pauseSound = new Sound("Audio/pause_sound.wav");
-            GunSound = new Sound("media/Laser Gun - Sound Effect for editing_0.wav");
-            // Example: clickSound = new Sound("Audio/click_sound.wav");
+            // Additional sound initializations
+            gunSound = new Sound("media/Laser Gun - Sound Effect for editing_0.wav");
+
+         //Initialize power-up sounds
+          hazmatSound = new Sound("media/hazmat.wav");
+          flySwatSound = new Sound("media/flyswat.wav");
+          bugRepellentSound = new Sound("media/bugrepellent.wav");
 
         } catch (RuntimeException e) {
             System.err.println("Error loading sounds: " + e.getMessage());
-        }
+        } 
 
         // Show the start screen and add listeners for mouse and keyboard inputs
         showStartScreen();
         addMouseListeners();
         addKeyListeners();
+    }
+
+    public StartGame getStartGame() {
+        return startGame;
     }
 
     public void showStartScreen() {
@@ -152,12 +162,22 @@ public class GameApp extends GraphicsProgram {
             pauseSound.setVolume(audioVolume);  // Adjusting the pause sound volume
         }
 
-        if (GunSound != null) {
-            GunSound.setVolume(audioVolume);  // Adjusting the gun effects  volume
+        if (gunSound != null) {
+            gunSound.setVolume(audioVolume);  // Adjusting the gun effects volume
         }
 
+        // Power-up sound volumes
+        if (hazmatSound != null) {
+            hazmatSound.setVolume(audioVolume);
+        }
+        if (flySwatSound != null) {
+            flySwatSound.setVolume(audioVolume);
+        }
+        if (bugRepellentSound != null) {
+            bugRepellentSound.setVolume(audioVolume);
+        }
     }
-    
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (gameState == GameState.PAUSED) {
@@ -195,7 +215,7 @@ public class GameApp extends GraphicsProgram {
         }
     }
 
-   @Override
+    @Override
     public void keyPressed(KeyEvent e) {
         if (startGame != null && gameState == GameState.ACTIVE) {
             startGame.handleKeyPress(e);
@@ -224,9 +244,21 @@ public class GameApp extends GraphicsProgram {
     }
 
     public void playGunSound() {
-        if (GunSound != null) {
-            GunSound.play();
+        if (gunSound != null) {
+            gunSound.play();
         }
+    }
+
+    public Sound getHazmatSound() {
+        return hazmatSound;
+    }
+
+    public Sound getFlySwatSound() {
+        return flySwatSound;
+    }
+
+    public Sound getBugRepellentSound() {
+        return bugRepellentSound;
     }
 
     public static void main(String[] args) {

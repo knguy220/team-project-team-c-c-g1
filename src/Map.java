@@ -55,9 +55,9 @@ public class Map {
         inventory.add(BugRepellent);
         
         weaponLabels = new ArrayList<>();
-        System.out.println("Initializing Inventory:");
+//        System.out.println("Initializing Inventory:");
         for (Weapon weapon : inventory) {
-            System.out.println("Added to inventory: " + weapon.getWeapon());
+  //          System.out.println("Added to inventory: " + weapon.getWeapon());
         }
 
         initializeInventoryDisplay(screenHeight);
@@ -87,7 +87,7 @@ public class Map {
             weaponLabels.add(weaponLabel);
         }
 
-        System.out.println("Inventory box and labels initialized.");
+//        System.out.println("Inventory box and labels initialized.");
     }
 
     
@@ -151,7 +151,7 @@ public class Map {
 
     private void renderInventory(GameApp gameApp) {
         // Add inventory box
-    	System.out.println("------------------------------------------------------");
+//    	System.out.println("------------------------------------------------------");
     	System.out.println(inventoryBox == null);
         gameApp.add(inventoryBox);
         System.out.println(inventoryBox);

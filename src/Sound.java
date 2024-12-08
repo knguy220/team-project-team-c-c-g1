@@ -10,7 +10,7 @@ public class Sound {
             // Load the sound file
             clip = AudioSystem.getClip();
             clip.open(audioStream);
-            System.out.println("Sound file loaded successfully: " + filename);
+//            System.out.println("Sound file loaded successfully: " + filename);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             System.err.println("Error loading sound file: " + e.getMessage());
         }
@@ -33,7 +33,7 @@ public class Sound {
     public void loop() {
         if (clip != null) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
-            System.out.println("Sound loop started.");
+ //           System.out.println("Sound loop started.");
         } else {
             System.err.println("Clip is not initialized.");
         }

@@ -16,9 +16,17 @@ public class StartGame {
     private static final int MAX_BULLETS = 20;
     private Console console;
     private Timer gameLoopTimer;
+    private PowerUps powerUps;
 
     private int score = 0; // Player's score
     private GLabel scoreLabel; // Score label for display
+    private GLabel hazmatCooldownLabel;
+    private GLabel flySwatCooldownLabel;
+    private GLabel bugRepellentCooldownLabel;
+
+    // Fields for Hazmat Suit
+    private GOval hazmatShield;
+    private long hazmatEndTime = 0; // Tracks when the hazmat shield expires
 
     public StartGame(GameApp gameApp) {
         this.gameApp = gameApp;
@@ -34,6 +42,9 @@ public class StartGame {
         int[] startPos = findValidStartPosition();
         this.player = new Player(gameApp, startPos[0], startPos[1], GUN_LENGTH, gameMap);
 
+     // Instantiate PowerUps with StartGame passed as an argument
+        this.powerUps = new PowerUps(player, gameApp, this);
+        player.setPowerUps(powerUps); // Link PowerUps to the player
         initializeGame();
 
         // Game loop timer to update gameplay elements
@@ -43,7 +54,7 @@ public class StartGame {
 
     private int[] findValidStartPosition() {
         int startX, startY;
-        int maxAttempts = 100; // Avoid infinite loops
+        int maxAttempts = 100;
         int attempts = 0;
 
         do {
@@ -73,7 +84,6 @@ public class StartGame {
         int tileX = x / Map.getTileSize();
         int tileY = y / Map.getTileSize();
 
-        // Check neighboring tiles for obstacles
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 int neighborX = tileX + dx;
@@ -91,19 +101,18 @@ public class StartGame {
     private void initializeGame() {
         gameApp.removeAll();
 
-        // Initialize player
         player.initialize();
 
         gameMap.render(gameApp);
 
-        // Initialize score label
+        // Score label
         scoreLabel = new GLabel("Score: 0");
         scoreLabel.setFont("Arial-Bold-20");
         scoreLabel.setColor(Color.WHITE);
         scoreLabel.setLocation(10, 50);
         gameApp.add(scoreLabel);
 
-        // Initialize pause button
+        // Pause button
         pauseButton = new GButton("Pause", (int) (gameApp.getWidth() - 100), 20, 80, 30, Color.BLACK, Color.WHITE);
         pauseButton.addActionListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -113,95 +122,39 @@ public class StartGame {
         });
         gameApp.add(pauseButton.getRect());
         gameApp.add(pauseButton.getMessage());
+
+        // Cooldown Labels
+        hazmatCooldownLabel = new GLabel("Hazmat: Ready");
+        hazmatCooldownLabel.setFont("Arial-Bold-16");
+        hazmatCooldownLabel.setColor(Color.YELLOW);
+        hazmatCooldownLabel.setLocation(10, 80);
+        gameApp.add(hazmatCooldownLabel);
+
+        flySwatCooldownLabel = new GLabel("Fly Swat: Ready");
+        flySwatCooldownLabel.setFont("Arial-Bold-16");
+        flySwatCooldownLabel.setColor(Color.CYAN);
+        flySwatCooldownLabel.setLocation(10, 100);
+        gameApp.add(flySwatCooldownLabel);
+
+        bugRepellentCooldownLabel = new GLabel("Bug Repellent: Ready");
+        bugRepellentCooldownLabel.setFont("Arial-Bold-16");
+        bugRepellentCooldownLabel.setColor(Color.GREEN);
+        bugRepellentCooldownLabel.setLocation(10, 120);
+        gameApp.add(bugRepellentCooldownLabel);
     }
 
-    public void show() {
-        if (pauseButton != null) {
-            gameApp.add(pauseButton.getRect());
-            gameApp.add(pauseButton.getMessage());
-        }
-
-        player.show();
-        player.resetMovement();
-        gameApp.add(scoreLabel);
-
-        for (Bullet bullet : bullets) {
-            gameApp.add(bullet.getBulletShape());
-        }
-
-        console.showAllEnemies();
-        resumeGameLoop();
-        console.resumeWaveTimer();
+    private void updateCooldownLabels() {
+        hazmatCooldownLabel.setLabel("Hazmat: " +
+            (powerUps.getHazmatCooldown() == 0 ? "Ready" : powerUps.getHazmatCooldown() / 1000 + "s"));
+        flySwatCooldownLabel.setLabel("Fly Swat: " +
+            (powerUps.getFlySwatCooldown() == 0 ? "Ready" : powerUps.getFlySwatCooldown() / 1000 + "s"));
+        bugRepellentCooldownLabel.setLabel("Bug Repellent: " +
+            (powerUps.getBugRepellentCooldown() == 0 ? "Ready" : powerUps.getBugRepellentCooldown() / 1000 + "s"));
     }
 
-    public void hide() {
-        if (pauseButton != null) {
-            gameApp.remove(pauseButton.getRect());
-            gameApp.remove(pauseButton.getMessage());
-        }
-
-        player.hide();
-        player.resetMovement();
-        for (Bullet bullet : bullets) {
-            gameApp.remove(bullet.getBulletShape());
-        }
-
-        gameApp.remove(scoreLabel);
-
-        console.hideAllEnemies();
-        pauseGameLoop();
-        console.pauseWaveTimer();
-    }
-
-    public void updateScore(int points) {
-        score += points;
-        scoreLabel.setLabel("Score: " + score);
-    }
-
-    public void pauseGameLoop() {
-        if (gameLoopTimer != null) {
-            gameLoopTimer.stop();
-        }
-    }
-
-    public void resumeGameLoop() {
-        if (gameLoopTimer != null && !gameLoopTimer.isRunning()) {
-            gameLoopTimer.start();
-        }
-    }
-
-    public void handleKeyPress(KeyEvent e) {
-        player.handleKeyPress(e);
-    }
-
-    public void handleKeyRelease(KeyEvent e) {
-        player.handleKeyRelease(e);
-    }
-
-    public void updateAiming(MouseEvent e) {
-        player.updateAiming(e);
-    }
-
-    public void handleShooting(MouseEvent e) {
-        if (Bullet.canShoot() && bullets.size() < MAX_BULLETS) {
-            double playerCenterX = player.getCenterX();
-            double playerCenterY = player.getCenterY();
-            double mouseX = e.getX();
-            double mouseY = e.getY();
-
-            double angle = Math.atan2(mouseY - playerCenterY, mouseX - playerCenterX);
-            double directionX = Math.cos(angle);
-            double directionY = Math.sin(angle);
-
-            Bullet bullet = new Bullet(gameApp, this, playerCenterX, playerCenterY, directionX, directionY);
-            bullets.add(bullet);
-            gameApp.playGunSound();
-        }
-    }
-
-    public void removeBullet(Bullet bullet) {
-        bullets.remove(bullet);
-        gameApp.remove(bullet.getBulletShape());
+    public void activateHazmatShield(GOval shield, long endTime) {
+        this.hazmatShield = shield;
+        this.hazmatEndTime = endTime;
     }
 
     private void update() {
@@ -217,9 +170,40 @@ public class StartGame {
         checkPlayerEnemyCollisions();
         checkingPlayerAndMedKit();
 
+        // Update power-up cooldowns
+        powerUps.updateCooldowns();
+        updateCooldownLabels();
+
+        // Update hazmat shield
+        if (hazmatShield != null) {
+            if (System.currentTimeMillis() > hazmatEndTime) {
+                gameApp.remove(hazmatShield);
+                hazmatShield = null;
+            } else {
+                hazmatShield.setLocation(player.getCenterX() - 50, player.getCenterY() - 50);
+                List<Enemy> enemies = new ArrayList<>(console.getEnemies());
+                for (Enemy enemy : enemies) {
+                    if (isCollidingWithShield(hazmatShield, enemy)) {
+                        console.removeEnemy(enemy, true); // Use Console's removeEnemy
+                    }
+                }
+            }
+        }
+
         if (!player.isAlive()) {
             triggerGameOver();
         }
+    }
+
+    private boolean isCollidingWithShield(GOval shield, Enemy enemy) {
+        double shieldCenterX = shield.getX() + shield.getWidth() / 2;
+        double shieldCenterY = shield.getY() + shield.getHeight() / 2;
+
+        double enemyCenterX = enemy.getEnemyShape().getX() + Enemy.getEnemySize() / 2;
+        double enemyCenterY = enemy.getEnemyShape().getY() + Enemy.getEnemySize() / 2;
+
+        double distance = Math.hypot(shieldCenterX - enemyCenterX, shieldCenterY - enemyCenterY);
+        return distance < shield.getWidth() / 2;
     }
 
     private void checkPlayerEnemyCollisions() {
@@ -229,13 +213,6 @@ public class StartGame {
                 console.removeEnemy(enemy, false);
                 break;
             }
-        }
-    }
-
-    private void checkingPlayerAndMedKit() {
-        if (player.getPressedE() && console.checkPlayerMedKit(player)) {
-            console.healPlayer(player);
-            console.removeMedKit();
         }
     }
 
@@ -284,8 +261,117 @@ public class StartGame {
         double distance = Math.hypot(bulletX - enemyX, bulletY - enemyY);
         return distance < (Bullet.getBulletSize() / 2 + Enemy.getEnemySize() / 2);
     }
-    
+
+    public void pauseGameLoop() {
+        if (gameLoopTimer != null) {
+            gameLoopTimer.stop();
+        }
+    }
+
+    public void resumeGameLoop() {
+        if (gameLoopTimer != null && !gameLoopTimer.isRunning()) {
+            gameLoopTimer.start();
+        }
+    }
+
+    public void updateScore(int points) {
+        score += points;
+        scoreLabel.setLabel("Score: " + score);
+    }
+
+    public void show() {
+        if (pauseButton != null) {
+            gameApp.add(pauseButton.getRect());
+            gameApp.add(pauseButton.getMessage());
+        }
+
+        player.show();
+        player.resetMovement();
+        gameApp.add(scoreLabel);
+
+        for (Bullet bullet : bullets) {
+            gameApp.add(bullet.getBulletShape());
+        }
+
+        console.showAllEnemies();
+        resumeGameLoop();
+        console.resumeWaveTimer();
+    }
+
+    public void hide() {
+        if (pauseButton != null) {
+            gameApp.remove(pauseButton.getRect());
+            gameApp.remove(pauseButton.getMessage());
+        }
+
+        player.hide();
+        player.resetMovement();
+        for (Bullet bullet : bullets) {
+            gameApp.remove(bullet.getBulletShape());
+        }
+
+        gameApp.remove(scoreLabel);
+
+        console.hideAllEnemies();
+        pauseGameLoop();
+        console.pauseWaveTimer();
+    }
+
     public Player getPlayer() {
         return player;
     }
+
+    public Console getConsole() {
+        return console;
+    }
+
+    public void handleKeyPress(KeyEvent e) {
+        player.handleKeyPress(e);
+    }
+
+    public void handleKeyRelease(KeyEvent e) {
+        player.handleKeyRelease(e);
+    }
+
+    public void updateAiming(MouseEvent e) {
+        player.updateAiming(e);
+    }
+
+    public void handleShooting(MouseEvent e) {
+        if (Bullet.canShoot() && bullets.size() < MAX_BULLETS) {
+            double playerCenterX = player.getCenterX();
+            double playerCenterY = player.getCenterY();
+            double mouseX = e.getX();
+            double mouseY = e.getY();
+
+            // Calculate the angle and direction vectors
+            double deltaX = mouseX - playerCenterX;
+            double deltaY = mouseY - playerCenterY;
+            double angle = Math.atan2(deltaY, deltaX); // Correctly calculate angle based on mouse position
+
+            double directionX = Math.cos(angle);
+            double directionY = Math.sin(angle);
+
+            // Create and add the bullet
+            Bullet bullet = new Bullet(gameApp, this, playerCenterX, playerCenterY, directionX, directionY);
+            bullets.add(bullet);
+
+            // Play gun sound
+            gameApp.playGunSound();
+        }
+    }
+
+
+    public void removeBullet(Bullet bullet) {
+        bullets.remove(bullet);
+        gameApp.remove(bullet.getBulletShape());
+    }
+
+    public void checkingPlayerAndMedKit() {
+        if (player.getPressedE() && console.checkPlayerMedKit(player)) {
+            console.healPlayer(player);
+            console.removeMedKit();
+        }
+    }
 }
+
