@@ -15,7 +15,6 @@ public class GameApp extends GraphicsProgram {
     private Sound pauseSound;
     private Sound gunSound;
 
-
     // Power-up sounds
     private Sound hazmatSound;
     private Sound flySwatSound;
