@@ -13,9 +13,6 @@ public class Player {
     private GImage body;
     private boolean pressedE;
     private PowerUps powerUps;
-    private GImage gunImage;
-    private GImage gunImageLeft;
-
 
     public static final int PLAYER_SIZE = 40; 
     private static final int MAX_HEALTH = 100; 
@@ -57,15 +54,6 @@ public class Player {
         gunLine = new GLine(startX + PLAYER_SIZE / 2, startY + PLAYER_SIZE / 2, 
                             startX + PLAYER_SIZE / 2 + gunLength, startY + PLAYER_SIZE / 2);
         gunLine.setColor(Color.BLACK);
-        
-     // Create the gun images
-        gunImage = new GImage("gun.png");
-        gunImage.scale(0.2); // Adjust size as needed
-
-        gunImageLeft = new GImage("gunLeft.png");
-        gunImageLeft.scale(0.2); // Adjust size as needed
-        gunImageLeft.setVisible(false); // Initially hidden
-
 
         // Create the health bar
         healthBarBackground = new GRect(10, 10, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
@@ -91,11 +79,8 @@ public class Player {
         gameApp.add(playerShape);
         gameApp.add(body);        
         gameApp.add(gunLine);
-        gameApp.add(gunImage);
-        gameApp.add(gunImageLeft);
         gameApp.add(healthBarBackground);
         gameApp.add(updatingHealthBar);
-        
     }
 
     /**
@@ -176,20 +161,12 @@ public class Player {
     }
 
     private void updateGunLine() {
-        double gunCenterX = getCenterX();
-        double gunCenterY = getCenterY();
+        double gunX = x + PLAYER_SIZE / 2 + gunLength * Math.cos(aimAngle);
+        double gunY = y + PLAYER_SIZE / 2 + gunLength * Math.sin(aimAngle);
 
-        if (Math.cos(aimAngle) < 0) {
-            gunImage.setVisible(false);
-            gunImageLeft.setVisible(true);
-            gunImageLeft.setLocation(gunCenterX - gunImageLeft.getWidth() / 2, gunCenterY - gunImageLeft.getHeight() / 2);
-        } else {
-            gunImageLeft.setVisible(false);
-            gunImage.setVisible(true);
-            gunImage.setLocation(gunCenterX - gunImage.getWidth() / 2, gunCenterY - gunImage.getHeight() / 2);
-        }
+        gunLine.setStartPoint(x + PLAYER_SIZE / 2, y + PLAYER_SIZE / 2);
+        gunLine.setEndPoint(gunX, gunY);
     }
-
 
     public void handleKeyPress(KeyEvent e) {
         int speed = 8; // Updated speed for faster movement
@@ -306,5 +283,3 @@ public class Player {
         return pressedE;
     }
 }
-
-
