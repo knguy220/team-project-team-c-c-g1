@@ -10,11 +10,11 @@ public class Boosts {
 	private Map map;
 	/*private GImage medIcon;
 	private GImage ammoIcon;*/
-	
 	private int medBoost = 50;
 	//private int ammoBoost = 15;
 	private GImage index;
-	
+	private int medKitSpawnInterval = 20; 
+	private int medKitTimer = 0; 
 	private GameApp gameApp;
 
 	
@@ -135,6 +135,16 @@ public class Boosts {
 			gameApp.add(m);
 		}
 	}
+	public void update() {
+	    medKitTimer++; // Increment timer with each game tick
+	    
+	    // Check if it's time to spawn a new medkit
+	    if (medKitTimer >= medKitSpawnInterval) {
+	        getMedKit(); // Call the method to spawn a medkit
+	        medKitTimer = 0; // Reset timer
+	    }
+	}
+
 	//any headers?
 	//public void addAmmo() {
 		//a function that updates ammunition?
