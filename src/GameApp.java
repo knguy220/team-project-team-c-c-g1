@@ -54,7 +54,7 @@ public class GameApp extends GraphicsProgram {
           bugRepellentSound = new Sound("media/bugrepellent.wav");
 
         } catch (RuntimeException e) {
-            System.err.println("Error loading sounds: " + e.getMessage());
+            System.err.println("There is an error loading sounds: " + e.getMessage());
         } 
 
         // Show the start screen and add listeners for mouse and keyboard inputs
