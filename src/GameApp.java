@@ -184,8 +184,6 @@ public class GameApp extends GraphicsProgram {
         if (gameState == GameState.PAUSED) {
             if (pauseScreen.isResumeButtonClicked(e.getX(), e.getY())) {
                 resumeGame();
-            } else if (pauseScreen.isSettingsButtonClicked(e.getX(), e.getY())) {
-                showSettingsScreen(true); // Opens settings from pause
             } else if (pauseScreen.isQuitButtonClicked(e.getX(), e.getY())) {
                 quitToStartScreen();
             }
