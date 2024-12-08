@@ -15,6 +15,7 @@ public class GameApp extends GraphicsProgram {
     private Sound pauseSound;
     private Sound gunSound;
 
+
     // Power-up sounds
     private Sound hazmatSound;
     private Sound flySwatSound;
@@ -245,9 +246,10 @@ public class GameApp extends GraphicsProgram {
 
     public void playGunSound() {
         if (gunSound != null) {
-            gunSound.play();
+            gunSound.play(); // Play the gun sound reliably
         }
     }
+
 
     public Sound getHazmatSound() {
         return hazmatSound;

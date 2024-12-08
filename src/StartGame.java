@@ -344,19 +344,14 @@ public class StartGame {
             double mouseX = e.getX();
             double mouseY = e.getY();
 
-            // Calculate the angle and direction vectors
-            double deltaX = mouseX - playerCenterX;
-            double deltaY = mouseY - playerCenterY;
-            double angle = Math.atan2(deltaY, deltaX); // Correctly calculate angle based on mouse position
-
+            double angle = Math.atan2(mouseY - playerCenterY, mouseX - playerCenterX);
             double directionX = Math.cos(angle);
             double directionY = Math.sin(angle);
 
-            // Create and add the bullet
             Bullet bullet = new Bullet(gameApp, this, playerCenterX, playerCenterY, directionX, directionY);
             bullets.add(bullet);
 
-            // Play gun sound
+            // Play gun sound reliably
             gameApp.playGunSound();
         }
     }

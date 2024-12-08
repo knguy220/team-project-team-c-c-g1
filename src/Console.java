@@ -1,4 +1,3 @@
-//handles updating the game
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +5,6 @@ import java.util.Random;
 
 import javax.swing.Timer;
 import acm.graphics.GLabel;
-
 
 public class Console {
     private GameApp gameApp;
@@ -26,7 +24,7 @@ public class Console {
         this.gameApp = gameApp;
         this.enemies = new ArrayList<>();
         this.enemiesDefeated = 0;
-        this.waveNumber = 0; 
+        this.waveNumber = 0;
         this.isSpawningWave = false;
         this.medKits = new Boosts(gameApp, false);
 
@@ -36,11 +34,15 @@ public class Console {
         waveLabel.setColor(java.awt.Color.RED);
         gameApp.add(waveLabel);
 
+        // Spawn 2 medkits at the start
+        spawnMedKits(2);
+
         // Initialize wave spawning timer
         waveTimer = new Timer(1000, e -> startNextWave()); // Short delay to prepare for the first wave
         waveTimer.setRepeats(false); // Only runs once at the start
         waveTimer.start();
     }
+
     public Console(GameApp gameApp, Map m) {
         this.gameApp = gameApp;
         this.enemies = new ArrayList<>();
@@ -48,13 +50,16 @@ public class Console {
         this.waveNumber = 0;
         this.isSpawningWave = false;
         this.map = m;
-        this.medKits = new Boosts(gameApp, false,m);
+        this.medKits = new Boosts(gameApp, false, m);
 
         // Initialize wave label
         waveLabel = new GLabel("", gameApp.getWidth() / 2.0, 50);
         waveLabel.setFont("Arial-Bold-24");
         waveLabel.setColor(java.awt.Color.RED);
         gameApp.add(waveLabel);
+
+        // Spawn 2 medkits at the start
+        spawnMedKits(2);
 
         // Initialize wave spawning timer
         waveTimer = new Timer(1000, e -> startNextWave()); // Short delay to prepare for the first wave
@@ -76,10 +81,10 @@ public class Console {
         // Update wave number display
         waveLabel.setLabel("Wave " + waveNumber);
         waveLabel.setLocation(
-            (gameApp.getWidth() - waveLabel.getWidth()) / 2, 
+            (gameApp.getWidth() - waveLabel.getWidth()) / 2,
             60 // Ensure it's below health bar and score
         );
-        //ggggg
+
         // Bring wave label to front
         gameApp.remove(waveLabel);
         gameApp.add(waveLabel);
@@ -99,8 +104,11 @@ public class Console {
             spawnTimer.setRepeats(false);
             spawnTimer.start();
         }
-        spawnMedKits();
-        
+
+        // Spawn 2 medkits every 5 waves
+        if (waveNumber % 5 == 0) {
+            spawnMedKits(2);
+        }
 
         // Delay before next wave starts
         Timer nextWaveTimer = new Timer(15000, e -> startNextWave());
@@ -110,7 +118,6 @@ public class Console {
         isSpawningWave = false;
     }
 
-
     /**
      * Spawns a standard enemy at a random off-screen position with specified speed.
      */
@@ -118,34 +125,35 @@ public class Console {
         double x = Math.random() > 0.5 ? -50 : gameApp.getWidth() + 50; // Off-screen X
         double y = Math.random() > 0.5 ? -50 : gameApp.getHeight() + 50; // Off-screen Y
         Random rand = new Random();
-        int type = rand.nextInt(3)+1;
-        Enemy enemy = new Enemy(gameApp,x,y);
+        int type = rand.nextInt(3) + 1;
+        Enemy enemy = new Enemy(gameApp, x, y);
         if (type == 3) {
-        	enemy.setSpeed(speed*0.25);
-        	enemy.setDamage(25);
-        	enemy.setHealth(50);
-        	enemy.setColor(Color.green);
-        	enemy.setBody("GreenLeft.png");
-        	enemy.setOffSet(10);
+            enemy.setSpeed(speed * 0.25);
+            enemy.setDamage(25);
+            enemy.setHealth(50);
+            enemy.setColor(Color.green);
+            enemy.setBody("GreenLeft.png");
+            enemy.setOffSet(10);
         } else if (type == 2) {
-        	enemy.setSpeed(speed*0.5);
-        	enemy.setDamage(10);
-        	enemy.setHealth(25);
-        	enemy.setColor(Color.blue);
-        	enemy.setBody("BlueLeft.png");
-        	enemy.setOffSet(12);
+            enemy.setSpeed(speed * 0.5);
+            enemy.setDamage(10);
+            enemy.setHealth(25);
+            enemy.setColor(Color.blue);
+            enemy.setBody("BlueLeft.png");
+            enemy.setOffSet(12);
         } else if (type == 1) {
-        	enemy.setSpeed(speed*0.75);
-        	enemy.setDamage(1);
-        	enemy.setHealth(10);
-        	enemy.setColor(Color.red);
-        	enemy.setBody("RedLeft.png");
-        	enemy.setOffSet(14);
+            enemy.setSpeed(speed * 0.75);
+            enemy.setDamage(1);
+            enemy.setHealth(10);
+            enemy.setColor(Color.red);
+            enemy.setBody("RedLeft.png");
+            enemy.setOffSet(14);
         }
         enemies.add(enemy);
         gameApp.add(enemy.getEnemyShape());
         gameApp.add(enemy.getBody());
     }
+
     /**
      * Removes an enemy from the game.
      */
@@ -154,31 +162,34 @@ public class Console {
         gameApp.remove(enemy.getBody());
         enemies.remove(enemy);
         if (isDead) {
-        	enemiesDefeated++;
+            enemiesDefeated++;
         }
         createDamageNumber(enemy.getEnemyShape().getX() + Enemy.ENEMY_SIZE / 2,
                 enemy.getEnemyShape().getY() + Enemy.ENEMY_SIZE / 2,
                 "10"); // Example damage value
     }
-    public void spawnMedKits() {
-    	Random medKitR = new Random();
-        int medKitNumber = medKitR.nextInt(3);
-        for (int i = 0; i < medKitNumber; i++) {
-        	Random xr = new Random();
-        	Random yr = new Random();
-        	double x = xr.nextDouble(gameApp.getWidth()-50) + 50;
-        	double y = yr.nextDouble(gameApp.getHeight()-50) + 50;
-        	medKits.createMedKit(x, y, 0.05);
+
+    /**
+     * Spawns exactly the specified number of medkits.
+     */
+    public void spawnMedKits(int count) {
+        for (int i = 0; i < count; i++) {
+            double x = Math.random() * (gameApp.getWidth() - 100) + 50;
+            double y = Math.random() * (gameApp.getHeight() - 100) + 50;
+            medKits.createMedKit(x, y, 0.05);
         }
     }
+
     public boolean checkPlayerMedKit(Player p) {
-    	return medKits.medKitOverlapping(p);
+        return medKits.medKitOverlapping(p);
     }
+
     public void healPlayer(Player p) {
-    	medKits.addHealth(p);
+        medKits.addHealth(p);
     }
+
     public void removeMedKit() {
-    	medKits.removeMedKit();
+        medKits.removeMedKit();
     }
 
     private void createDamageNumber(double x, double y, String damage) {
@@ -232,7 +243,7 @@ public class Console {
             }
         }).start();
     }
-    
+
     /**
      * Updates enemy positions to follow the player.
      */
@@ -296,3 +307,4 @@ public class Console {
         return enemiesDefeated;
     }
 }
+

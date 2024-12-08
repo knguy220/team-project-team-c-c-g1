@@ -52,10 +52,10 @@ public class PowerUps {
             flySwat.setFillColor(new Color(0, 255, 0, 180)); // Semi-transparent green
             gameApp.add(flySwat);
 
-            // Trail for Fly Swat
+            // Create a trail effect
             List<GOval> trail = new ArrayList<>();
 
-            // Thread for Fly Swat movement
+            // Start a thread for movement and animation
             new Thread(() -> {
                 try {
                     List<Enemy> enemiesToHit = new ArrayList<>(startGame.getConsole().getEnemies());
@@ -65,7 +65,6 @@ public class PowerUps {
                         if (hits >= 10) break; // Limit to 10 hits
                         if (!target.isAlive()) continue; // Skip if enemy is already dead
 
-                        // Move toward target
                         while (target.isAlive() && !flySwat.getBounds().intersects(target.getEnemyShape().getBounds())) {
                             double targetX = target.getEnemyShape().getX() + Enemy.getEnemySize() / 2;
                             double targetY = target.getEnemyShape().getY() + Enemy.getEnemySize() / 2;
@@ -78,7 +77,7 @@ public class PowerUps {
                             double directionX = deltaX / distance;
                             double directionY = deltaY / distance;
 
-                            // Move Fly Swat closer to the target
+                            // Move Fly Swat closer to the target (faster speed)
                             flySwat.move(directionX * 15, directionY * 15);
 
                             // Add trail effects
@@ -87,14 +86,21 @@ public class PowerUps {
                             Thread.sleep(15); // Smooth movement
                         }
 
-                        // Swatting effect on hit
+                        // Apply damage and briefly "pause" at the enemy
                         if (flySwat.getBounds().intersects(target.getEnemyShape().getBounds())) {
-                            swatEnemy(target, flySwat); // Perform swat animation
-                            target.updateHealth(100); // Apply damage
+                            target.updateHealth(100); // Apply significant damage
                             if (!target.isAlive()) {
                                 startGame.getConsole().removeEnemy(target, true);
                             }
                             hits++;
+
+                            // Brief pause effect
+                            Thread.sleep(150);
+
+                            // Make Fly Swat glow after each hit
+                            flySwat.setFillColor(new Color(255, 255, 0, 180)); // Bright yellow after hit
+                            Thread.sleep(150);
+                            flySwat.setFillColor(new Color(0, 255, 0, 180)); // Return to green
                         }
                     }
 
@@ -102,69 +108,6 @@ public class PowerUps {
                     gameApp.remove(flySwat);
                     cleanupTrail(trail);
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-        }
-    }
-
-    // Swatting effect: Swat grows and shrinks while creating debris
-    private void swatEnemy(Enemy target, GOval flySwat) {
-        try {
-            // Swat grows to simulate impact
-            for (int i = 0; i < 3; i++) {
-                flySwat.setSize(flySwat.getWidth() + 10, flySwat.getHeight() + 10);
-                flySwat.setLocation(
-                    flySwat.getX() - 5,
-                    flySwat.getY() - 5
-                );
-                Thread.sleep(30);
-            }
-
-            // Create debris particles
-            createDebris(target);
-
-            // Swat shrinks back
-            for (int i = 0; i < 3; i++) {
-                flySwat.setSize(flySwat.getWidth() - 10, flySwat.getHeight() - 10);
-                flySwat.setLocation(
-                    flySwat.getX() + 5,
-                    flySwat.getY() + 5
-                );
-                Thread.sleep(30);
-            }
-
-            // Turn the Fly Swat darker after hitting
-            flySwat.setFillColor(new Color(50, 150, 50, 180)); // Dark green "stain"
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Create debris particles
-    private void createDebris(Enemy target) {
-        for (int i = 0; i < 8; i++) {
-            GOval debris = new GOval(
-                target.getEnemyShape().getX() + Enemy.getEnemySize() / 2,
-                target.getEnemyShape().getY() + Enemy.getEnemySize() / 2,
-                5,
-                5
-            );
-            debris.setColor(Color.RED);
-            debris.setFilled(true);
-            gameApp.add(debris);
-
-            // Move debris outward in random directions
-            new Thread(() -> {
-                try {
-                    double angle = Math.random() * Math.PI * 2;
-                    double speed = Math.random() * 5 + 2; // Random speed
-                    for (int j = 0; j < 20; j++) { // 20 frames of movement
-                        debris.move(Math.cos(angle) * speed, Math.sin(angle) * speed);
-                        Thread.sleep(30);
-                    }
-                    gameApp.remove(debris); // Remove debris after animation
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
