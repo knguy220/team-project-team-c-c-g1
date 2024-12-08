@@ -8,29 +8,12 @@ public class Boosts {
 	private List<GImage> medKit;
 	private List<GImage> mistakes;
 	private Map map;
-	/*private GImage medIcon;
-	private GImage ammoIcon;*/
 	private int medBoost = 50;
-	//private int ammoBoost = 15;
 	private GImage index;
 	private int medKitSpawnInterval = 20; 
 	private int medKitTimer = 0; 
 	private GameApp gameApp;
 
-	
-	/*public Boosts (GameApp gameApp, double x, double y, int medBoost, int ammoBoost) {
-		this.gameApp = gameApp;
-		this.medBoost = medBoost; 
-		this.ammoBoost = ammoBoost;
-	}
-	public Boosts(boolean isAmmo){
-		if (isAmmo) {
-			ammo = new ArrayList<>();
-		} else {
-			medKit = new ArrayList<>();
-		}
-	}*/
-	
 	public Boosts (GameApp ga, boolean isAmmo) {
 		this.gameApp = ga;
 		if (isAmmo) {
@@ -145,51 +128,7 @@ public class Boosts {
 	    }
 	}
 
-	//any headers?
-	//public void addAmmo() {
-		//a function that updates ammunition?
-	//}
-	/*
-	public void createMedKit(double x, double y, double s) {
-		GImage medkit = new GImage("MedKit.jpg", x, y);
-		medkit.scale(s);
-		medKit.add(medkit);
-	}
-	public void createAmmo(double x, double y, double s) {
-		GImage a = new GImage("Bullet.png", x, y);
-		a.scale(s);
-		ammo.add(a);
-	}
-	public void addingAmmo(GameApp gameApp) {
-		for (GImage a: ammo) {
-			gameApp.add(a);
-		}
-	}
-	public void addingMedKit(GameApp gameApp) {
-		for (GImage m: medKit) {
-			gameApp.add(m);
-		}
-	}
-	public GImage getMedKit() {
-		return medIcon;
-	}
-	
-	public GImage getAmmo() {
-		return ammoIcon;
-	}
-	
-	public int getMedBoost() {
-		return medBoost;
-	}
-	
-	public int getAmmoBoost() {
-		return ammoBoost;
-	}
-	
-	public void remove() {
-		gameApp.remove(medIcon);
-		gameApp.remove(ammoIcon);
-	}*/
+
 }
 	
 	
