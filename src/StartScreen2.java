@@ -45,6 +45,7 @@ public class StartScreen2 {
         gameApp.add(settingsButton.getRect());
         gameApp.add(settingsButton.getMessage());
 
+        // Instructions button - Displays instructions when clicked
         instructionsButton = new GButton("Instructions", 730, 400, 100, 40, Color.BLACK, Color.WHITE);
         instructionsButton.addActionListener(new MouseListener() {
             @Override
@@ -59,7 +60,7 @@ public class StartScreen2 {
         gameApp.add(instructionsButton.getRect());
         gameApp.add(instructionsButton.getMessage());
 
-        // Start button - Begins the game when clicked
+        // Start button - Requests username when clicked
         startButton = new GButton("Start Game", 730, 600, 100, 40, Color.BLACK, Color.WHITE);
         startButton.addActionListener(new MouseListener() {
             @Override
@@ -95,10 +96,10 @@ public class StartScreen2 {
 
     private void requestUsername() {
         String input = JOptionPane.showInputDialog(null, "Enter your username (3-15 characters):");
-        if (input != null) {  // Checks iff user didn't click cancel
+        if (input != null) {  // Checks if user didn't click cancel
             if (isUsernameValid(input)) {
                 username = input;
-                gameApp.startGame();
+                gameApp.showDifficultyMenu(); // Show difficulty menu after username
             } else {
                 showUsernameError();
             }
@@ -119,4 +120,5 @@ public class StartScreen2 {
     public String getUsername() {
         return username;
     }
-} 
+}
+

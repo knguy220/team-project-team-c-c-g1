@@ -1,6 +1,5 @@
 import acm.graphics.*;
 import java.awt.Color;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GButton {
@@ -24,6 +23,25 @@ public class GButton {
         return label;
     }
 
+    /**
+     * Checks if a point (x, y) is within the boundaries of the button's rectangle.
+     *
+     * @param x The x-coordinate of the point.
+     * @param y The y-coordinate of the point.
+     * @return True if the point is inside the button; false otherwise.
+     */
+    public boolean contains(double x, double y) {
+        return rect.contains(x, y);
+    }
+
+    /**
+     * Adds the button components to the canvas.
+     */
+    public void addToCanvas(GCanvas canvas) {
+        canvas.add(rect);
+        canvas.add(label);
+    }
+    
     public void addActionListener(MouseListener listener) {
         rect.addMouseListener(listener);
         label.addMouseListener(listener);

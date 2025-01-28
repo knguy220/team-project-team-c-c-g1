@@ -23,7 +23,8 @@ public class Player {
     private double velocityX = 0;
     private double velocityY = 0;
     
-    private int playerHealth = MAX_HEALTH;
+    private int playerHealth;
+    private int maxHealth;
 
     private boolean movingUp = false;
     private boolean movingDown = false;
@@ -39,6 +40,10 @@ public class Player {
         this.x = startX;
         this.y = startY;
         this.gunLength = gunLength;
+        
+     // Initialize default health
+        this.maxHealth = 100; // Default max health
+        this.playerHealth = maxHealth;
 
         // Create the player shape
         playerShape = new GOval(startX, startY, PLAYER_SIZE, PLAYER_SIZE);
@@ -64,6 +69,16 @@ public class Player {
         updatingHealthBar.setFilled(true);
         updatingHealthBar.setColor(Color.GREEN);
     }
+    
+    public void setMaxHealth(int maxHealth) {
+        playerHealth = maxHealth;
+        updatingHealthBar.setSize(HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT); // Reset health bar
+    }
+
+    public void logPlayerHealth() {
+        System.out.println("Player Health: " + playerHealth + "/" + maxHealth);
+    }
+    
 
     /**
      * Sets the PowerUps instance for the player.
@@ -232,8 +247,8 @@ public class Player {
         playerHealth -= damage;
         playerHealth = Math.max(playerHealth, 0);
 
-        // Update health bar width
-        double healthBarWidth = (double) playerHealth / MAX_HEALTH * HEALTH_BAR_WIDTH;
+     // Update health bar width
+        double healthBarWidth = (double) playerHealth / maxHealth * HEALTH_BAR_WIDTH;
         updatingHealthBar.setSize(healthBarWidth, HEALTH_BAR_HEIGHT);
     }
 

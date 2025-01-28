@@ -88,9 +88,11 @@ public class GameOverScreen {
      * Restarts the game by navigating to the StartGame screen.
      */
     private void restartGame() {
-        System.out.println("Restarting game...");
-        gameApp.startGame(); // Reset and start the game
+        System.out.println("Redirecting to difficulty menu...");
+        gameApp.showDifficultyMenu(); // Redirect to the difficulty selection screen
     }
+
+
 
 
     /**

@@ -17,6 +17,8 @@ public class StartGame {
     private Console console;
     private Timer gameLoopTimer;
     private PowerUps powerUps;
+    private String difficulty;
+
 
     private int score = 0; // Player's score
     private GLabel scoreLabel; // Score label for display
@@ -28,9 +30,11 @@ public class StartGame {
     private GOval hazmatShield;
     private long hazmatEndTime = 0; // Tracks when the hazmat shield expires
 
-    public StartGame(GameApp gameApp) {
+    public StartGame(GameApp gameApp, String difficulty) {
         this.gameApp = gameApp;
-
+        this.difficulty = difficulty;
+        // Other initialization code
+        
         int screenWidth = (int) gameApp.getWidth();
         int screenHeight = (int) gameApp.getHeight();
 
@@ -109,8 +113,13 @@ public class StartGame {
         scoreLabel = new GLabel("Score: 0");
         scoreLabel.setFont("Arial-Bold-20");
         scoreLabel.setColor(Color.WHITE);
-        scoreLabel.setLocation(10, 50);
+        scoreLabel.setLocation(10, 40);
         gameApp.add(scoreLabel);
+        
+        GLabel difficultyLabel = new GLabel("Difficulty: " + difficulty, 10, 60); // Show difficulty
+        difficultyLabel.setFont("Arial-Bold-18");
+        difficultyLabel.setColor(Color.WHITE);
+        gameApp.add(difficultyLabel);
 
         // Pause button
         pauseButton = new GButton("Pause", (int) (gameApp.getWidth() - 100), 20, 80, 30, Color.BLACK, Color.WHITE);
@@ -127,19 +136,19 @@ public class StartGame {
         hazmatCooldownLabel = new GLabel("Hazmat: Ready");
         hazmatCooldownLabel.setFont("Arial-Bold-16");
         hazmatCooldownLabel.setColor(Color.YELLOW);
-        hazmatCooldownLabel.setLocation(10, 80);
+        hazmatCooldownLabel.setLocation(10, 90);
         gameApp.add(hazmatCooldownLabel);
 
         flySwatCooldownLabel = new GLabel("Fly Swat: Ready");
         flySwatCooldownLabel.setFont("Arial-Bold-16");
         flySwatCooldownLabel.setColor(Color.CYAN);
-        flySwatCooldownLabel.setLocation(10, 100);
+        flySwatCooldownLabel.setLocation(10, 110);
         gameApp.add(flySwatCooldownLabel);
 
         bugRepellentCooldownLabel = new GLabel("Bug Repellent: Ready");
         bugRepellentCooldownLabel.setFont("Arial-Bold-16");
         bugRepellentCooldownLabel.setColor(Color.GREEN);
-        bugRepellentCooldownLabel.setLocation(10, 120);
+        bugRepellentCooldownLabel.setLocation(10, 130);
         gameApp.add(bugRepellentCooldownLabel);
     }
 

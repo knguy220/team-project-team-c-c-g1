@@ -17,6 +17,11 @@ public class Map {
     private GRect inventoryBox;
     private List<GLabel> weaponLabels;
 
+    public Map(GameApp gameApp) {
+        this((int) gameApp.getWidth(), (int) gameApp.getHeight()); // Cast dimensions to int
+    }
+
+
     public Map(int screenWidth, int screenHeight) {
     	this.screenWidth = screenWidth;
 

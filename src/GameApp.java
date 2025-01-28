@@ -10,6 +10,7 @@ public class GameApp extends GraphicsProgram {
     private SettingsScreen settingsScreen;
     private PauseScreen pauseScreen;
     private GameOverScreen gameOverScreen;
+    private DifficultyMenu difficultyMenu;
     private Sound backgroundMusic;
     private Sound clickSound;
     private Sound pauseSound;
@@ -19,17 +20,21 @@ public class GameApp extends GraphicsProgram {
     private Sound hazmatSound;
     private Sound flySwatSound;
     private Sound bugRepellentSound;
-
+    
     public enum GameState { ACTIVE, PAUSED, IN_MENU, GAME_OVER }
 
     private GameState gameState = GameState.IN_MENU;
+    private String lastDifficulty = "Medium"; // Default difficulty
 
+    
     @Override
     public void init() {
         // Initialize the screens and other game elements
         startScreen = new StartScreen2(this);
         settingsScreen = new SettingsScreen(this);
         pauseScreen = new PauseScreen(this);
+        
+        difficultyMenu = new DifficultyMenu(this);
 
         // Set up the game screen size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -55,7 +60,7 @@ public class GameApp extends GraphicsProgram {
         } catch (RuntimeException e) {
             System.err.println("There is an error loading sounds: " + e.getMessage());
         } 
-
+        
         // Show the start screen and add listeners for mouse and keyboard inputs
         showStartScreen();
         addMouseListeners();
@@ -95,11 +100,26 @@ public class GameApp extends GraphicsProgram {
             startGame.pauseGameLoop(); // Stop any ongoing game loop
             startGame = null; // Reset the StartGame instance
         }
-        startGame = new StartGame(this); // Create a fresh instance of StartGame
+        // Provide a default difficulty level (e.g., "Medium") if none is set
+        String defaultDifficulty = "Medium";
+        startGame = new StartGame(this, defaultDifficulty);
         startGame.show(); // Show the game screen
         gameState = GameState.ACTIVE; // Set the game state to active
     }
 
+    public void startGameWithDifficulty(String difficulty) {
+        removeAll(); // Clear all elements from the current screen
+        if (startGame != null) {
+            startGame.pauseGameLoop(); // Stop any ongoing game loop
+            startGame = null; // Reset the StartGame instance
+        }
+        startGame = new StartGame(this, difficulty); // Pass the difficulty
+        startGame.show(); // Show the game screen
+        gameState = GameState.ACTIVE; // Set the game state to active
+    }
+
+
+    
     public void showPauseScreen() {
         if (startGame != null) {
             startGame.hide();
@@ -177,10 +197,21 @@ public class GameApp extends GraphicsProgram {
             bugRepellentSound.setVolume(audioVolume);
         }
     }
+    
+    public void showDifficultyMenu() {
+        if (difficultyMenu == null) {
+            difficultyMenu = new DifficultyMenu(this);
+        }
+        difficultyMenu.show();
+        addMouseListeners(); // Ensure mouse listeners are active for the menu
+    }
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (gameState == GameState.PAUSED) {
+        if (gameState == GameState.IN_MENU && difficultyMenu != null) {
+            difficultyMenu.handleMouseClick(e); // Pass the MouseEvent object
+        } else if (gameState == GameState.PAUSED) {
             if (pauseScreen.isResumeButtonClicked(e.getX(), e.getY())) {
                 resumeGame();
             } else if (pauseScreen.isQuitButtonClicked(e.getX(), e.getY())) {
@@ -189,12 +220,6 @@ public class GameApp extends GraphicsProgram {
         } else if (gameState == GameState.GAME_OVER) {
             if (gameOverScreen != null) {
                 gameOverScreen.handleMouseClick(e); // Handle clicks on Game Over screen
-            }
-        } else if (gameState == GameState.IN_MENU) {
-            if (settingsScreen.isApplyButtonClicked(e.getX(), e.getY())) {
-                settingsScreen.applySettings();
-            } else if (settingsScreen.isBackButtonClicked(e.getX(), e.getY())) {
-                settingsScreen.backToPrevious(); // Correct Back button behavior
             }
         }
     }
@@ -245,6 +270,10 @@ public class GameApp extends GraphicsProgram {
         if (gunSound != null) {
             gunSound.play(); // Play the gun sound reliably
         }
+    }
+
+    public String getLastDifficulty() {
+        return lastDifficulty;
     }
 
 

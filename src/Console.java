@@ -18,6 +18,8 @@ public class Console {
     private Map map;    
     private DifficultyManager difficultyManager;
     private DifficultyManager.DifficultySettings currentSettings;
+    private Player player;
+
 
     private double baseEnemySpeed;
     private int baseSpawnRate;
@@ -73,8 +75,10 @@ public class Console {
     }
     
  // New constructor to integrate difficulty settings
-    public Console(GameApp gameApp, String difficulty) {
+    public Console(GameApp gameApp, Player player, String difficulty) {
         this(gameApp); // Call the existing constructor
+
+        this.player = player;
 
         // Initialize DifficultyManager and apply settings
         difficultyManager = new DifficultyManager();
@@ -90,7 +94,18 @@ public class Console {
                 applyDifficultySettings(currentSettings);
             }
         }
+
+        // Initialize the Map using the new constructor
+        map = new Map(gameApp);
+
+        // Adjust the player's health based on difficulty settings
+        player.setMaxHealth(currentSettings.getPlayerHealth());
+
+        // Debugging log
+        player.logPlayerHealth();
     }
+
+
     
  // Helper method to load default difficulty settings
     private void loadDefaultSettings() {
