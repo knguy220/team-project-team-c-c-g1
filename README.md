@@ -34,3 +34,69 @@ For each enemy to be spawned:
   Create a timer with the calculated spawn delay
   Spawn an enemy using the scaled speed for the current wave
 Add the newly spawned enemies to the game
+
+
+Difficulty Settings
+The game supports three difficulty levels:
+- **Easy**: Slower enemies, slower spawn rates, and higher player health.
+- **Medium**: Balanced settings for normal gameplay.
+- **Hard**: Faster enemies, faster spawn rates, and lower player health.
+
+Configuring Difficulty
+The difficulty settings are defined in `difficulty_config.txt`. Place this file in the `src` directory. The format should look like this:
+
+Easy: enemySpeed = 4.0 spawnRate = 800 playerHealth = 150
+
+Medium: enemySpeed = 6.0 spawnRate = 600 playerHealth = 100
+
+Hard: enemySpeed = 8.0 spawnRate = 400 playerHealth = 50
+
+Feature Demonstration:
+
+To confirm the difficulty selection feature is implemented:
+Launch the application.
+On the main menu, click **Start Game**
+Enter a valid username (3-15 characters) in the prompt
+The difficulty menu will appear
+Select a difficulty (Easy, Medium, Hard)
+
+Observe that:
+   - The game starts with the selected difficulty
+   - The score and difficulty labels are visible on the game screen
+   - Enemies spawn faster, move quicker, or the player's health is adjusted based on the selected difficulty
+To confirm:
+   - Easy: Enemies move slower, spawn slower, and player health is higher
+   - Medium: Balanced settings.
+   - Hard: Enemies move faster, spawn faster, and player health is lower
+
+If the non-programming user would like to edit the values:
+
+Open difficulty_config.txt in any text editor (e.g., Notepad).
+Locate the desired difficulty section:
+
+Easy:
+enemySpeed = 4.0
+spawnRate = 800
+playerHealth = 150
+
+Medium:
+enemySpeed = 6.0
+spawnRate = 600
+playerHealth = 100
+
+Hard:
+enemySpeed = 8.0
+spawnRate = 400
+playerHealth = 50
+
+Adjust the values:
+enemySpeed: Controls how fast enemies move
+spawnRate: Controls the delay (in milliseconds) between enemy spawns
+playerHealth: Sets the player's starting health
+
+Save the file and restart the game to apply the changes
+
+If difficulty_config.txt is invalid, the program will:
+Use default settings for that difficulty level, and log the issue
+
+
