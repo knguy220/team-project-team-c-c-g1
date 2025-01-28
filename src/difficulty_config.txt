@@ -1,0 +1,14 @@
+Easy:
+enemySpeed=4.0
+spawnRate=800
+playerHealth=150
+
+Medium:
+enemySpeed=6.0
+spawnRate=600
+playerHealth=100
+
+Hard:
+enemySpeed=8.0
+spawnRate=400
+playerHealth=50
