@@ -15,10 +15,15 @@ public class Console {
     private Timer waveTimer;
     private GLabel waveLabel;
     private Boosts medKits;
-    private Map map;
+    private Map map;    
+    private DifficultyManager difficultyManager;
+    private DifficultyManager.DifficultySettings currentSettings;
 
-    private static final double BASE_ENEMY_SPEED = 6.0; // Increased base speed
-    private static final int BASE_SPAWN_DELAY = 600;   // Faster spawn rate
+    private double baseEnemySpeed;
+    private int baseSpawnRate;
+
+    private static final double DEFAULT_ENEMY_SPEED = 6.0; // Default enemy speed
+    private static final int DEFAULT_SPAWN_DELAY = 600;   // Default spawn delay
 
     public Console(GameApp gameApp) {
         this.gameApp = gameApp;
@@ -66,9 +71,41 @@ public class Console {
         waveTimer.setRepeats(false); // Only runs once at the start
         waveTimer.start();
     }
+    
+ // New constructor to integrate difficulty settings
+    public Console(GameApp gameApp, String difficulty) {
+        this(gameApp); // Call the existing constructor
 
+        // Initialize DifficultyManager and apply settings
+        difficultyManager = new DifficultyManager();
+        if (!difficultyManager.loadConfig("difficulty_config.txt")) {
+            System.err.println("Failed to load difficulty configuration. Using default values.");
+            loadDefaultSettings();
+        } else {
+            currentSettings = difficultyManager.getSettings(difficulty);
+            if (currentSettings == null || !currentSettings.isValid()) {
+                System.err.println("Invalid difficulty selected. Using default values.");
+                loadDefaultSettings();
+            } else {
+                applyDifficultySettings(currentSettings);
+            }
+        }
+    }
+    
+ // Helper method to load default difficulty settings
+    private void loadDefaultSettings() {
+        currentSettings = new DifficultyManager.DifficultySettings(DEFAULT_ENEMY_SPEED, DEFAULT_SPAWN_DELAY, 100);
+        applyDifficultySettings(currentSettings);
+    }
+
+    // Helper method to apply difficulty settings
+    private void applyDifficultySettings(DifficultyManager.DifficultySettings settings) {
+        this.baseEnemySpeed = settings.getEnemySpeed();
+        this.baseSpawnRate = settings.getSpawnRate();
+    }
+    
     /**
-     * Starts the next wave of enemies.
+     * Starts the next wave of enemies, adjusting spawn rate and speed based on difficulty settings.
      */
     public void startNextWave() {
         if (gameApp.getGameState() != GameApp.GameState.ACTIVE || isSpawningWave) {
@@ -89,10 +126,14 @@ public class Console {
         gameApp.remove(waveLabel);
         gameApp.add(waveLabel);
 
-        // Logic for spawning enemies
-        int enemyCount = Math.min(5 + waveNumber * 2, 30);
-        int spawnDelay = Math.max(100, BASE_SPAWN_DELAY - waveNumber * 50);
-        double enemySpeed = BASE_ENEMY_SPEED + waveNumber;
+        // Adjust spawn delay and speed based on difficulty and wave number
+        int enemyCount = Math.min(5 + waveNumber * 2, 30); // Max 30 enemies per wave
+        int spawnDelay = (currentSettings != null) 
+            ? Math.max(100, currentSettings.getSpawnRate() - waveNumber * 50) 
+            : Math.max(100, DEFAULT_SPAWN_DELAY - waveNumber * 50); // Fallback to default
+        double enemySpeed = (currentSettings != null) 
+            ? currentSettings.getEnemySpeed() + waveNumber * 0.1 
+            : DEFAULT_ENEMY_SPEED + waveNumber * 0.1; // Fallback to default
 
         for (int i = 0; i < enemyCount; i++) {
             int finalI = i;
@@ -110,7 +151,7 @@ public class Console {
             spawnMedKits(2);
         }
 
-        // Delay before next wave starts
+        // Schedule the next wave after 15 seconds
         Timer nextWaveTimer = new Timer(15000, e -> startNextWave());
         nextWaveTimer.setRepeats(false);
         nextWaveTimer.start();
